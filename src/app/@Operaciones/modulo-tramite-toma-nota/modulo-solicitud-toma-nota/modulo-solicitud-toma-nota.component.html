@@ -1,0 +1,854 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <div class="col-md-12 breadcrumb">
+    <p>Toma de nota de modificaciones al interior de las asociaciones religiosas > <strong>Solicitud de toma de
+        nota</strong></p>
+  </div>
+  <div *ngIf="inicio">
+    <form role="form" [formGroup]="formGroupInicio">
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label class="control-label requerido">Número de SGAR:</label>
+          <input class="form-control" type="text" name="c_numero_sgar" formControlName="c_numero_sgar" required
+            [readonly]="bloqueoTN" appTrim />
+        </div>
+        <div class="form-group col-md-6">
+          <label class="control-label requerido">Denominaci&oacute;n:</label>
+          <input class="form-control" type="text" name="c_denominacion" formControlName="c_denominacion"
+            [readonly]="bloqueoTN" required appTrim />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label class="control-label requerido col-md-8" style="padding-left:0px !important">Escrito solicitud de toma
+            de nota:</label>
+          <div class="col-md-4">
+            <app-modulo-carga-archivo [id]="tomanota" [id_archivo_tramite]="14" [archivo_registrado]="escritosolicitud"
+              (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+              [isDictaminador]="isDictaminador">
+            </app-modulo-carga-archivo>
+            <!--app-modulo-anexos [id]="tomanota" [id_archivo_tramite]="14"></app-modulo-anexos-->
+
+          </div>
+          <label class="control-label col-md-8" style="padding-left:0px !important"> Otros (Acta de Asamblea,
+            Convocatoria, Nombramiento, etc.): </label>
+          <div class="form-group col-md-12">
+            <div class="col-md-12">
+              <div class="col-md-2">
+                <button *ngIf="!isDictaminador" class="btn btn-default btn-sm btn-margin" type="button"
+                  title="Agregar Archivos" (click)="cargarArchivo()" [disabled]="bloqueoTN">
+                  <span class="glyphicon glyphicon-file"></span>
+                </button>
+              </div>
+            </div>
+
+            <input style="display: none" id="ArchivoModal" name="ArchivoModal" type="file" multiple="multiple"
+              (change)="agregarArchivo($event.target.files)" />
+
+            <div class="col-md-12 mt-5">
+              <table class="table table-striped" *ngIf="listaAnexosOtros.length > 0">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th class="text-center">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let archivo of listaAnexosOtros; let i = index">
+                    <td>{{ archivo.nombre_anexo }}</td>
+                    <td class="text-center">
+                      <button class="btn btn-default btn-sm btn-margin" type="button" (click)="detalle(archivo, archivo.base64)">
+                        <span class="glyphicon glyphicon-zoom-in"></span>
+                      </button>&nbsp;
+                      <button class="btn btn-default btn-sm btn-margin" type="button" [disabled]="bloqueoTN"
+                        (click)="openAdvertencia(archivo, i)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+        <div class="form-group col-md-6">
+
+          <label class="control-label requerido" for="s_cat_solicitud_escrito">Tipo de Solicitud Escrito:</label>
+          <select class="form-control" name="c_id_tsol_escrito" formControlName="c_id_tsol_escrito" [attr.disabled]="bloqueoTN?'':null" required>
+            <option value="" selected>Seleccione una opci&oacute;n...</option>
+            <option *ngFor="let tipo of listaSolicitudEscrito" value="{{ tipo.c_id }}">
+              {{ tipo.c_nombre_n }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group col-md-12" *ngIf="listaAnexosOtros.length > 0">
+          <label class="control-label requerido" for="comentario_tnota">Comentarios:</label>
+          <input class="form-control" type="text" name="comentario_tnota" formControlName="comentario_tnota"
+            [readonly]="bloqueoTN" />
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="control-label">Por favor seleccione los movimientos que desea realizar con respecto a la
+          información y/o documentación de la asociación religiosa.</label>
+      </div><br />
+    </div>
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;">
+          Modificación de estatutos
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check1id" [disabled]="bloqueoTN"
+            [(ngModel)]="check1" (change)="checkedMovimiento('Estatutos',$event.target.checked)" />
+        </div>
+      </div>
+
+      <!--div class="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;" for="">
+          Movimientos del representante legal
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check2id" [disabled]="bloqueoTN"
+                 [(ngModel)]="check2" (change)="checkedMovimiento('Representante',$event.target.checked)" />
+        </div>
+      </div-->
+
+      <div class="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;" for="">
+          Movimientos en domicilio notificaciones
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check3id" [disabled]="bloqueoTN"
+            [(ngModel)]="check3" (change)="checkedMovimiento('DomicilioNotificacion',$event.target.checked)" />
+        </div>
+      </div>
+
+      <div class="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;" for="">
+          Cambio de denominación
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check4id" [disabled]="bloqueoTN"
+            [(ngModel)]="check4" (change)="checkedMovimiento('Denominacion',$event.target.checked)" />
+        </div>
+      </div>
+
+      <div class="form-group col-md-4" style="inline-size: -webkit-fill-available;">
+
+      </div>
+
+      <div class="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;" for="">
+          Movimientos del apoderado legal
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check5id" [disabled]="bloqueoTN"
+            [(ngModel)]="check5" (change)="checkedMovimiento('Apoderado',$event.target.checked)" />
+        </div>
+      </div>
+
+      <!--div class="form-group col-md-4" style="inline-size: -webkit-fill-available;">
+        Movimientos del representante legal
+      </div-->
+
+      <div class="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;" for="">
+          Relación de representantes Legales/ Asociados/ Ministros de culto/ Órgano de Gobierno
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check2id" [disabled]="bloqueoTN"
+                 [(ngModel)]="check2" (change)="checkedMovimiento('Representante',$event.target.checked)" />
+        </div>
+      </div>
+
+      <!--divclass="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;" for="">
+          Relación de representantes Legales/ Asociados/ Ministros de culto/ Órgano de Gobierno
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check6id" [disabled]="bloqueoTN"
+            [(ngModel)]="check6" (change)="checkedMovimiento('Miembros',$event.target.checked)" />
+        </div>
+      </div-->
+
+      <div class="form-group col-md-4">
+        <label class="control-label col-md-9" style="padding-left: 0px !important;" for="">
+          Movimientos en domicilio legal
+        </label>
+        <div class="col-md-3">
+          <input class="" type="checkbox" name="checkMovimiento[]" id="check7id" [disabled]="bloqueoTN"
+            [(ngModel)]="check7" (change)="checkedMovimiento('DomicilioLegal',$event.target.checked)" />
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <button (click)="ShowMovimientos()" class="btn btn-primary btnbtns" *ngIf="!esVistaPrevia"
+          [disabled]="this.formGroupInicio.invalid">
+          Aceptar
+        </button>
+        <button type="button" (click)="regresarInicio()" class="btn btn-secondary btnbtns">
+          Salir
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="movEstatutos">
+    <div class="container">
+      <br />
+      <h5>Movimientos en estatutos</h5>
+      <form role="form" [formGroup]="formGroupEstatutos">
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label class="control-label requerido" style="padding-left:0px !important">Estatutos:</label>
+          </div>
+          <div class="form-group col-md-8">
+            <app-modulo-anexos [id]="tomanota" [id_archivo_tramite]="25" (is_sent_anexos)="guardarAnexos($event)"></app-modulo-anexos>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-8">
+            <label class="control-label requerido" for="c_comentario">Comentarios:</label>
+            <textarea class="form-control" formControlName="c_comentario" name="c_comentario" rows="10"
+              [readonly]="bloqueoTN"></textarea>
+            <div *ngIf="formGroupEstatutos.invalid && formGroupEstatutos.get('c_comentario').touched">
+              <span class="error">{{ obtenerErroresEstatutosComentarios() }}</span>
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+      <div class="row">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-primary btnbtns" (click)="OnSubmitEstatutos()" *ngIf="!esVistaPrevia"
+            [disabled]="this.formGroupEstatutos.invalid || bloqueoTN">
+            Guardar
+          </button>
+          <button type="button" class="btn btn-secondary btnbtns" (click)="retornarInicio()">
+            Salir
+          </button>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="movDenominacion">
+    <div class="container">
+      <br />
+      <h5>Cambio de denominación</h5>
+
+      <form role="form" [formGroup]="formGroupDenominacion">
+        <div class="row">
+          <div class="form-group col-md-8">
+            <label class="control-label requerido" for="c_denominacion">Nueva denominación:</label>
+
+            <input class="form-control" type="text" formControlName="c_denominacion" name="c_denominacion" required
+              pattern='^[^"]*$' [readonly]="bloqueoTN" />
+            <div *ngIf="formGroupDenominacion.invalid && formGroupDenominacion.get('c_denominacion').touched">
+              <span class="error">{{ obtenerErroresDenominacionNueva() }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-8">
+            <label class="control-label requerido col-md-8" style="padding-left:0px !important">Certificado de
+              registro:</label>
+            <div class="col-md-4">
+              <app-modulo-carga-archivo [id]="tomanota" [id_archivo_tramite]="19"
+                [archivo_registrado]="certificadoregistro" (is_sent_arch)="setSentArch($event)"
+                (is_loading)="setIsLoadingArchivo($event)"
+                [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-8">
+            <label class="control-label requerido col-md-8" style="padding-left:0px !important">Ejemplar de estatutos
+              con nueva denominación:</label>
+            <div class="col-md-4">
+              <app-modulo-carga-archivo [id]="tomanota" [id_archivo_tramite]="20"
+                [archivo_registrado]="estatutosnuevasolicitud" (is_sent_arch)="setSentArch($event)"
+                (is_loading)="setIsLoadingArchivo($event)"
+                [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-8">
+            <label class="control-label" for="c_comentario_n">Comentarios:</label>
+            <textarea class="form-control" formControlName="c_comentario_n" name="c_comentario_n" rows="10"
+              [readonly]="bloqueoTN"></textarea>
+            <div *ngIf="formGroupDenominacion.invalid && formGroupDenominacion.get('c_comentario_n').touched">
+              <span class="error">{{ obtenerErroresDenominacionComentarios() }}</span>
+            </div>
+          </div>
+        </div>
+
+
+      </form>
+      <div class="row">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-primary btnbtns" (click)="OnSubmitDenominacion()" *ngIf="!esVistaPrevia"
+            [disabled]="this.formGroupDenominacion.invalid || bloqueoTN">
+            Guardar
+          </button>
+          <button type="button" class="btn btn-secondary btnbtns" (click)="retornarInicio()">
+            Salir
+          </button>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--div *ngIf="movMiembros">
+    <div class="container">
+      <br />
+      <div class="tabla-Representantes col-md-12">
+        <h4>
+          Relación de Representantes Legales / Asociados / Ministros de Culto / Órgano de Gobierno
+        </h4>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <button class="btn btnbtns btn-primary btn-sm active pull-right" title="Agregar Nuevo Integrante"
+                type="button" (click)="openEdicion(null)" [disabled]="bloqueoTN">
+                Nuevo Integrante
+              </button>
+            </div>
+            <div>
+              <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                <thead>
+                  <tr>
+
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Roles</th>
+                    <th scope="col">Órgano Gobierno</th>
+                    <th scope="col">INE / Pasaporte</th>
+                    <th scope="col">Acta de Nac. / Doc. Migratorio</th>
+                    <th scope="col">CURP</th>
+                    <th scope="col">Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let Representante of listrepresentante; let i = index">
+                    <th class="">{{ Representante.p_nombre_completo }}</th>
+                    <th class="roles">
+                      {{getRoles(Representante)}}
+                    </th>
+                    <th class="">
+                      <div *ngIf="Representante.p_cargo">{{ Representante.p_cargo }} - Cargo: {{
+                        Representante.c_organo_g }}</div>
+                      <div *ngIf="!Representante.p_cargo">-</div>
+                    </th>
+                    <td>
+                      <app-modulo-carga-archivo [id]="Representante.r_id" [id_archivo_tramite]="7"
+                        [archivo_registrado]="Representante.p_ine_exists" (is_loading)="setIsLoadingArchivo($event)"
+                        (is_sent_arch)="setSentArch($event)" [indice]="i"
+                        [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+                    </td>
+                    <td>
+                      <div class="col-md-12">
+                        <app-modulo-carga-archivo [id]="Representante.r_id" [id_archivo_tramite]="8"
+                          [archivo_registrado]="Representante.p_acta_exists" (is_loading)="setIsLoadingArchivo($event)"
+                          (is_sent_arch)="setSentArch($event)" [indice]="i"
+                          [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="col-md-12">
+                        <app-modulo-carga-archivo [id]="Representante.r_id" [id_archivo_tramite]="9"
+                          [archivo_registrado]="Representante.p_curp_exists" (is_loading)="setIsLoadingArchivo($event)"
+                          (is_sent_arch)="setSentArch($event)" [indice]="i"
+                          [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+                      </div>
+                    </td>
+                    <td>
+                      <button class="btn btn-secondary btn-sm" title="Editar Representante" type="button"
+                        (click)="openEdicion(Representante)" [disabled]="bloqueoTN">
+                        <i class="ti-pencil"></i>
+                      </button>
+
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+              <div class="row">
+                <div class="col-md-6">
+                </div>
+              </div>
+            </div>
+          </div><br />
+          <div class="row">
+            <div class="col-md-6">
+              <button type="button" class="btn btn-primary btnbtns" *ngIf="!esVistaPrevia"
+                [disabled]="this.listrepresentante.length == 0 || bloqueoTN" (click)="editarPasoTres()">
+                Guardar
+              </button>
+              <button type="button" class="btn btn-secondary btnbtns" (click)="retornarInicio()">
+                Salir
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div-->
+
+
+  <div *ngIf="movRepresentante">
+    <div class="container">
+      <br />
+      <div class="tabla-Representantes col-md-12">
+        <h4>
+          Relación de Representantes Legales / Asociados / Ministros de Culto / Órgano de Gobierno
+        </h4>
+      </div>
+
+      <form role="form" [formGroup]="formGroupRepresentante">
+        <div class="row">
+
+          <div class="form-group col-md-5">
+            <div class="form-group col-md-12">
+              <label class="control-label requerido" for="c_id_tipo_movimiento">Tipo de movimiento:</label>
+              <select class="form-control" name="c_id_tipo_movimiento" formControlName="c_id_tipo_movimiento" required
+                [attr.disabled]="bloqueoTN?'':null">
+                <option value="" selected>Seleccione una opci&oacute;n...</option>
+                <option *ngFor="let tipo of listatipomovimiento" value="{{ tipo.c_id }}">
+                  {{ tipo.c_nombre_n }}
+                </option>
+              </select>
+              <div *ngIf="formGroupRepresentante.invalid && formGroupRepresentante.get('c_id_tipo_movimiento').touched">
+                <span class="error">{{ obtenerErroresTipoMovimiento() }}</span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_nombre">Nombre<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="p_nombre" required [readonly]="bloqueoTN" />
+              <div *ngIf="formGroupRepresentante.invalid && formGroupRepresentante.get('p_nombre').touched">
+                <span class="error">{{ obtenerErroresNombreRepre() }}</span>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_apaterno">Apellido Paterno<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="p_apaterno" required [readonly]="bloqueoTN" />
+              <div *ngIf="formGroupRepresentante.invalid && formGroupRepresentante.get('p_apaterno').touched">
+                <span class="error">{{ obtenerErroresPaternoRepre() }}</span>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_amaterno">Apellido Materno<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="p_amaterno" required [readonly]="bloqueoTN" />
+              <div *ngIf="formGroupRepresentante.invalid && formGroupRepresentante.get('p_amaterno').touched">
+                <span class="error">{{ obtenerErroresMaternoRepre() }}</span>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label requerido" for="c_id_poder">Facultades del representante legal:</label>
+              <select class="form-control" name="c_id_poder" formControlName="c_id_poder" required
+                [attr.disabled]="bloqueoTN?'':null">
+                <option value="" selected>Seleccione una opci&oacute;n...</option>
+                <option *ngFor="let tipo of listapoderes" value="{{ tipo.c_id }}">
+                  {{ tipo.c_nombre_n }}
+                </option>
+              </select>
+              <div *ngIf="
+                formGroupRepresentante.invalid && formGroupRepresentante.get('c_id_poder').touched
+              ">
+                <span class="error">{{ obtenerErroresPoder() }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-7">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_rol">Rol<span class="text-danger">*</span>:</label>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Representante Legal</th>
+                    <th scope="col">Ministros de Culto</th>
+                    <th scope="col">Asociados</th>
+                    <th scope="col">Órgano Gobierno</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row">
+                      <input (change)="enableValidations()" formControlName="t_rep_legal" class="form-checkbox"
+                        type="checkbox" [attr.disabled]="bloqueoTN?'':null">
+
+                    </td>
+                    <td scope="row">
+                      <input (change)="enableValidations()" formControlName="t_ministro_culto" class="form-checkbox"
+                        type="checkbox" [attr.disabled]="bloqueoTN?'':null">
+
+                    </td>
+                    <td scope="row">
+                      <input (change)="enableValidations()" formControlName="t_rep_asociado" class="form-checkbox"
+                        type="checkbox" [attr.disabled]="bloqueoTN?'':null">
+
+                    </td>
+                    <td scope="row">
+                      <input (change)="enableValidations()" formControlName="t_organo_gob" class="form-checkbox"
+                        type="checkbox" [attr.disabled]="bloqueoTN?'':null">
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="error" *ngIf="this.invalidrol">
+                Debe seleccionar al menos un rol.
+              </div>
+            </div>
+            <div class="form-group col-md-6" [hidden]="hideparam">
+              <label class="control-label" for="c_organo_g">Órgano de Gobierno<span
+                  class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="c_organo_g" name="c_organo_g"
+                [readonly]="bloqueoTN" />
+              <div class="error"
+                *ngIf="formGroupRepresentante.invalid && formGroupRepresentante.get('c_organo_g').touched">
+                {{ obtenerErroresCargoG() }}
+              </div>
+            </div>
+            <div class="form-group col-md-6" [hidden]="hideparam">
+              <label class="control-label" for="p_cargo">Cargo Gobierno<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="p_cargo" name="p_cargo" [readonly]="bloqueoTN" />
+              <div class="error"
+                *ngIf="formGroupRepresentante.invalid && formGroupRepresentante.get('p_cargo').touched">
+                {{ obtenerErroresCargo() }}
+              </div>
+            </div>
+            <!--div *ngIf="Representante_r_id > 0"-->
+            <div *ngIf="this.txtTituloBoton == 'Guardar'">
+              <div class="form-group col-md-12">
+                <label class="control-label requerido labelencabezado" for="s_cat__escrito_solicitud_tn">Identificación
+                  (INE):</label>
+                <div class="col-md-12">
+                  <app-modulo-carga-archivo [id]="Representante_r_id" [id_archivo_tramite]="7" (is_sent_arch)="setSentArch($event)"
+                    [archivo_registrado]="Representante_p_ine_exists" (is_loading)="setIsLoadingArchivo($event)"
+                    [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+                </div>
+              </div>
+              <div class="form-group col-md-12">
+                <label class="control-label requerido labelencabezado" for="s_cat__escrito_solicitud_tn">Acta de
+                  Nacimiento:</label>
+                <div class="col-md-12">
+                  <app-modulo-carga-archivo [id]="Representante_r_id" [id_archivo_tramite]="8" (is_sent_arch)="setSentArch($event)"
+                    [archivo_registrado]="Representante_p_acta_exists" (is_loading)="setIsLoadingArchivo($event)"
+                    [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+                </div>
+              </div>
+              <div class="form-group col-md-12">
+                <label class="control-label requerido labelencabezado" for="s_cat__escrito_solicitud_tn">CURP:</label>
+                <div class="col-md-12">
+                  <app-modulo-carga-archivo [id]="Representante_r_id" [id_archivo_tramite]="9" (is_sent_arch)="setSentArch($event)"
+                    [archivo_registrado]="Representante_p_curp_exists" (is_loading)="setIsLoadingArchivo($event)"
+                    [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <button type="button" class="btn btn-primary btnbtns" (click)="OnSubmitRepresentanteLegal()" *ngIf="!esVistaPrevia"
+              [disabled]="this.formGroupRepresentante.invalid || bloqueoTN">
+              {{ this.txtTituloBoton }}
+            </button>
+            <button type="button" class="btn btn-secondary btnbtns" (click)="retornarInicio()">
+              Salir
+            </button>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div *ngIf="movApoderado">
+    <div class="container">
+      <br />
+      <div class="tabla-Representantes col-md-12">
+        <h4>
+          Apoderado legal
+        </h4>
+      </div>
+
+      <form role="form" [formGroup]="formGroupApoderado">
+        <div class="row">
+
+          <div class="form-group col-md-6">
+
+            <div class="form-group col-md-12">
+              <label class="control-label requerido" for="c_id_tipo_movimiento">Tipo de movimiento<span
+                  class="text-danger">*</span>:</label>
+              <select class="form-control" name="c_id_tipo_movimiento" formControlName="c_id_tipo_movimiento"
+                (change)="ChangeDocto($event.target.value)" required [attr.disabled]="bloqueoTN?'':null">
+                <option value="" selected>Seleccione una opci&oacute;n...</option>
+                <option *ngFor="let tipo of listatipomovimiento" value="{{ tipo.c_id }}">
+                  {{ tipo.c_nombre_n }}
+                </option>
+              </select>
+              <div *ngIf="
+                formGroupApoderado.invalid && formGroupApoderado.get('c_id_tipo_movimiento').touched
+              ">
+                <span class="error">{{ obtenerErroresTipoMovimientoApoderado() }}</span>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_nombre">Nombre<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="p_nombre" required [readonly]="bloqueoTN" />
+              <div *ngIf="formGroupApoderado.invalid && formGroupApoderado.get('p_nombre').touched">
+                <span class="error">{{ obtenerErroresNombreApoderado() }}</span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_apaterno">Apellido Paterno<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="p_apaterno" required [readonly]="bloqueoTN" />
+              <div *ngIf="formGroupApoderado.invalid && formGroupApoderado.get('p_apaterno').touched">
+                <span class="error">{{ obtenerErroresPaternoApoderado() }}</span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_amaterno">Apellido Materno<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" formControlName="p_amaterno" required [readonly]="bloqueoTN" />
+              <div *ngIf="formGroupApoderado.invalid && formGroupApoderado.get('p_amaterno').touched">
+                <span class="error">{{ obtenerErroresMaternoApoderado() }}</span>
+              </div>
+            </div>
+
+            <div class="form-group col-md-12">
+              <label class="control-label" for="c_id_poder">Facultades del apoderado legal<span
+                  class="text-danger">*</span>:</label>
+              <select class="form-control" name="c_id_poder" formControlName="c_id_poder" required
+                [attr.disabled]="bloqueoTN?'':null">
+                <option value="" selected>Seleccione una opci&oacute;n...</option>
+                <option *ngFor="let tipo of listapoderes" value="{{ tipo.c_id }}">
+                  {{ tipo.c_nombre_n }}
+                </option>
+              </select>
+              <div *ngIf="
+                formGroupApoderado.invalid && formGroupApoderado.get('c_id_poder').touched
+              ">
+                <span class="error">{{ obtenerErroresPoderApoderado() }}</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-group col-md-6">
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_nacionalidad">Nacionalidad<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="text" name="p_nacionalidad" formControlName="p_nacionalidad" required
+                [readonly]="bloqueoTN" />
+            </div>
+            <div *ngIf="
+                formGroupApoderado.invalid && formGroupApoderado.get('p_nacionalidad').touched
+              ">
+              <span class="error">{{ obtenerErroresNacionalidadApoderado() }}</span>
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label" for="p_edad">Edad<span class="text-danger">*</span>:</label>
+              <input class="form-control" type="number" name="p_edad" formControlName="p_edad" required
+                [readonly]="bloqueoTN" />
+              <div *ngIf="
+                formGroupApoderado.invalid && formGroupApoderado.get('p_edad').touched
+              ">
+                <span class="error">{{ obtenerErroresEdadApoderado() }}</span>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label class="control-label requerido col-md-8" style="padding-left:0px !important">Escritura
+                Pública:</label>
+              <div class="form-group col-md-12">
+                <app-modulo-anexos [id]="tomanota" [id_archivo_tramite]="21" (is_sent_anexos)="guardarEscritura($event)"></app-modulo-anexos>
+              </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="bnd_apoderado == 1">
+              <label class="control-label requerido col-md-8" style="padding-left:0px !important">Acta de Asamblea /
+                Nombramiento:</label>
+              <div class="col-md-4">
+                <app-modulo-carga-archivo [id]="tomanota" [id_archivo_tramite]="22"
+                  [archivo_registrado]="altaapoderadodoc" (is_sent_arch)="setSentArch($event)"
+                  (is_loading)="setIsLoadingArchivo($event)"
+                  [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+              </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="bnd_apoderado == 2">
+              <label class="control-label requerido col-md-8" style="padding-left:0px !important">Acta de Defunción /
+                Renuncia / Acta de Asamblea:</label>
+              <div class="col-md-4">
+                <app-modulo-carga-archivo [id]="tomanota" [id_archivo_tramite]="23"
+                  [archivo_registrado]="bajaapoderadodoc" (is_sent_arch)="setSentArch($event)"
+                  (is_loading)="setIsLoadingArchivo($event)"
+                  [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+              </div>
+            </div>
+            <div class="form-group col-md-12" *ngIf="bnd_apoderado == 3">
+              <label class="control-label requerido col-md-8" style="padding-left:0px !important">Acta de Asamblea /
+                Nombramiento:</label>
+              <div class="col-md-4">
+                <app-modulo-carga-archivo [id]="tomanota" [id_archivo_tramite]="24"
+                  [archivo_registrado]="cambioapoderadodoc" (is_sent_arch)="setSentArch($event)"
+                  (is_loading)="setIsLoadingArchivo($event)"
+                  [isDictaminador]="isDictaminador"></app-modulo-carga-archivo>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-primary btnbtns" (click)="OnSubmitApoderado()" *ngIf="!esVistaPrevia"
+            [disabled]="this.formGroupApoderado.invalid || bloqueoTN">
+            Guardar
+          </button>
+          <button type="button" class="btn btn-secondary btnbtns" (click)="retornarInicio()">
+            Salir
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="movDomicilio1">
+    <app-modulo-formulario-domicilio [TipoDomicilio]="1" (registroDomicilio)="patchDomicilio($event)"
+      [ModelDTO]="ModelDTO" [Enabled]="false">
+    </app-modulo-formulario-domicilio>
+    <div class="row">
+      <div class="col-md-6">
+        <button type="button" class="btn btn-primary btnbtns" *ngIf="!esVistaPrevia" (click)="OnSubmit()"
+          [disabled]="this.formGroup.invalid || bloqueoTN">
+          Guardar
+        </button>
+        <button type="button" class="btn btn-secondary btnbtns" (click)="retornarInicio()">
+          Salir
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="movDomicilio2">
+
+    <app-modulo-formulario-domicilio [TipoDomicilio]="2" (registroDomicilio)="patchDomicilio($event)"
+      [ModelDTO]="ModelDTONotificaciones" [Enabled]="false" [tomaNota]="true">
+    </app-modulo-formulario-domicilio>
+
+    <div class="row">
+      <div class="col-md-6">
+        <button type="button" class="btn btn-primary btnbtns" *ngIf="!esVistaPrevia" (click)="OnSubmit()"
+          [disabled]="this.formGroup.invalid || bloqueoTN">
+          Guardar
+        </button>
+
+        <button type="button" class="btn btn-secondary btnbtns" (click)="retornarInicio()">
+          Salir
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+  <br />
+
+  <div class="row" *ngIf="showCotejoBoton">
+    <h6>Finalizar Toma de Nota</h6>
+    <hr style="background-color:black;height:1px" />
+  </div>
+  <div class="row">
+    <div class="form-group col-md-8" *ngIf="showCotejoBoton">
+      <p class="control-label requerido" for="c_cotejo">Indique cómo desea que se lleve a cabo el cotejo de la
+        documentación digital contra original:</p>
+      <form [formGroup]="formGroupCotejo" role="form">
+        <select class="form-control" name="c_cotejo" formControlName="c_cotejo" required
+          [attr.disabled]="bloqueoTN?'':null">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaModalidad" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+        <div *ngIf="
+                formGroupCotejo.invalid && formGroupCotejo.get('c_cotejo').touched
+              ">
+          <span class="error">{{ obtenerErroresCotejo() }}</span>
+        </div>
+      </form>
+    </div>
+    <div class="form-group col-md-8" *ngIf="!showCotejoBoton"></div>
+    <div class="form-group col-md-4" *ngIf="!showCotejoBoton"></div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-4" *ngIf="showCotejoBoton">
+      <button class="btn btn-primary btnbtns" (click)="Finalizar()" *ngIf="!esVistaPrevia"
+        [disabled]="this.formGroupCotejo.invalid || bloqueoTN">
+        Finalizar
+      </button>
+    </div>
+  </div>
+
+  <div class="row" style="text-align:end" *ngIf="showPagination">
+    <div class="pagination">
+      <a *ngFor="let route of routes;let i = index" (click)="ShowClickPage(route.text)"
+        class="{{route.active?'active':''}}" title="{{route.text}}">{{i + 1}}</a>
+    </div>
+  </div>
+
+
+
+  <ng-template #contentEXito let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Información</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <div class="col-sm-8 col-sm-offset-2 alert alert-danger">
+          <p>Por favor seleccione el movimiento que desea realizar</p>
+        </div><br /><br /><br />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" (click)="modal.dismiss('Cross click')">Aceptar</button>
+
+
+    </div>
+  </ng-template>
+
+</div>

@@ -1,0 +1,13 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="bs-autocomplete-container">
+    <input [id]="'inputField' + inputId" class="form-control bs-autocomplete-input"
+           [ngModel]="filter" (ngModelChange)="filterEntries($event)" data-toggle="dropdown"
+           (focus)="inputFieldFocused()"
+           placeholder="{{inputPlaceholder}}"  [maxlength]="'6'" [autocomplete]="'off'" [readonly]="readOnly"/>
+    <ul [id]="'menu' + inputId" class="dropdown-menu animated fadeInDown animated-fast bs-autocomplete-menu" role="menu">
+      <li class="option" *ngFor="let entry of filteredEntities">
+        <a href="javascript:void(0)" *ngIf="entryProperty" (click)="selectEntry(entry)">{{entry[entryProperty]}}</a>
+        <a href="javascript:void(0)" *ngIf="!entryProperty" (click)="selectEntry(entry)">{{entry}}</a>
+      </li>
+    </ul>
+  </div>

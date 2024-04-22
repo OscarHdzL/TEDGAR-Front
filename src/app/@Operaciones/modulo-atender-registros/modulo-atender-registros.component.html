@@ -1,0 +1,70 @@
+<app-modulo-spiner-login
+  *ngIf="operacionRespuesta.EstaEjecutando"
+></app-modulo-spiner-login>
+<div class="container">
+  <h3>Asignación de Solicitudes de Registro</h3>
+  <div class="tabla-registros col-md-12">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-12">
+          <!-- <button
+            class="btn btn-primary btn-sm active pull-right"
+            title="Agregar Nueva Componente"
+            type="button"
+            (click)="open()"
+          >
+            Nueva Colonia
+          </button> -->
+        </div>
+        <div class="col-md-12">
+          <h3>Solicitudes de Registros</h3>
+          <hr class="red" />
+          <div class="table-responsive">
+            <table
+              class="table table-sm table-hover"
+              datatable
+              [dtOptions]="dtOptions"
+              [dtTrigger]="dtTrigger"
+            >
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">Folio</th>
+                  <th scope="col">Denominación</th>
+                  <th scope="col">Tipo Solicitud</th>
+                  <th scope="col">Fecha Reg.</th>
+                  <th scope="col">Estatus</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="listRegistros?.length != 0">
+                  <tr
+                    *ngFor="let registro of listRegistros; let i = index"
+                    class="text-center tr-especialPadding"
+                  >
+                    <td scope="row">
+                      {{ registro.reg_numero_registro }}
+                    </td>
+                    <td scope=""><a class="text-primary" [routerLink]="['/solicitudregistro/'+registro.reg_id]">{{ registro.reg_cat_denominacion }}</a></td>
+                    <td scope="">
+                      {{ registro.reg_cat_solicitud_escrito }}
+                    </td>
+                    <td>{{ registro.reg_fecha | date: 'dd/MM/yyyy'}}</td>
+                    <td scope="">{{ registro.reg_estatus }}</td>
+
+                    
+                  </tr>
+              </tbody>
+              <tbody *ngIf="listRegistros?.length == 0">
+                <tr>
+                  <td colspan="3" class="no-data-available">
+                    No se encontraron resultados
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

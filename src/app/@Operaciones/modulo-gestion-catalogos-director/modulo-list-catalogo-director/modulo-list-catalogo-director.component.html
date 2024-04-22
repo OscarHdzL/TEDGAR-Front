@@ -1,0 +1,63 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <h3>Administración Componentes Director</h3>
+
+  <div class="tabla-catalogos col-md-12">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-primary btn-sm active pull-right" title="Agregar Nuevo Componente" type="button"
+            (click)="open()">
+            Nuevo Componente
+          </button>
+        </div>
+        <div class="col-md-12">
+          <h3>Lista Componentes</h3>
+          <hr class="red" />
+          <div class="table-responsive">
+            <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+              <thead>
+                <tr>
+                  <th scope="col">Título</th>
+                  <th scope="col">Nombre(s)</th>
+                  <th scope="col">Apellido Paterno</th>
+                  <th scope="col">Apellido Materno</th>
+                  <th scope="col">Cargo</th>
+                  <th scope="col">Estatus</th>
+                  <th scope="col" width="15%">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let catalogo of listcatalogo; let i = index">
+                  <th scope="row">{{ catalogo.director_titulo }}</th>
+                  <th scope="row">{{ catalogo.director_nombre }}</th>
+                  <th scope="row">{{ catalogo.director_apaterno }}</th>
+                  <th scope="row">{{ catalogo.director_amaterno }}</th>
+                  <th scope="row">{{ catalogo.director_cargo }}</th>
+                  <td> {{catalogo.director_activo ? 'Activo':'Inactivo'}}</td>
+                  <td>
+                    <div class="row">
+                      <div class="col-auto">
+                        <button class="btn btn-secondary btn-sm" title="Editar catalogo" type="button"
+                          (click)="openEdicion(catalogo, catalogo.c_nombre_n)">
+                          <!--Editar-->
+                          <i class="ti-pencil"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" title="Desactivar/Activar" type="button"
+                          (click)="OnChange(catalogo.director_activo,catalogo.director_id)">
+
+                          <i *ngIf="!catalogo.director_activo" class="toggleactivar"></i>
+                          <i *ngIf="catalogo.director_activo" class="togglesuspender"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,38 @@
+
+<div class="container">
+  <div class="col-md-12 breadcrumb">
+    <p>Trámites > <strong>Toma de nota de modificaciones al interior de las Asociaciones Religiosas</strong></p>
+  </div>
+  <h3>Toma de nota de modificaciones al interior de las Asociaciones Religiosas</h3>
+  <div class="row">
+    <div class="col-md-12">
+      <ul>
+        <li>
+          Quejas y sugerencias de servicios.
+          <p>
+            En el espacio de Contacto Ciudadano esta disponible un buz&oacute;n
+            y papeletas para expresar con toda libertad su inconformidad o
+            comentario. V&iacute;a telef&oacute;nica: 01 (55) 5128-0000 ext.
+            36893. Via internet al correo electrónico:<a href="mailto:dgar@segob.gob.mx">dgar@segob.gob.mx</a>.
+          </p>
+        </li>
+        <li><a (click)="downloadPdf(3)">Descargue e imprima esta informaci&oacute;n</a></li>
+        <li>
+          Descargue el <a (click)="downloadPdf(4)">escrito libre</a> escrito libre ejemplo para realizar
+          su solicitud.
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6 link">
+    <!-- <div class="col-md-6 link" > -->
+      <a [routerLink]="['/solicitudtomanota/0' ]">
+        Solicitud de toma de nota
+      </a>
+    </div>
+    <div class="col-md-6 link">
+      <a [routerLink]="['/registros-toma-nota/']">
+        Consultar toma de nota
+      </a>
+    </div>
+  </div>
+</div>

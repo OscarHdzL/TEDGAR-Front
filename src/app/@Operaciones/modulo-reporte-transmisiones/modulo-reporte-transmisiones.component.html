@@ -1,0 +1,262 @@
+<app-modulo-spiner-login
+  *ngIf="operacionRespuesta.EstaEjecutando"
+></app-modulo-spiner-login>
+<div class="container p-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-12">
+            <h3>{{ titulo }}</h3>
+            <hr class="red" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <form [formGroup]="formFiltros" (ngSubmit)="ConsultaDatos()">
+            <div class="col-md-4">
+              <div class="row col-md-12 form-group">
+                <label class="col-md-4 control-label">
+                  Medio de Comunicación:</label
+                >
+                <div class="col-md-8">
+                  <select
+                    class="form-control"
+                    formControlName="medioComunicacion"
+                    name="medioComunicacion"
+                  >
+                    <option value="0">Seleccione</option>
+                    <option
+                      *ngFor="let medio of selectMedioComunicacion"
+                      value="{{ medio.medio_nombre }}"
+                    >
+                      {{ medio.medio_nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row col-md-12 form-group">
+                <label class="col-md-4 control-label"> Estatus:</label>
+                <div class="col-md-8">
+                  <select
+                    class="form-control"
+                    formControlName="estatusTransmision"
+                    name="estatusTransmision"
+                  >
+                    <option value="0">Seleccione</option>
+                    <option
+                      *ngFor="let estatus of selectCatEstatus"
+                      [ngValue]="estatus.estatus_id"
+                    >
+                      {{ estatus.estatus_nombre }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="row col-md-12 form-group">
+                <label class="col-md-4 control-label"> Denominación:</label>
+                <div class="col-md-8">
+                  <input
+                    class="form-control"
+                    formControlName="denominacion"
+                    name="denominacion"
+                    type="text"
+                    placeholder="Denominación"
+                  />
+                </div>
+              </div>
+              <div class="row col-md-12 form-group">
+                <label class="col-md-4 control-label"> Acto religioso:</label>
+                <div class="col-md-8">
+                  <input
+                    class="form-control"
+                    formControlName="actoReligioso"
+                    name="actoReligioso"
+                    type="text"
+                    placeholder="Acto religioso"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="row col-md-12 form-group">
+                <label class="col-md-6 control-label"> Fecha inicio:</label>
+                <div class="col-md-6">
+                  <input
+                    class="form-control"
+                    style="font-size: 10px"
+                    type="date"
+                    formControlName="fechai"
+                    name="fechai"
+                  />
+                </div>
+              </div>
+              <div class="row col-md-12 form-group">
+                <label class="col-md-6 control-label"> Fecha fin:</label>
+                <div class="col-md-6">
+                  <input
+                    class="form-control"
+                    style="font-size: 10px"
+                    type="date"
+                    formControlName="fechaf"
+                    name="fechaf"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 p-5">
+                <div class="row">
+                  <div class="col-sm-9 text-center"></div>
+                  <div class="col-sm-3 text-center" style="text-align: left">
+                    <button
+                      type="button"
+                      (click)="openlimpiarReporte()"
+                      class="btn btn-sm btn-primary"
+                      title="Limpiar reporte"
+                    >
+                      <i class="ti-file"></i>
+                    </button>
+                    <label for="">&nbsp; &nbsp;</label>
+                    <button class="btn btn-sm btn-primary">Buscar</button>
+                    <label for="">&nbsp; &nbsp;</label>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-primary"
+                      title="Descargar reporte"
+                      *ngIf="visibleExecel"
+                      (click)="exportAsXLSX()"
+                    >
+                      <i class="ti-download"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="table-responsive">
+              <table
+                class="table table-sm table-hover"
+                datatable
+                [dtOptions]="dtOptions"
+                [dtTrigger]="dtTrigger"
+              >
+                <thead>
+                  <tr class="text-center tr-especial">
+                    <th scope="col">Denominación</th>
+                    <th scope="col">SGAR</th>
+                    <th scope="col">Representante o Apoderado legal</th>
+                    <!--  -- -->
+                    <th scope="col">No Oficio</th>
+                    <!--  -- -->
+                    <th scope="col">No Transmisiones</th>
+                    <!--  -- -->
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Fecha de solicitud</th>
+                    <th scope="col">Fecha de autorización</th>
+                    <!--  -- -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let reporte of listRegistros"
+                    class="tr-especialPadding"
+                  >
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{
+                          reporte.registro_denominacion
+                        }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{
+                          reporte.registro_nregistro
+                        }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">
+                          {{ reporte.representante_nombre_completo }}
+                        </span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{
+                          reporte.transmision_no_oficio
+                        }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{
+                          reporte.total_transmisiones
+                        }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{ reporte.estatus_nombre }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      {{
+                        reporte.transmision_fecha_solicitud
+                          | date : "dd/MM/yyyy"
+                      }}
+                    </td>
+                    <td>
+                      {{
+                        reporte.transmision_fecha_autorizacion
+                          | date : "dd/MM/yyyy"
+                      }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #contentReporte let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Mensaje</h4>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group alert alert-warning">
+          <p>¿Desea limpiar el reporte?</p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button id="" class="btn btn-sm btn-danger" (click)="limpiarReporte()">
+        Aceptar
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-sm btn-default"
+        (click)="modal.dismiss('cancel click')"
+      >
+        Cancelar
+      </button>
+    </div>
+  </ng-template>
+</div>

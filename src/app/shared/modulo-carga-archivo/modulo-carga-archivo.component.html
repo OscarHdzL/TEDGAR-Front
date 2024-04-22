@@ -1,0 +1,13 @@
+<input style="display: none" type="file" (change)="cargarArchivo($event)" #fileInput accept="application/pdf">
+
+<button *ngIf="!isDictaminador" class="btn btn-default btn-sm btn-margin" type="button" (click)="fileInput.click()">
+  <span class="glyphicon glyphicon-file"></span>
+</button>
+<button class="btn btn-default btn-sm btn-margin" type="button" (click)="detalle()" [disabled]="!archivo_registrado">
+  <span class="glyphicon glyphicon-zoom-in"></span>
+</button>
+
+<button *ngIf="!isDictaminador" class="btn btn-default btn-sm btn-margin" type="button" (click)="openAdvertencia()"
+  [disabled]="!archivo_registrado">
+  <span class="glyphicon glyphicon-trash"></span>
+</button>

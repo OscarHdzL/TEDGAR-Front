@@ -1,0 +1,53 @@
+<div class="container p-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-sesion">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <h1>Aviso de privacidad</h1>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <p class="texto-justificado" style="text-align: center;">
+                            El aviso de privacidad se puede consultar mediante la siguiente dirección
+                            <a href="./assets/AvisoPrivacidad.PDF" download>Aviso de privacidad</a>
+                            <!-- Este AVISO DE PRIVACIDAD aplica a la información personal recopilada sobre el Titular por Información Dinámica de Consulta S.A. de C.V. (en adelante, IDC). -->
+
+                            <!-- Para los efectos del presente AVISO DE PRIVACIDAD, los términos que se utilicen en este y que no estén definidos en el mismo tendrán el significado que les atribuye la legislación en materia de protección de datos personales.
+
+                            IDC es una empresa comprometida con el derecho a la protección de datos personales de cualquier Titular, también conocido como el “derecho a la autodeterminación informativa”, el cual está garantizado y protegido como un derecho humano, en el segundo párrafo del artículo 16 de la Constitución Política de los Estados Unidos Mexicanos y en la legislación en materia de protección de datos personales.
+
+                            IDC se obliga específicamente y de manera enunciativa más no limitativa a: (i) Utilizar o aplicar sus datos personales exclusivamente para la realización de los fines establecidos en el presente AVISO DE PRIVACIDAD; (ii) Asegurarse de que sus datos personales sean manejados con estricta sujeción al secreto profesional y confidencialidad; (iii) Observar los principios de protección tales como licitud, consentimiento, información, calidad, finalidad, lealtad, proporcionalidad y responsabilidad, así como los deberes de seguridad y confidencialidad previstos en la legislación en materia de protección de datos personales, debiendo adoptar las medidas necesarias para su aplicación, y (iv) Implementar y mantener las medidas de seguridad administrativas, técnicas y físicas que permitan proteger sus datos contra daño, pérdida, alteración, destrucción o el uso, acceso o tratamiento no autorizado.
+
+                            En los casos en que el tratamiento de sus datos personales esté contemplado en algunas de las causales o situaciones previstas por el artículo 10 de la Ley Federal de Protección de Datos Personales en Posesión de los Particulares, no será necesario su consentimiento. -->
+                        </p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" (change)="aceptoAvisoPrivacidad($event.target.checked)"> Aceptar
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <button class="btn btn-primary pull-right"  [disabled]="!siAcepto" (click)="enviarSolicitud()">Enviar <span class="spinerBtn"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

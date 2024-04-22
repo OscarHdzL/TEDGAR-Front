@@ -1,0 +1,5 @@
+<div class="pagination text-right">
+    <!-- <a (click)="pageChange(false)">&laquo;</a> -->
+    <a *ngFor="let route of routes" (click)="returnSpecificPage(route.id)" class="{{route.active?'active':''}}">{{route.text}}</a>
+    <!-- <a (click)="pageChange(true)">&raquo;</a> -->
+</div>

@@ -1,0 +1,20 @@
+
+.btnbtns {
+    margin: 1rem;
+}  
+.btn-default {
+    font-size: 12px!important;
+}
+.roles {
+  width: 5rem !important;
+}
+
+.btn-group-sm > .btn,
+.btn-sm {
+  padding: 5 px 10 px;
+  font-size: 14px;
+  line-height: 1.5;
+  border-radius: 3 px;
+  padding-top: 1rem !important;
+  margin-left: 1rem !important;
+}

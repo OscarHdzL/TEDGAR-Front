@@ -1,0 +1,33 @@
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    background: rgb(222,211,179);
+    background: linear-gradient(
+0deg, rgba(222,211,179,1) 0%, rgba(255,255,255,1) 56%);
+}
+
+.card-img-gob {
+    width: 30%;
+    padding-bottom: 0;
+    margin: 30px auto;
+}
+
+.mt-5 {
+    margin-top: 10px;
+}
+
+.mb-10 {
+    margin-bottom: 50px;
+}

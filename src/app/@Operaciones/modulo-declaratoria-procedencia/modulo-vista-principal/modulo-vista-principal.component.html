@@ -1,0 +1,314 @@
+<app-modulo-spiner-declaratoria *ngIf="estaCargando"></app-modulo-spiner-declaratoria>
+
+<div class="container">
+  <div class="row">
+    <h3 *ngIf="idPerfil != 11 && idPerfil != 12">Declaratoria de procedencia</h3>
+    <h3 *ngIf="idPerfil == 12">Atención de Solicitudes de Declaratoria de Procedencia</h3>
+    <h3 *ngIf="idPerfil == 11">Asignación de Solicitudes de Declaratoria de Procedencia</h3>
+    <div class="col-md-12">
+      <h3 *ngIf="idPerfil != 11 && idPerfil != 12">Solicitudes de registros</h3>
+      <h3 *ngIf="idPerfil == 12">Solicitudes</h3>
+      <h3 *ngIf="idPerfil == 11">Solicitudes de Declaratoria de Procedencia</h3>
+      <hr class="red" />
+      <div class="row">
+        <form [formGroup]="formGroup" *ngIf="idPerfil != 11 && idPerfil != 12">
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-6" style="text-align: end">
+                <span style="font-weight: bold;font-size: 20px;">Denominación:</span>
+              </div>
+              <div class="col-sm-6">
+                <input class="form-control" type="text" formControlName="denominacion"
+                  placeholder="Nombre de la denominación" />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-6" style="text-align: end">
+                <span style="font-weight: bold;font-size: 20px;">Folio:</span>
+              </div>
+              <div class="col-sm-6">
+                <input class="form-control" type="text" formControlName="folio" placeholder="Folio" />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-6" style="text-align: end;">
+                <span style="font-weight: bold;font-size: 20px;">Estatus:</span>
+              </div>
+              <div class="col-sm-6">
+                <select class="form-control" formControlName="estatus" name="d_colonia">
+                  <option value="" selected>Seleccione una opci&oacute;n...</option>
+                  <option *ngFor="let tipo of listaEstatus" value="{{ tipo.i_id }}">
+                    {{ tipo.c_nombre }}
+                  </option>
+                </select>
+              </div>
+
+
+            </div>
+          </div>
+          <br><br>
+          <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+
+              <div class="text-right">
+
+                <button type="button" (click)="openlimpiarReporte()"
+                  class="btn btn-primary btn-sm espacio-derecho-tabla " title="Limpiar reporte">
+                  <i class="ti-file"></i>
+                </button>
+
+                <button class="btn btn-primary btn-sm  espacio-derecho-tabla" (click)="buscar()">
+                  Buscar
+                </button>
+
+                <button class="btn btn-primary btn-sm active espacio-derecho-tabla -margen" title="Nueva Solicitud"
+                  type="button" (click)="mandarNuevoRegistro()">
+                  Nueva Solicitud
+                </button>
+
+              </div>
+            </div>
+          </div>
+        </form>
+
+
+        <form [formGroup]="formGroup" *ngIf="idPerfil == 12">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-4">
+                <span style="font-weight: bold;font-size: 20px;">Denominación:</span>
+              </div>
+              <div class="col-sm-8" style="text-align: start">
+                <input class="form-control" type="text" formControlName="denominacion"
+                  placeholder="Nombre de la denominación" />
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-6" style="text-align: end;">
+                <span style="font-weight: bold;font-size: 20px;">Estatus:</span>
+              </div>
+              <div class="col-sm-6">
+                <select class="form-control" formControlName="estatus" name="d_colonia">
+                  <option value="" selected>Seleccione una opci&oacute;n...</option>
+                  <option *ngFor="let tipo of listaEstatus" value="{{ tipo.i_id }}">
+                    {{ tipo.c_nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <br><br>
+          <div class="row">
+            <div class="col-sm-8"></div>
+            <div class="col-sm-4">
+              <div class="text-right">
+                <button type="button" (click)="openlimpiarReporte()"
+                  class="btn btn-primary btn-sm espacio-derecho-tabla " title="Limpiar reporte">
+                  <i class="ti-file"></i>
+                </button>
+                <button class="btn btn-primary btn-sm  espacio-derecho-tabla" (click)="buscar()">
+                  Buscar
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="row" *ngIf="idPerfil == 11">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-4">
+          <div class="text-right">
+            <button type="button" (click)="openlimpiarReporte()"
+              class="btn btn-primary btn-sm espacio-derecho-tabla " title="Limpiar reporte">
+              <i class="ti-file"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="table-responsive" *ngIf="idPerfil != 11 && idPerfil != 12">
+        <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">Folio</th>
+              <th scope="col">Denominación</th>
+              <th scope="col">Fecha de envió</th>
+              <th scope="col">Estatus</th>
+              <th scope="col">Fecha de autorización</th>
+              <th scope="col">Acciones</th>
+              <th scope="col">Comentarios</th>
+            </tr>
+
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let catalogo of lista; let i = index">
+              <td scope="row">{{ catalogo.folio }}</td>
+              <td scope="row" style="word-break: break-all; width: 100px">{{ catalogo.denominacion_religiosa }}</td>
+              <td scope="row">{{ catalogo.fecha_envio | date : "dd/MM/yyyy"  }}</td>
+              <td scope="row">{{ catalogo.estatus }}</td>
+              <td scope="row">{{ catalogo.fecha_autorizacion | date : "dd/MM/yyyy"  }}</td>
+
+              <td class="text-left" style="width: 125px;">
+                <button class="bootstrap-icons espacio-derecho-tabla icono-grande" title="Ver Detalle" type="button"
+                  (click)="mandarVisualizacion(catalogo)">
+                  <i class="ti-search"></i>
+                </button>
+
+                <button class="bootstrap-icons espacio-derecho-tabla" title="Editar" type="button"
+                  (click)="mandarModificacion(catalogo)">
+                  <i class="ti-pencil"></i>
+                </button>
+
+                <button class="bootstrap-icons  icono-grande" title="Eliminar" type="button"
+                  (click)="openEliminar(catalogo.id_declaratoria)">
+                  <i class="ti-trash"></i>
+                </button>
+              </td>
+              <td scope="row">
+                <button class="bootstrap-icons  espacio-derecho-tabla  icono-grande" title="Editar" type="button"
+                  (click)="mandarComentarios(catalogo)" *ngIf="catalogo.comentarios != null">
+                  <i class="ti-file"></i>
+                </button>
+                <span class="circulo-Base Notificacion--rojo espacio-derecho-tabla" *ngIf="catalogo.comentarios != null"></span>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+      <div class="table-responsive" *ngIf="idPerfil == 11">
+        <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">Folio</th>
+              <th scope="col">Denominación</th>
+              <th scope="col">Fecha de registro</th>
+              <th scope="col">Estatus</th>
+              <th scope="col">Dictaminador</th>
+              <th scope="col">Asignar</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let catalogo of lista; let i = index">
+              <td scope="row">{{ catalogo.folio }}</td>
+              <td scope="row" (click)="mandarModificacion(catalogo)"
+                style="text-decoration: underline;color: steelblue; word-break: break-all; width: 100px">{{ catalogo.denominacion_religiosa }}</td>
+              <td scope="row">{{ catalogo.fecha_envio | date : "dd/MM/yyyy"  }}</td>
+              <td scope="row">{{ catalogo.estatus }}</td>
+              <td scope="row">{{ catalogo.correo_dictaminador }}</td>
+              <td scope="row">
+                <select class="form-control" (change)="asignarDeclaratoria($event, i, catalogo)">
+                  <option selected value="na">Seleccione una opci&oacute;n...</option>
+                  <option *ngFor="let tipo of listaDictaminadores" value="{{ tipo.id_usuario }}">
+                    {{ tipo.nombre }}
+                  </option>
+                </select>
+              </td>
+
+              <td class="text-left">
+                <button class="bootstrap-icons espacio-derecho-tabla icono-grande" title="Ver Detalle" type="button"
+                  (click)="mandarVisualizacion(catalogo)">
+                  <i class="ti-search"></i>
+                </button>
+              </td>
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+      <div class="table-responsive" *ngIf="idPerfil == 12">
+        <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">Folio</th>
+              <th scope="col">Denominación</th>
+              <th scope="col">Tipo de solicitud</th>
+              <th scope="col">Fecha de envió</th>
+              <th scope="col">Estatus</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let catalogo of lista; let i = index">
+              <td scope="row">{{ catalogo.folio }}</td>
+              <td scope="row" style="word-break: break-all; width: 100px">{{ catalogo.denominacion_religiosa }}</td>
+              <td scope="row" (click)="mandarModificacion(catalogo)"
+                style="text-decoration: underline;color: steelblue;">Declaratoria de Procedencia</td>
+              <td scope="row">{{ catalogo.fecha_envio | date : "dd/MM/yyyy"  }}</td>
+              <td scope="row">{{ catalogo.estatus }}</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+      <!-- boton para asingador asigne a dictaminadores -->
+      <button class="btn btn-sm btn-primary" (click)="asignar()" *ngIf="idPerfil == 11"
+        [disabled]="listaDictaminadoresPost.length == 0">
+        Asignar Declaratoria
+      </button>
+      <br><br>
+
+    </div>
+
+
+
+  </div>
+
+  <ng-template #contentReporte let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Mensaje</h4>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group alert alert-warning">
+          <p>¿Desea limpiar los filtros?</p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger" (click)="limpiarReporte()">
+        Aceptar
+      </button>
+      <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">
+        Cancelar
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #contentEliminar let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Eliminar Decaratoria</h4>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <p>¿Está seguro que desea eliminar la declaratoria definitivamente?</p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger" (click)="eliminarDeclaratoria()">Aceptar</button>
+      <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">Cancelar</button>
+    </div>
+  </ng-template>
+
+</div>

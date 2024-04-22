@@ -1,0 +1,5 @@
+.line::before{
+    content:'\2022';
+    color: red;
+    width: 20px;
+}

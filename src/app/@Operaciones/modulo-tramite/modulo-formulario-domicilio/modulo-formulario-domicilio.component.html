@@ -1,0 +1,112 @@
+
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<form role="form" [formGroup]="formGroup" (change)="registroDomicilio.emit(formGroup.value)">
+      <div class="error" *ngIf="formGroup.invalid && formGroup.get('d_tipo_domicilio')">
+        {{ obtenerErroresTipoDom() }}
+      </div>
+<div class="row">
+    <h4>Domicilio {{titulo}}</h4>
+    <div class="form-group col-md-6">
+      <label class="control-label requerido" for="d_cpostal">C.P.:</label>
+      <!-- <app-modulo-autocomplete-cp (onEntrySelected)="onEntrySelected($event)" [filter]="this.cpostal" [readOnly]="Enabled"></app-modulo-autocomplete-cp> -->
+      <input #terminoCodigo appTrim (blur)="onEntrySelected(terminoCodigo.value)" formControlName="d_cpostal" class="form-control" [attr.disabled]="isDictaminador || bloqueo || this.bloqueoTN?'':null">
+      <div class="error" *ngIf="formGroup.invalid && formGroup.get('d_cpostal').touched">
+        {{ obtenerErroresCPostal() }}
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <label class="control-label requerido" for="d_endidad">Estado:</label>
+      <input
+        class="form-control"
+        formControlName="d_endidad"
+        name="d_endidad"
+        required
+        readonly
+        [ngModel]="this.Entidad"
+        maxlength="6"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+      />
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label class="control-label requerido" for="d_ciudad">Ciudad:</label>
+      <input
+        class="form-control"
+        type="text"
+        formControlName="d_ciudad"
+        name="d_ciudad"
+        required
+        readonly
+        [ngModel]="this.Municipio"
+      />
+    </div>
+    <div class="form-group col-md-6">
+      <label class="control-label requerido" for="d_colonia">Colonia:</label>
+      <select
+        class="form-control"
+        formControlName="d_colonia"
+        name="d_colonia"
+        required
+        [attr.disabled]="isDictaminador ||bloqueo || bloqueoTN ? '':null"
+      >
+        <!--[attr.disabled]="isDictaminador ||bloqueo || bloqueoTN ? '':null"-->
+        <option value="" selected>Seleccione una opci&oacute;n...</option>
+        <option *ngFor="let tipo of listaColonia" value="{{ tipo.c_id }}">
+          {{ tipo.c_nombre_n }}
+        </option>
+      </select>
+
+      <div class="error" *ngIf="formGroup.invalid && formGroup.get('d_colonia').touched">
+        {{ obtenerErroresColonia() }}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+
+    <div class="form-group col-md-6">
+      <label class="control-label requerido" for="d_calle">Calle:</label>
+      <input
+        maxlength="50"
+        class="form-control"
+        type="text"
+        formControlName="d_calle"
+        name="d_calle"
+        [readonly]="Enabled"
+        required
+        [attr.disabled]="bloqueo || bloqueoTN?'':null"
+      />
+      <div class="error" *ngIf="formGroup.invalid && formGroup.get('d_calle').touched">
+        {{ obtenerErroresCalle() }}
+      </div>
+    </div>
+    <div class="form-group col-md-3">
+      <label class="control-label" for="d_numeroe">Num. Ext.:</label>
+      <input
+        maxlength="10"
+        class="form-control"
+        type="text"
+        formControlName="d_numeroe"
+        name="d_numeroe"
+        [readonly]="Enabled"
+        [attr.disabled]="bloqueo || bloqueoTN?'':null"
+      />
+    </div>
+    <div class="form-group col-md-3">
+      <label class="control-label" for="d_numeroi">Num. Int.:</label>
+      <input
+        maxlength="6"
+        class="form-control"
+        type="text"
+        formControlName="d_numeroi"
+        name="d_numeroi"
+        [readonly]="Enabled"
+        [attr.disabled]="bloqueo || bloqueoTN?'':null"
+      />
+      <!-- <div class="error" *ngIf="formGroup.invalid && formGroup.get('d_numeroi').touched">
+        {{ obtenerErroresNumeroi() }}
+      </div> -->
+    </div>
+  </div>
+  </form>

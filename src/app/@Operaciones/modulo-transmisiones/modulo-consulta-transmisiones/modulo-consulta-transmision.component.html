@@ -1,0 +1,611 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <div class="col-md-12 breadcrumb">
+    <h2>Solicitud de Transmisiones</h2>
+  </div>
+
+  <h3>Datos generales</h3>
+  <hr class="red">
+
+  <div class="row col-md-12 form-group">
+    <label class="col-sm-6 control-label" style="text-align: right;">
+      Nombre del Representante o apoderado Legal:
+    </label>
+    <div class="col-sm-4">
+      <label class="custom-control-label"> {{modeloTramite?.rep_nombre_completo}} </label>
+    </div>
+  </div>
+
+
+  <div class="row col-md-12 form-group">
+    <label class="col-sm-6 control-label" style="text-align: right;">
+      Denominaci&oacute;n de la Asociaci&oacute;n religiosa:
+    </label>
+    <div class="col-sm-4">
+      <label class="custom-control-label"> {{modeloTramite?.denominacion}} </label>
+    </div>
+  </div>
+
+  <div class="row col-md-12 form-group">
+    <label class="col-sm-6 control-label" style="text-align: right;">
+      N&uacute;mero de
+      Registro SGAR:
+    </label>
+    <div class="col-sm-4">
+      <label class="custom-control-label"> {{modeloTramite?.numero_sgar}} </label>
+    </div>
+  </div>
+
+  <div class="row col-md-12 form-group">
+    <label class="col-sm-6 control-label" style="text-align: right;">
+      Domicilio para o&iacute;r y recibir notificaciones:
+    </label>
+    <div class="col-sm-4">
+      <label class="custom-control-label"> {{modeloTramite?.domicilio}} </label>
+    </div>
+  </div>
+
+  <div class="row col-md-12 form-group">
+    <label class="col-sm-6 control-label" style="text-align: right;">
+      Correo electr&oacute;nico:
+    </label>
+    <div class="col-sm-4">
+      <label class="custom-control-label"> {{modeloTramite?.correo_electronico}} </label>
+    </div>
+  </div>
+
+  <div class="row col-md-12 form-group">
+    <label class="col-sm-6 control-label" style="text-align: right;">
+      N&uacute;mero telef&oacute;nico:
+    </label>
+    <div class="col-sm-4">
+      <label class="custom-control-label"> {{modeloTramite?.numero_tel}} </label>
+    </div>
+  </div>
+
+  <h3>Actos Religiosos</h3>
+  <hr class="red">
+
+  <div id="seccionActos">
+    <div class="panel-group ficha-collapse" id="accordion">
+      <div class="panel panel-default" *ngFor="let row of lstActosReligiosos;">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-parent="#accordion" data-toggle="collapsed" [href]="'#panel-' + row.i_id_acto" aria-expanded="true"
+               attr.aria-valuenow="panel-{{row.i_id_acto}}">
+              {{row.c_nombre}}
+            </a>
+          </h4>
+          <button type="button" class="collpase-button collapsed" data-parent="#accordion" data-toggle="collapse"
+                  [attr.href]="row.ruta" (click)="obtenerActosMediosTransmision(row.i_id_acto, row.c_nombre)">
+          </button>
+        </div>
+        <div class="panel-collapse collapse" id="panel-{{row.i_id_acto}}">
+          <div class="panel-body">
+
+            <div class="row">
+              <div class="form-group col-md-9">
+                <label class="control-label">Acto Religioso: &nbsp; </label>
+                <label class="control-label" type="text"> {{nombre_acto}} </label>
+              </div>
+            </div>
+
+            <div class="row" id="ActosFechas">
+
+              <div *ngIf="lstActosFechasRangos?.length > 0">
+                <div *ngFor="let row of lstActosFechasRangos; let i = index">
+
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label class="control-label"> Fechas:</label>
+                      <br>
+                      <label class="custom-control-label"> {{row.c_fecha_inicio | date: 'dd/MM/yyyy' }} &nbsp; </label>
+                      <label class="custom-control-label" *ngIf="row.c_fecha_fin != null">
+                        - {{
+row.c_fecha_fin | date:
+                        'dd/MM/yyyy'
+                        }}
+                      </label>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label class="control-label"> Horario:</label>
+                      <br>
+                      <label class="custom-control-label"> {{row.c_hora_inicio}} &nbsp; </label>
+                      <label class="custom-control-label" *ngIf="row.c_hora_fin != null"> - {{row.c_hora_fin}} </label>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div *ngIf="lstActosFechasFrecuencia?.length > 0">
+                <div *ngFor="let row of lstActosFechasFrecuencia; let i = index">
+
+                  <div class="row">
+                    <div class="form-group col-md-6">
+                      <label class="control-label"> Fechas:</label>
+                      <br>
+                      <label class="custom-control-label"> {{row.c_periodo}} </label>
+                      <span *ngFor="let dia of row.cat_dia"> {{dia.c_nombre}} &nbsp;</span>
+                      <span *ngFor="let mes of row.cat_mes"> {{mes.c_nombre}} &nbsp;</span>
+                      <span *ngFor="let anio of row.cat_anio"> {{anio.c_nombre}} &nbsp;</span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label class="control-label"> Horario:</label>
+                      <br>
+                      <label class="custom-control-label"> {{row.c_hora_inicio}} &nbsp; </label>
+                      <label class="custom-control-label" *ngIf="row.c_hora_fin != null"> - {{row.c_hora_fin}} </label>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row" id="actosMediosTransmision">
+              <label class="control-label">Medios de Transmisi&oacute;n</label>
+
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Canal/Frecuencia</th>
+                    <th>Proveedor de servicio</th>
+                    <th>Televisora/Radiofusora</th>
+                    <th>Lugar de Transmisi&oacute;n</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of lstActosMedios; let i = index;">
+                    <td> {{i + 1}} </td>
+                    <td> {{row.frecuencia_canal}} </td>
+                    <td> {{row.proveedor}} </td>
+                    <td> {{row.televisora_radiodifusora}} </td>
+                    <td> {{row.lugar_transmision}} </td>
+                  </tr>
+                  <tr style="text-align: center;" *ngIf="lstActosMedios?.length == 0">
+                    <td colspan="6"> Sin registros </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr>
+
+  <div id="atencionTransmision">
+
+    <form role="form" [formGroup]="formGroupAtenderTransmision">
+      <div class="row">
+        <div class="row">
+
+
+          <div class="form-group col-md-12">
+            <label class="control-label col-md-1" style="padding-left:0px !important" for="">Identificación: </label>
+            <div class="col-md-1">
+              <!--<app-modulo-carga-archivo [id]="i_id_transmision"
+                                  [id_archivo_tramite]="27"
+                                  [archivo_registrado]="identificacion"
+                                  (is_loading)="setIsLoadingArchivo($event)">
+
+        </app-modulo-carga-archivo>-->
+
+              <div class="form-group col-md-1">
+                <app-modulo-anexos [isDictaminador]="true" [id]="i_id_transmision" [id_archivo_tramite]="27"></app-modulo-anexos>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-group col-md-12">
+            <label class="control-label col-md-2" style="padding-left:0px !important" for="">Oficio de Solicitud: </label>
+            <div class="col-md-2">
+              <app-modulo-carga-archivo [id]="i_id_transmision"
+                                        [id_archivo_tramite]="28"
+                                        [archivo_registrado]="solicitudTrans"
+                                        [isDictaminador]="true"
+                                        (is_loading)="setIsLoadingArchivo($event)">
+              </app-modulo-carga-archivo>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group col-md-8">
+          <div *ngIf="isDictaminador" class="row col-md-12 form-group">
+            <label class="col-sm-6 control-label requerido" for="referencia" style="text-align: right;">
+              Referencia:
+            </label>
+            <div class="col-sm-6">
+              <input class="form-control" type="text" name="referencia" formControlName="referencia" required [readonly]="bloqueoDictaminador">
+              <div *ngIf="(formGroupAtenderTransmision.get('referencia').touched) && formGroupAtenderTransmision.get('referencia').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isDictaminador" class="row col-md-12 form-group">
+            <label class="col-sm-6 control-label requerido" for="expediente" style="text-align: right;">
+              Expediente:
+            </label>
+            <div class="col-sm-6">
+              <input class="form-control" type="text" name="expediente" formControlName="expediente" required [readonly]="bloqueoDictaminador">
+              <div *ngIf="(formGroupAtenderTransmision.get('expediente').touched) && formGroupAtenderTransmision.get('expediente').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isDictaminador" class="row col-md-12 form-group">
+            <label class="col-sm-6 control-label requerido" for="oficio" style="text-align: right;">
+              Oficio:
+            </label>
+            <div class="col-sm-6">
+              <input class="form-control" type="text" name="oficio" formControlName="oficio" required [readonly]="bloqueoDictaminador">
+              <div *ngIf="(formGroupAtenderTransmision.get('oficio').touched) && formGroupAtenderTransmision.get('oficio').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isDictaminador" class="row col-md-12 form-group">
+            <label class="col-sm-6 control-label requerido" for="id_firmante" style="text-align: right;">
+              Firmante:
+            </label>
+            <div class="col-sm-6">
+              <select id="id_firmante" name="id_firmante" class="form-control" formControlName="id_firmante" (change)="onChangeFirmante($event.target)" [attr.disabled]="bloqueoDictaminador?'':null">
+                <option value="" selected disabled hidden>Seleccione</option>
+                <option *ngFor="let opcion of lstDirectores" value="{{opcion.director_id}}">{{opcion.director_nombre + ' ' + opcion.director_apaterno + ' ' + opcion.director_amaterno}} </option>
+              </select>
+              <div *ngIf="(formGroupAtenderTransmision.get('id_firmante').touched) && formGroupAtenderTransmision.get('id_firmante').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="isDictaminador" class="row col-md-12 form-group">
+            <label class="col-sm-6 control-label requerido" for="puesto_firmante" style="text-align: right;" [readonly]="bloqueoDictaminador">
+              Puesto del Firmante:
+            </label>
+            <div class="col-sm-6">
+              <input class="form-control" type="text" name="puesto_firmante" formControlName="puesto_firmante" required disabled>
+            </div>
+          </div>
+
+          <div *ngIf="isDictaminador" class="row col-md-12 form-group">
+            <label class="col-sm-6 control-label" for="id_ccp" style="text-align: right;">
+              Con copia para:
+            </label>
+            <div class="col-sm-6">
+              <select id="id_ccp" name="id_ccp" class="form-control" formControlName="id_ccp" (change)="onChangeCcp($event.target)" [attr.disabled]="bloqueoDictaminador?'':null">
+                <option value="" selected disabled hidden>Seleccione</option>
+                <option *ngFor="let opcion of lstDirectores" value="{{opcion.director_id}}">{{opcion.director_nombre + ' ' + opcion.director_apaterno + ' ' + opcion.director_amaterno}} </option>
+              </select>
+              <div *ngIf="(formGroupAtenderTransmision.get('id_ccp').touched) && formGroupAtenderTransmision.get('id_ccp').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row" style="text-align: center;">
+
+        <button type="button"
+                class="btn btn-secondary btnbtns"
+                (click)="EjecutaSalir()">
+                Salir
+        </button>
+
+        <button *ngIf="isDictaminador"
+                style="width: 137px!important;"
+                type="button"
+                class="btn btn-primary btnbtns"
+                (click)="guardarAtenderTransmision()"
+                [ngClass]="{'item-tramite': b_procesoTerminado}"
+                [disabled]="formGroupAtenderTransmision.invalid || bloqueoDictaminador">
+               Guardar
+        </button>
+
+        <!---->
+        <button type="button"
+                class="btn btn-primary btnbtns"
+                (click)="createPDF()"
+                *ngIf="b_oficio && isDictaminador"
+                [disabled]="formGroupAtenderTransmision.invalid">
+                Generar Oficio
+        </button>
+
+        <!---->
+        <button *ngIf="b_procesoTerminado && isDictaminador"
+                type="button"
+                class="btn btn-primary btnbtns"
+                (click)="consultarOficioConcluido()">
+                Ver Oficio
+        </button>
+
+
+        <label  *ngIf="b_procesoTerminado && isDictaminador">
+            <span class="btn btn-primary btnbtns" >
+              Sustituir Oficio
+                <input type="file"
+                      accept="application/pdf"
+                      style="display: none;"
+                      (change)="preCargarArchivo($event.target.files)">
+            </span>
+        </label>
+
+
+
+      </div>
+
+      <div *ngIf="isDictaminador" class="row" style="padding-left: 455px;">
+
+        <button type="button"
+                class="btn btn-primary btnbtns"
+                [ngClass]="{'item-tramite': b_procesoTerminado}"
+                (click)="abrirFormObservar()"
+                *ngIf="b_observar"
+                [disabled]="formGroupAtenderTransmision.invalid || bloqueoDictaminador">
+              Observar
+        </button>
+
+
+        <button style="width: 190px!important;"
+                type="button"
+                class="btn btn-primary btnbtns"
+                [ngClass]="{'item-tramite': b_procesoTerminado}"
+                *ngIf="b_autorizar"
+                (click)="abrirFormAutorizar()"
+                [disabled]="formGroupAtenderTransmision.invalid || bloqueoDictaminador">
+              Autorizar
+        </button>
+
+        <!---->
+        <button type="button"
+                class="btn btn-primary btnbtns"
+                [ngClass]="{'item-tramite': b_procesoTerminado}"
+                (click)="abrirFormConcluir()"
+                *ngIf="b_concluir"
+                [disabled]="formGroupAtenderTransmision.invalid">
+                Concluir Trámite
+        </button>
+
+
+
+      </div>
+    </form>
+  </div>
+
+  <!--SECCIÓN MODALES-->
+  <ng-template #modalObservaciones let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Observaciones</h4>
+    </div>
+    <div class="modal-body">
+      <form role="form" [formGroup]="formGroupObservarTransmision">
+        <div class="row">
+          <div class="row col-md-12 form-group">
+            <label class="col-sm-12 control-label requerido" for="observacion" style="text-align: left;">
+              Comentarios:
+            </label>
+            <br>
+            <div class="col-sm-12">
+              <textarea class="form-control" type="text" name="observacion" formControlName="observacion" required [readonly]="!isDictaminador">
+              </textarea>
+              <div *ngIf="(formGroupObservarTransmision.get('observacion').touched) && formGroupObservarTransmision.get('observacion').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+              (click)="modal.dismiss('Cross click')">
+        Cerrar
+      </button>
+      <button class="btn btn-primary" [disabled]="formGroupObservarTransmision.invalid" (click)="guardarObservacion()">Guardar</button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalAutorizar let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Autorizar Transmisión</h4>
+    </div>
+    <div class="modal-body">
+      <form role="form" [formGroup]="formGroupAutorizarTransmision">
+        <div class="row">
+
+          <div class="form-group col-md-12">
+            <div class="row col-md-12 form-group">
+              <label class="col-sm-12 control-label" style="text-align: left;">
+                Autorizado
+              </label>
+            </div>
+
+            <div class="row col-md-12 form-group">
+              <label class="col-sm-3 control-label requerido" for="fecha" style="text-align: left;">
+                Fecha:
+              </label>
+              <div class="col-sm-6">
+                <input class="form-control" type="date" formControlName="fecha" name="fecha" required />
+                <div *ngIf="(formGroupAutorizarTransmision.get('fecha').touched) && formGroupAutorizarTransmision.get('fecha').errors?.required"
+                     class="form-text form-text-error">
+                  <small>El campo es requerido</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row col-md-12 form-group">
+              <label class="col-sm-3 control-label requerido" for="horario" style="text-align: left;">
+                Horario:
+              </label>
+              <div class="col-sm-6">
+                <select id="horario" name="horario" class="form-control" formControlName="horario" required>
+                  <option value="" selected disabled hidden>Seleccione</option>
+                  <option *ngFor="let opcion of lstHorarios" value="{{opcion.c_horario}}">{{opcion.c_horario}} </option>
+                </select>
+                <div *ngIf="(formGroupAutorizarTransmision.get('horario').touched) && formGroupAutorizarTransmision.get('horario').errors?.required"
+                     class="form-text form-text-error">
+                  <small>El campo es requerido</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="row col-md-12 form-group">
+              <label class="col-sm-12 control-label requerido" for="direccion" style="text-align: left;">
+                Direcci&oacute;n:
+              </label>
+              <br>
+              <div class="col-sm-12">
+                <textarea class="form-control" type="text" name="direccion" formControlName="direccion" required>
+                </textarea>
+                <div *ngIf="(formGroupAutorizarTransmision.get('direccion').touched) && formGroupAutorizarTransmision.get('direccion').errors?.required"
+                     class="form-text form-text-error">
+                  <small>El campo es requerido</small>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-12">
+
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+              (click)="modal.dismiss('Cross click')">
+        Cerrar
+      </button>
+      <button class="btn btn-primary" [disabled]="formGroupAutorizarTransmision.invalid" (click)="autorizarTransmision()">Enviar Notificaci&oacute;n</button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalConcluir let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Concluir Trámite</h4>
+    </div>
+    <div class="modal-body">
+      <form role="form" [formGroup]="formGroupConcluirTramite">
+        <div class="row">
+
+          <div class="row col-md-12 form-group">
+            <label class="col-sm-6 control-label requerido" for="id_estatus" style="text-align: left;">
+              Seleccione una opci&oacute;n:
+            </label>
+            <div class="col-sm-6">
+              <select id="id_estatus" name="id_estatus" class="form-control" formControlName="id_estatus" required (change)="onChangeEstatusSolicitud($event.target)">
+                <option value="" selected disabled hidden>Seleccione</option>
+                <option value="34"> Solicitud Concluida </option>
+                <option value="33"> Solicitud Cancelada </option>
+              </select>
+              <div *ngIf="(formGroupConcluirTramite.get('id_estatus').touched) && formGroupConcluirTramite.get('id_estatus').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row col-md-12 form-group" *ngIf="b_concluirSolicitud">
+            <label class="col-sm-6 control-label requerido" for="oficio" style="text-align: left;">
+              Oficio
+            </label>
+            <div class="col-sm-6">
+              <app-modulo-carga-archivo [id]="i_id_transmision"
+                                        [id_archivo_tramite]="29"
+                                        [archivo_registrado]="autorizacionTransmision"
+                                        (is_loading)="setIsLoadingArchivo($event)"
+                                        (is_sent_arch)="setSentArch($event)">
+              </app-modulo-carga-archivo>
+            </div>
+          </div>
+
+          <div class="row col-md-12 form-group">
+            <label class="col-sm-12 control-label requerido" for="observacion" style="text-align: left;">
+              Comentarios:
+            </label>
+            <br>
+            <div class="col-sm-12">
+              <textarea class="form-control" type="text" name="observacion" formControlName="observacion" required>
+              </textarea>
+              <div *ngIf="(formGroupConcluirTramite.get('observacion').touched) && formGroupConcluirTramite.get('observacion').errors?.required"
+                   class="form-text form-text-error">
+                <small>El campo es requerido</small>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+              (click)="modal.dismiss('Cross click')">
+        Cerrar
+      </button>
+      <button class="btn btn-primary" [disabled]="formGroupConcluirTramite.invalid" (click)="concluirTramite()">Finalizar</button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalSustituir let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Sustituir Oficio</h4>
+    </div>
+    <div class="modal-body">
+      <form role="form" [formGroup]="formGroupConcluirTramite">
+        <div class="row">
+
+          <div class="row col-md-12 form-group" *ngIf="b_procesoTerminado">
+            <label class="col-sm-6 control-label requerido" for="oficio" style="text-align: left;">
+              Oficio
+            </label>
+            <div class="col-sm-6">
+              <app-modulo-carga-archivo [id]="i_id_transmision"
+                                        [id_archivo_tramite]="29"
+                                        [archivo_registrado]="autorizacionTransmision"
+                                        (is_loading)="setIsLoadingArchivo($event)">
+              </app-modulo-carga-archivo>
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+              (click)="modal.dismiss('Cross click')">
+        Cerrar
+      </button>
+      <!-- <button class="btn btn-primary" [disabled]="formGroupConcluirTramite.invalid" (click)="concluirTramite()">Finalizar</button> -->
+    </div>
+  </ng-template>
+
+</div>

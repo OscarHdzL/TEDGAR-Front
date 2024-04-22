@@ -1,0 +1,76 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+
+<div class="container">
+  <!-- <div class="col-md-12 breadcrumb" *ngIf="!isDictaminador">
+    <p>Otorgamiento de Registro Constitutivo como Asociación Religiosa > <strong>Solicitud de Registro</strong></p>
+  </div>
+  <div class="col-md-12 breadcrumb" *ngIf="isDictaminador">
+    <p><strong>Atención de solicitudes de registro</strong></p>
+    <p>Dictaminación > <strong>Revisión de información del registro</strong></p>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9 text-right pull-right">
+      <app-modulo-paginacion [routes]="routes" [tramiteId]="id_tramite"></app-modulo-paginacion>
+    </div>
+  </div> -->
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+    <app-modulo-formulario-domicilio [TipoDomicilio]="TipoDomicilio" (registroDomicilio)="patchDomicilio($event)"
+      [ModelDTO]="ModelDTO" [Enabled]="isDictaminador|| bloqueo">
+    </app-modulo-formulario-domicilio>
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label class="control-label requerido" for="s_cat_sjuridica">Situaci&oacute;n Jur&iacute;dica:</label>
+        <select class="form-control" formControlName="s_cat_sjuridica" name="s_cat_sjuridica" required
+          [attr.disabled]="isDictaminador || bloqueo?'':null">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaSJuridica" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre }}
+          </option>
+        </select>
+
+        <div *ngIf="formGroup.invalid && formGroup.get('s_cat_sjuridica').touched">
+          {{ obtenerErroresSJuridica() }}
+        </div>
+      </div>
+      <div class="form-group col-md-5 btn-file">
+        <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="1" [archivo_registrado]="arch_sjuridica"
+          (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+          [isDictaminador]="isDictaminador || bloqueo"></app-modulo-carga-archivo>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_f_apertura">Fecha de Apertura:</label>
+        <input class="form-control form-date" type="date" formControlName="s_f_apertura" required
+          [readonly]="isDictaminador || bloqueo" />
+        <div *ngIf="formGroup.invalid && formGroup.get('s_f_apertura').touched">
+          {{ obtenerErroresFechaApertura() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_manifiesto_file">Manifiesto de no conflicto:</label>
+        <div class="col-md-12">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="2" [archivo_registrado]="arch_mainifiesto"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo"></app-modulo-carga-archivo>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-6">
+      <span [hidden]="isDictaminador == true || bloqueo == true || bloqueo == 1">
+        <button (click)="OnSubmit()"
+          [disabled]="this.formGroup.invalid || isDictaminador ||  !this.arch_mainifiesto || !this.arch_sjuridica || bloqueo"
+          class="btn btn-primary btn-footer">
+          Guardar
+        </button>
+      </span>
+
+      <button (click)="exitPublic()" type="button" class="btn btn-secondary btn-footer">
+        Salir
+      </button>
+    </div>
+  </div>
+</div>

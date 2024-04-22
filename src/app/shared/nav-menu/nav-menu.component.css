@@ -1,0 +1,52 @@
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+.navbar-dark .navbar-nav .subnav-link{
+  background-color: #13322b!important;
+
+}
+.banneruser{
+  color: white!important;
+  padding-top: 1rem;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+  background-color:  rgba(255, 255, 255, 0.20)!important;
+  color: #D4C19C;
+  text-decoration: none;
+  outline: 0;
+}
+/* html {
+  font-size: 14px;
+} */
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+.modal.fade .modal-dialog {
+  transform: translate(0, 0) !important;
+}
+
+.modal-footer {
+  background-color: white !important;
+}
+
+.d-block.modal.fade.show {
+  opacity: 1 !important;
+}
+
+.modal-backdrop.fade {
+  opacity: 0.5 !important;
+}
+
+.modal-content {
+  border: 0px !important;
+
+  padding-bottom: 50px;
+}

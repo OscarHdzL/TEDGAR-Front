@@ -1,0 +1,103 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <h3>Asignación de Solicitudes de toma de nota</h3>
+  <div class="tabla-registros col-md-12">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-12">
+          <!-- <button
+            class="btn btn-primary btn-sm active pull-right"
+            title="Agregar Nueva Componente"
+            type="button"
+            (click)="open()"
+          >
+            Nueva Colonia
+          </button> -->
+        </div>
+        <div class="col-md-12">
+          <h3>Solicitudes de Registros</h3>
+          <hr class="red" />
+          <div class="table-responsive">
+            <table class="table table-sm table-hover"
+                   datatable
+                   [dtOptions]="dtOptions">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">Folio</th>
+                  <th scope="col">Denominación</th>
+                  <th scope="col">Tipo Solicitud</th>
+                  <th scope="col">Fecha Reg.</th>
+                  <th scope="col">Núm SGAR</th>
+                  <th scope="col">Estatus</th>
+                  <th scope="col">Dictaminador</th>
+                  <th scope="col">Asignar</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="listRegistros?.length != 0">
+                <tr *ngFor="let registro of listRegistros; let i = index"
+                    class="text-center tr-especialPadding">
+                  <th scope="row">
+                    {{ registro.reg_numero_folio }}
+                  </th>
+                  <th scope="">{{ registro.reg_cat_denominacion }}</th>
+                  <th scope="">
+                    {{ registro.reg_cat_solicitud_escrito }}
+                  </th>
+                  <td>{{ registro.reg_fecha | date: 'dd/MM/yyyy' }}</td>
+                  <th scope="">{{ registro.reg_numero_registro }}</th>
+                  <th scope="">{{ registro.reg_estatus }}</th>
+                  <th scope="">{{ registro.correo_dic }}</th>
+
+                  <td class="text-left">
+
+                    <select class="form-control"
+                            (change)="onChange($event.target.value,registro.reg_idtn)">
+                      <option value="" selected>
+                        Seleccione una opci&oacute;n...
+                      </option>
+                      <option *ngFor="let tipo of listDicataminador"
+                              value="{{ tipo.id_usuario }}">
+                        {{ tipo.usuario }}
+                      </option>
+                    </select>
+                    <!-- <div
+        *ngIf="
+        dictaminadores[i].get('us_dictaminador_id').errors
+            ?.required &&
+            dictaminadores[i].get('us_dictaminador_id').touched
+        "
+      >
+        El campo es requerido
+      </div> -->
+
+                  </td>
+                  <td>
+                    <button class="bootstrap-icons espacio-derecho-tabla icono-grande"
+                            title="Ver Detalle"
+                            type="button"
+                            (click)="mandarVerDetalle(registro.reg_idtn)">
+                      <i class="ti-search"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="listRegistros?.length == 0">
+                <tr>
+                  <td colspan="3" class="no-data-available">
+                    No se encontraron resultados
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button (click)="OnSubmit()"
+                    [disabled]=" this.dictaminadores?.length === 0"
+                    class="btn btn-primary">
+              Asignar Registro
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,152 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <h3>Administración de Oficios</h3>
+  <div class="tabla-catalogos col-md-12">
+    <div class="container p-5">
+
+      <div class="row">
+
+
+        <!--div class="col-md-12">
+          <button class="btn btn-primary btn-sm active pull-right"
+                  title="Agregar Nueva Plantilla"
+                  type="button"
+                  (click)="abrirModalNuevoRegistro()">
+            Nuevo Componente
+          </button>
+        </div-->
+
+
+        <div class="col-md-12">
+          <h3>Lista de Componentes</h3>
+          <hr class="red" />
+          <table class="table table-striped"
+                 datatable
+                 [dtOptions]="dtOptions"
+                 [dtTrigger]="dtTrigger">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let catalogo of listcatalogo; let i = index">
+                <td scope="row"> {{catalogo.c_nombre}} </td>
+                <td>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <!--button class="btn btn-secondary btn-sm"
+                                title="Desactivar/Activar"
+                                type="button"
+                                (click)="seleccionarPlantillaActual(catalogo.i_id)">
+                          <i *ngIf="catalogo.i_estatus === 2" class="toggleactivar"></i>
+                          <i *ngIf="catalogo.i_estatus === 1" class="togglesuspender"></i>
+                        </button-->
+                        <button class="btn btn-secondary btn-sm"
+                                title="Editar Plantilla"
+                                type="button"
+                                (click)="editarElementoPlantilla(catalogo)">
+                          <i class="ti-pencil"></i>
+                        </button>
+                        <!--button class="btn btn-secondary btn-sm"
+                                title="Eliminar Plantilla"
+                                type="button"
+                                (click)="bajaElementoPlantilla(catalogo)">
+                          <i class="ti-trash"></i>
+                        </button-->
+                    </div>
+                  </div>
+
+
+               </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <ng-template #modalOperaciones let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title">{{ operacionTituloModel }}</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form" [formGroup]="fromCatalago">
+
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label class="col-md-4 control-label requerido">Nombre de la plantilla:</label>
+                    <div class="col-md-8">
+                        <input  class="form-control"
+                                type="text"
+                                name="c_nombre"
+                                formControlName="c_nombre"
+                                autocomplete='off' disabled>
+                        <span class="error"
+                            *ngIf="(fromCatalago.get('c_nombre').touched) && fromCatalago.get('c_nombre').errors?.required">
+                            El campo es requerido.
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">
+                                Seleccione el archivo
+                                <input type="file"
+                                       accept=".docx, .pdf"
+                                       style="display: none;"
+                                       (change)="preCargarArchivo($event.target.files)">
+                            </span>
+                        </label>
+                    </div>
+                    <div class="row text-center">
+                      <span class="error" *ngIf="(fromCatalago.get('ArchivoBase64').touched) && fromCatalago.get('ArchivoBase64').errors?.required">
+                        El archivo es requerido.
+                     </span>
+                    </div>
+                </div>
+            </div>
+
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+                  (click)="modal.dismiss('Cross click')">Cerrar</button>
+          <button class="btn btn-primary"
+                  [disabled]="fromCatalago.invalid"
+                  (click)="procesarPersistencia()">Guardar</button>
+        </div>
+
+      </ng-template>
+
+
+      <ng-template #confirmarEliminar let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Mensaje</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group alert alert-danger">
+              <p>¿Desea eliminar esta plantilla?</p>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-sm btn-danger"
+                  (click)="eliminarPlantilla()">Aceptar</button>
+
+          <button type="button"
+                  class="btn btn-sm btn-default"
+                  (click)="modal.dismiss('cancel click')">Cancelar</button>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+</div>
+

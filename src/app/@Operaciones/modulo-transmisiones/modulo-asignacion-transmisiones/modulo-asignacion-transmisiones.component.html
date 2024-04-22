@@ -1,0 +1,107 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <h3>Asignación de Solicitudes de Trasmisiones</h3>
+  <div class="tabla-registros col-md-12">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-12">
+        </div>
+        <div class="col-md-12">
+          <h3>Solicitudes de Trasmisiones</h3>
+
+          <div class="row">
+            <div class="col-lg-12">
+    
+              <form [formGroup]="formFiltros" (ngSubmit)="ConsultaDatos()">
+    
+                <div class="col-lg-12">
+                  <div class="row col form-group">
+                    <label class="col-sm-3 control-label centar-vertial">Búsqueda:</label>
+                    <div class="col-sm-9">
+                      <input class="form-control" type="text" formControlName="busqueda" name="busqueda" placeholder="Búsqueda" />
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="col-lg-12">
+                  <div class="text-right">
+    
+                    <button type="button" (click)="limpiarReporte()" class="btn btn-primary btn-sm espacio-derecho"
+                      title="Limpiar reporte">
+                      <i class="ti-file"></i>
+                    </button>
+    
+                    <button class="btn btn-primary btn-sm  espacio-derecho">
+                      Buscar
+                    </button>   
+                  
+    
+                  </div>
+                </div>
+    
+              </form>
+            </div>
+          </div>
+
+          <hr class="red" />
+          <div class="table-responsive">
+            <table class="table table-sm table-hover"
+            datatable
+            [dtOptions]="dtOptions"
+            [dtTrigger]="dtTrigger">
+              <thead>
+                <tr class="text-center">
+                  <th>#</th>
+                  <th>Registro SGAR</th>
+                  <th>Asociación Religiosa</th>
+                  <th>Fecha de Solicitud</th>
+                  <th width="15%">Estatus</th>
+                  <th>Dictaminador de Registro</th>
+                  <th>Dictaminador Asignado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of listRegistros; let i = index" class="text-center tr-especialPadding">
+                  <td> {{ i + 1 }} </td>
+                  <td> {{ reg.c_numero_sgar }} </td>
+                  <td> {{ reg.c_denominacion }}</td>
+                  <td> {{ reg.c_fecha | date: 'dd/MM/yyyy'  }} </td>
+                  <td width="15%"> {{ reg.c_estatus }} </td>
+                  <td width="15%"> {{ reg.nombre_dictaminador }} </td>
+                  <td class="text-left">
+
+                    <select class="form-control"
+                            (change)="onChange($event.target.value, reg.i_id_tbl_transmision)">
+                      <option value="" selected>
+                        Seleccione una opci&oacute;n...
+                      </option>
+                      <option *ngFor="let tipo of listDictaminador" value="{{ tipo.id_usuario }}">
+                        {{ tipo.usuario }}
+                      </option>
+                    </select>
+                  </td>
+
+                  <td>
+                    <button class="bootstrap-icons espacio-derecho-tabla icono-grande"
+                            title="Ver Detalle"
+                            type="button"
+                            (click)="verDetalle(reg.i_id_tbl_transmision)">
+                      <i class="ti-search"></i>
+                    </button>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+            <button (click)="asignarTransmision()"
+                    [disabled]="this.ArgDictaminador?.length === 0 || this.ArgDictaminador === undefined"
+                    class="btn btn-primary">
+              Asignar Solicitud
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

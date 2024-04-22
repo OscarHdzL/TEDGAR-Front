@@ -1,0 +1,13 @@
+
+
+.btn {
+  margin: 1rem;
+}
+
+button .btn .btn-sm {
+  font-size: 12px !important;
+}
+
+.labelencabezado{
+    font-size: 12px;
+}

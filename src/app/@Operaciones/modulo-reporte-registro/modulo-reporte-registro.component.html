@@ -1,0 +1,231 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container p-5">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-12">
+            <h3>{{ titulo }}</h3>
+            <hr class="red">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <form [formGroup]="formFiltros" (ngSubmit)="ConsultaDatos()">
+            <div class="col-md-4">
+              <div class="row col-md-12 form-group" *ngIf="tipoTramite == 1">
+                <label class="col-md-4 control-label"> Credo:</label>
+                <div class="col-md-8">
+                  <select class="form-control" formControlName="credoregistro" name="credoregistro">
+                    <option value="0"> Seleccione</option>
+                    <option *ngFor="let tipo of selectCatCredo" value="{{ tipo.c_id }}">
+                      {{ tipo.c_nombre_n }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row col-md-12 form-group" *ngIf="tipoTramite != 1">
+                <label class="col-md-4 control-label"> Movimientos realizados:</label>
+                <div class="col-md-8">
+                  <select class="form-control" formControlName="movRealizado" name="movRealizado">
+                    <option value="0"> Seleccione</option>
+                    <option *ngFor="let tipo of selectCatMovRealizado" value="{{ tipo.c_id }}">
+                      {{ tipo.c_nombre_n }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row col-md-12 form-group">
+                <label class="col-md-4 control-label"> Estatus:</label>
+                <div class="col-md-8">
+                  <select class="form-control" formControlName="estatusregistro" name="estatusregistro">
+                    <option value="0"> Seleccione</option>
+                    <option *ngFor="let estatus of selectCatEstatus" [ngValue]="estatus.i_id">{{estatus.c_nombre}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4" *ngIf="tipoTramite == 1">
+              <div class="row col-md-12 form-group">
+                <label class="col-md-4 control-label"> Estado:</label>
+                <div class="col-md-8">
+                  <select class="form-control" formControlName="entidadregistro" name="entidadregistro" (ngModelChange)="cargarCatalogoMunicipio()">
+                    <option value="0"> Seleccione</option>
+                    <option *ngFor="let estados of selectCatEstados" [ngValue]="estados.idEstado">{{estados.nombre}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row col-md-12 form-group">
+                <label class="col-md-4 control-label"> Municipio:</label>
+                <div class="col-md-8">
+                  <select class="form-control" formControlName="municipioregistro" name="municipioregistro">
+                    <option value="0"> Seleccione</option>
+                    <option *ngFor="let muni of selectCatMunicipio" [ngValue]="muni.idMunicipio">{{muni.nombre}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="row col-md-12 form-group">
+                <label class="col-md-6 control-label"> Fecha inicio:</label>
+                <div class="col-md-6">
+                  <input class="form-control" style="font-size:10px"
+                         type="date"
+                         formControlName="fechai" name="fechai" />
+                </div>
+              </div>
+              <div class="row col-md-12 form-group">
+                <label class="col-md-6 control-label"> Fecha fin:</label>
+                <div class="col-md-6">
+                  <input class="form-control" style="font-size:10px"
+                         type="date"
+                         formControlName="fechaf" name="fechaf" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 p-5">
+                <div class="row">
+                  <div class="col-sm-9 text-center">
+                  </div>
+                  <div class="col-sm-3 text-center" style="text-align:left">
+                    <button type="button" (click)="openlimpiarReporte()" class="btn btn-sm btn-primary" title="Limpiar reporte">
+                      <i class="ti-file"></i>
+                    </button>
+                    <label for="">&nbsp; &nbsp;</label>
+                    <button class="btn btn-sm btn-primary">
+                      Buscar
+                    </button>
+                    <label for="">&nbsp; &nbsp;</label>
+                    <button type="button" class="btn btn-sm btn-primary" title="Descargar reporte" *ngIf="visibleExecel" (click)="exportAsXLSX()">
+                      <i class="ti-download"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="table-responsive">
+              <table class="table table-sm table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="tipoTramite == 1">
+                <thead>
+                  <tr class="text-center tr-especial">
+                    <th scope="col">Denominación</th>
+                    <th scope="col">SGAR</th>
+                    <th scope="col">Domicilio legal</th>
+                    <th scope="col">Representante legal</th>
+                    <th scope="col">Credo</th>
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Fecha Registro</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reporte of listRegistros" class="tr-especialPadding">
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.c_denominacion}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.c_nRegistro}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.domicilio_legal}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.representante_legal}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.credo}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.estatus_tramite}}</span>
+                      </div>
+                    </td>
+                    <td>{{reporte.fecha_registro | date: 'dd/MM/yyyy'}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table table-sm table-hover" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" *ngIf="tipoTramite != 1">
+                <thead>
+                  <tr class="text-center tr-especial">
+                    <th scope="col">Denominación</th>
+                    <th scope="col">SGAR</th>
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Fecha Registro</th>
+                    <th scope="col">Movimientos Realizados</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reporte of listRegistros" class="tr-especialPadding">
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.c_denominacion}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.c_nRegistro}}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.estatus_tramite}}</span>
+                      </div>
+                    </td>
+                    <td>{{reporte.fecha_registro | date: 'dd/MM/yyyy'}}
+                    </td>
+                    <td>
+                      <div class="mrg-top-15 text-center">
+                        <span class="info">{{reporte.movimientostnota}}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #contentReporte let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Mensaje</h4>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group alert alert-warning">
+          <p>¿Desea limpiar el reporte?</p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <!--<button type="button" class="btn btn-outline-dark" >Save</button>-->
+      <!--<button type="button" class="btn btn-sm btn-danger" (click)="activarUsuario(user)">Aceptar</button>-->
+      <button id="" class="btn btn-sm btn-danger" (click)="limpiarReporte()">Aceptar</button>
+
+      <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">Cancelar</button>
+    </div>
+  </ng-template>
+</div>
+
+

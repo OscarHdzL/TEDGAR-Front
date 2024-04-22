@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Agregar Componente</h4>
+</div>
+<form role="form" [formGroup]="form">
+  <div class="modal-body col-md-12">
+    <ng-container formArrayName="catalogos">
+      <ng-container *ngFor="let catalogo of catalogos.controls; let i = index">
+        <div [formGroup]="catalogo">
+        <div class="row">
+        
+            <div class="form-group col-md-10">
+              <label class="control-label">Nombre:</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="nombre"
+                required
+              />
+              <div class="error"
+                *ngIf="
+                  catalogo.get('nombre').errors?.required &&
+                  catalogo.get('nombre').touched
+                "
+              >
+                El campo es requerido
+              </div>
+            </div>
+            <!-- <div class="form-group col-md-5">
+              <label class="control-label">Descipción:</label>
+              <input
+                class="form-control"
+                type="text"
+                formControlName="descripcion"
+                required
+              />
+              <div
+                *ngIf="
+                  catalogo.get('descripcion').errors?.required &&
+                  catalogo.get('descripcion').touched
+                "
+              >
+                El campo es requerido
+              </div>
+            </div> -->
+            <div class="col-md-2 btn-file">
+              <button class="btn btn-secondary btn-icon" (click)="remover(i)"
+              ><i class="ti-trash"></i
+            ></button>
+            </div>
+          
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <div class="col-md-12">
+      <button class="btn btn-secondary btn-sm" (click)="agregar()"> Agregar </button>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      (click)="OnSubmit()"
+      [disabled]="!this.catalogos.valid || this.catalogos?.length === 0"
+      class="btn btn-primary"
+    >
+      Aceptar
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="activeModal.close()"
+    >
+      Cancelar
+    </button>
+  </div>
+</form>

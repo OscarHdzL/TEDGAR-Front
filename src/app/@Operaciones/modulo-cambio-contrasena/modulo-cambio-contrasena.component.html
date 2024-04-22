@@ -1,0 +1,112 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container p-5">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-sesion">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <h3>Cambio de contraseña</h3>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12"  *ngIf="!solisitudExito">
+                            <form [formGroup]="formVeriCorreo" (ngSubmit)="EnviarCorreoContrasena()">
+                                <div class="form-group">
+                                    <span > Nueva contraseña 
+                                    </span><br>
+                               </div>  
+                                <div class="form-group">
+                                      <div class="input-group" id="show_hide_password">
+                                        <input formControlName="Contrasena" class="form-control"
+                                        placeholder="Contrasena" [type]="controltype" (keyup)="formatocorreoValido()" autocomplete="off" name="Contrasena">
+                                        <div class="input-group-addon" (click)="showPass()">
+                                            <i 
+                                            [ngClass]="{
+                                              'glyphicon': true,
+                                              'glyphicon-eye-open': this.showpass,
+                                              'glyphicon-eye-close': ! this.showpass
+                                            }" aria-hidden="true"  ></i>
+                                          </div>
+                                         </div>
+                            
+                                    <span class="error"
+                                        *ngIf="(formVeriCorreo.get('Contrasena').touched || submitted) && formVeriCorreo.get('Contrasena').errors?.required">
+                                        La contrasena es un valor requerido
+                                    </span>
+                                    <span class="error"
+                                    *ngIf="contraValida">
+                                       Las contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número, un caracter especial, mínimo 8 caracteres y máximo 16.
+                                    </span>
+                                    
+                                </div>
+                                <div class="form-group" *ngIf="editableContra">
+                                           <span > Confirmar contraseña
+                                           </span><br>
+                                </div> 
+                                <div class="form-group" *ngIf="editableContra">
+                                    <div class="input-group" id="show_hide_password">
+                                        <input formControlName="contraseniaConfirma" class="form-control"
+                                        placeholder="Confirmar contraseña" [type]="controltype" type="password" (keyup)="confirmarContrasena()" autocomplete="off" name="contraseniaConfirma">
+                                        <div class="input-group-addon" (click)="showPass()">
+                                            <i 
+                                            [ngClass]="{
+                                              'glyphicon': true,
+                                              'glyphicon-eye-open': this.showpass,
+                                              'glyphicon-eye-close': ! this.showpass
+                                            }" aria-hidden="true"  ></i>
+                                          </div>
+                                          </div>  
+                                   
+                                    <span class="error"
+                                        *ngIf="mesCorrecto">
+                                        La contraseña no coincide.
+                                    </span>
+                                    
+                                </div>
+                                <div class="form-group" *ngIf="btnVisible">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                            <button class="btn btn-primary"
+                                                [disabled]="operacionRespuesta.EstaEjecutando">
+                                                Aceptar<span
+                                                    [ngClass]="{'spinerBtn': operacionRespuesta.EstaEjecutando }"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12"  *ngIf="solisitudExito">
+                            <div class="form-group">
+                                <div class="alert alert-success" role="alert">
+                                   <span >Tu contraseña ha sido restablecida.
+                                   </span><br>
+                                </div>
+                             </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                            <div class="text-center">
+                                                <a [routerLink]="['/iniciar-sesion']" tabindex="5" class="btn btn-primary">Aceptar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-danger" *ngIf="operacionRespuesta.EsMsjError">
+                            <p>
+                                {{ operacionRespuesta.Msj }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

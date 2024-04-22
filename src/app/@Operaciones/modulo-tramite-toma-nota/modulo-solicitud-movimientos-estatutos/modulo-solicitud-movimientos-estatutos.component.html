@@ -1,0 +1,69 @@
+<!--<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>-->
+<div class="container">
+  <h3>Solicitud de toma de nota</h3>
+  <!--<app-modulo-mensajes [showErrors]="showErrors" [showExitos]="showExitos" [mensajesError]="mensajesError" [mensajesExito]="mensajesExito"></app-modulo-mensajes>-->
+  <br />
+  <h5>Movimientos en estatutos</h5>
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label class="control-label requerido col-md-8" style="padding-left:0px !important" for="s_cat__escrito_solicitud_tn">Estatutos:</label>
+        <div class="col-md-4">
+          <!-- <app-modulo-carga-archivo [id]="id_tramite"
+                                    [id_archivo_tramite]="0"
+                                    [archivo_registrado]="estatutos"
+                                    (is_loading)="setIsLoadingArchivo($event)"></app-modulo-carga-archivo> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label class="control-label requerido"  for="s_cat__escrito_solicitud_tn">Comentarios:</label>
+        <textarea class="form-control" required></textarea>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label class="control-label requerido" for="s_cat_modalidad">Indique cómo desea que se lleve a cabo la entrega  de la  documentación digital contra original:</label>
+        <select class="form-control"
+                
+                name="s_cat_modalidad"
+                required>
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaModalidad" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+  </form>
+  <!--app-modulo-formulario-domicilio [TipoDomicilio]="1"
+                                   (registroDomicilio)="patchDomicilio($event)"
+                                   [ModelDTO]="ModelDTO">
+  </app-modulo-formulario-domicilio>-->
+  <div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-primary" [routerLink]="['']">
+        Guardar
+      </button>
+      <button (click)="OnSubmit()"
+              [disabled]="!this.formGroup.valid"
+              class="btn btn-primary">
+        Finalizar
+      </button>
+      <button type="button" class="btn btn-secondary" [routerLink]="['']">
+        Salir
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <!--<app-modulo-paginacion [routes]="routes"></app-modulo-paginacion>-->
+    </div>
+  </div>
+</div>

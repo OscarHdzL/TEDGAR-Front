@@ -1,0 +1,101 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+
+<div class="container">
+  <h3>{{titulo}}</h3>
+  <!-- <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9 text-right pull-right">
+      <app-modulo-paginacion [routes]="routes" [tramiteId]="id_tramite"></app-modulo-paginacion>
+    </div>
+  </div> -->
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label class="control-label requerido" for="s_cat_notarioarr">{{ msjLabelMostrar }}:</label>
+        <select class="form-control" formControlName="s_cat_notarioarr" name="s_cat_notarioarr" required
+          [attr.disabled]="isDictaminador || bloqueo?'':null">
+          <option value=0 selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaNotario" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+
+        <div *ngIf=" formGroup.invalid && formGroup.get('s_cat_notarioarr').touched ">
+          {{ obtenerErroresNotarioArr() }}
+        </div>
+
+        <div class="error" *ngIf="validarConstancia">
+          Campo Requerido
+        </div>
+      </div>
+      <div class="col-md-6 btn-file">
+        <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="10" [archivo_registrado]="arch_notario"
+          (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+          [isDictaminador]="isDictaminador || bloqueo">
+        </app-modulo-carga-archivo>
+      </div>
+    </div>
+    <div class="row">
+      <h4>Convenio Extranjería</h4>
+      <div class="form-group col-md-6 row-form">
+        <label class="control-label col-md-4 requerido" for="s_1er_documento_file">1er documento:</label>
+        <div class="col-md-8">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="11" [archivo_registrado]="arch_doc_1"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo">
+          </app-modulo-carga-archivo>
+        </div>
+      </div>
+    </div>
+    <div class="row row-form">
+      <div class="form-group col-md-6">
+        <label class="control-label col-md-4 requerido" for="s_2do_documento_file">2do documento:</label>
+        <div class="col-md-8">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="12" [archivo_registrado]="arch_doc_2"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo">
+          </app-modulo-carga-archivo>
+        </div>
+      </div>
+    </div>
+    <div class="row row-form">
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_cat_modalidad">Indique cómo desea que se lleve a cabo el cotejo de
+          la documentación digital contra original</label>
+        <select class="form-control" formControlName="s_cat_modalidad" name="s_cat_modalidad" required
+          [attr.disabled]="isDictaminador || bloqueo?'':null">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaModalidad" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+
+        <div *ngIf="
+              formGroup.invalid && formGroup.get('s_cat_modalidad').touched
+            ">
+          {{ obtenerErroresModalidad() }}
+        </div>
+      </div>
+
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-6">
+      <span [hidden]="isDictaminador == true || bloqueo == true || bloqueo == 1">
+        <button (click)="OnSubmit()" [disabled]="this.formGroup.invalid || !arch_notario ||
+        !arch_doc_1 || isDictaminador ||
+        !arch_doc_2 || bloqueo" class="btn btn-primary btn-footer">
+          Guardar
+        </button>
+        <button [disabled]="this.formGroup.invalid || !arch_notario || isDictaminador ||
+      !arch_doc_1 || !arch_doc_2 || bloqueo" (click)="Finalizar()" class="btn btn-primary btn-footer">
+          Finalizar
+        </button>
+      </span>
+
+      <button (click)="exitPublic()" type="button" class="btn btn-secondary btn-footer">
+        Salir
+      </button>
+    </div>
+  </div>
+</div>

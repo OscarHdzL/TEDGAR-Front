@@ -1,0 +1,113 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <!-- <div class="col-md-12 breadcrumb" *ngIf="!isDictaminador">
+    <p>
+      Otorgamiento de Registro Constitutivo como Asociación Religiosa >
+      <strong>Solicitud de Registro</strong>
+    </p>
+  </div>
+  <div class="col-md-12 breadcrumb" *ngIf="isDictaminador">
+    <p><strong>Atención de solicitudes de registro</strong></p>
+    <p>Dictaminación > <strong>Revisión de información del registro</strong></p>
+  </div>
+
+   <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9 text-right pull-right">
+      <app-modulo-paginacion [routes]="routes" [tramiteId]="id_tramite"></app-modulo-paginacion>
+    </div>
+  </div> -->
+
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+    <div class="row">
+      <!-- <h4>Información General</h4> -->
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_cat_solicitud_escrito">Tipo de Solicitud Escrito:</label>
+        <select class="form-control" formControlName="s_cat_solicitud_escrito" name="s_cat_solicitud_escrito" required
+          [attr.disabled]="this.isDictaminador || this.bloqueo ? '' : null"
+          (change)="seleccionoTipoSolicitudEscrito($event.target.value)">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaSolicitudEscrito" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_cat_solicitud_escrito').touched">
+          {{ obtenerErroresSolicitudEscrito() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_cat_denominacion">Denominaci&oacute;n:</label>
+        <input class="form-control" type="text" formControlName="s_cat_denominacion" name="s_cat_denominacion" required
+          pattern='^[^"]*$' [readonly]="isDictaminador || bloqueo" appTrim maxlength="50"/>
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_cat_denominacion').touched">
+          {{ obtenerErroresDenominacion() }}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div *ngIf="seleccionoMatriz">
+        <div class="form-group col-md-6">
+          <label class="control-label" [ngClass]="{'requerido': seleccionoMatriz }">{{ msjLabelMostrar }}:</label>
+          <input class="form-control" type="text" formControlName="c_matriz" name="c_matriz"
+            [attr.disabled]="this.isDictaminador || this.bloqueo ? '' : null">
+          <div class="error" *ngIf="formGroup.invalid  && formGroup.get('c_matriz').touched">
+            {{ obtenerErroresMatriz() }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_cat_credo">Credo:</label>
+        <select class="form-control" formControlName="s_cat_credo" name="s_cat_credo" required
+          [attr.disabled]="this.isDictaminador || this.bloqueo ? '' : null">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaCredo" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_cat_credo').touched">
+          {{ obtenerErroresCredo() }}
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="row">
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_pais_origen">Pa&iacute;s Origen:</label>
+        <select class="form-control" formControlName="s_pais_origen" name="s_pais_origen" required
+          [attr.disabled]="this.isDictaminador || this.bloqueo ? '' : null">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaPais" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_pais_origen').touched">
+          {{ obtenerErroresPaisOrigen() }}
+        </div>
+      </div>
+    </div>
+  </form>
+  <app-modulo-formulario-domicilio [TipoDomicilio]="1" (registroDomicilio)="patchDomicilio($event)"
+    [ModelDTO]="ModelDTO" [Enabled]="isDictaminador">
+  </app-modulo-formulario-domicilio>
+  <div class="row">
+    <div class="col-md-6">
+      <span [hidden]="isDictaminador == true || bloqueo == true || bloqueo == 1">
+        <button (click)="OnSubmit()" class="btn btn-primary"
+          [disabled]="this.formGroup.invalid || isDictaminador || bloqueo">
+          Guardar
+        </button>
+      </span>
+
+      <button type="button" class="btn btn-secondary" (click)="exitPublic()">
+        Salir
+      </button>
+    </div>
+  </div>
+</div>

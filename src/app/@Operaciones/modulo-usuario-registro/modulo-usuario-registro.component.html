@@ -1,0 +1,151 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container p-5">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h3>Datos de contacto</h3>
+      <hr class="red" />
+      <form role="form" #formGuardaUsuarioSistema="ngForm" (ngSubmit)="guardarUsuarioSistema(Mensaje)">
+        <div class="form-group">
+          <label class="control-label requerido" for="nombre">Nombre del representante legal:</label>
+          <input class="form-control" type="text" [(ngModel)]="nombre" name="nombre" #_nombre="ngModel" required />
+          <div *ngIf="_nombre.touched && !_nombre.valid">
+            <span *ngIf="_nombre.errors.required" class="error">Por favor introduzca el nombre(s), es un valor
+              requerido</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="apellido_p">Apellido Paterno:</label>
+          <input class="form-control" type="text" [(ngModel)]="apellido_p" name="apellido_p" #_apellido_p="ngModel"
+            required />
+          <div *ngIf="_apellido_p.touched && !_apellido_p.valid">
+            <span *ngIf="_apellido_p.errors.required" class="error">Por favor introduzca el apellido paterno, es un
+              valor
+              requerido</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="apellido_m">Apellido Materno:</label>
+          <input class="form-control" type="text" [(ngModel)]="apellido_m" name="apellido_m" #_apellido_m="ngModel"/>
+          <div *ngIf="_apellido_m.touched && !_apellido_m.valid">
+            <span *ngIf="_apellido_m.errors.required" class="error">Por favor introduzca el apellido materno, es un
+              valor
+              requerido</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="telefono_movil">Número de contacto:</label>
+          <input class="form-control" type="text" [(ngModel)]="telefono_movil" name="telefono_movil"
+            #_telefono_movil="ngModel" pattern="[0-9]{10}" />
+          <div *ngIf="_telefono_movil.touched && !_telefono_movil.valid">
+            <span *ngIf="_telefono_movil.errors.required" class="error">Por favor introduzca un número de contacto, es
+              un valor
+              requerido</span>
+            <span *ngIf="_telefono_movil.errors.pattern" class="error">
+              Por favor introduzca un telefono valido solo números de 10
+              dígitos</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="correo_electronico">Correo Electónico:</label>
+          <input class="form-control" type="email" [(ngModel)]="correo_electronico" name="correo_electronico"
+            #_correo_electronico="ngModel" email required />
+          <div *ngIf="_correo_electronico.touched && !_correo_electronico.valid">
+            <span *ngIf="_correo_electronico.errors.required" class="error">Por favor introduzca el correo electrónico, es un valor
+              requerido</span>
+            <span *ngIf="_correo_electronico.errors.email" class="error">
+              Por favor introduzca el correo electrónico con el formato correcto</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="correo_electronico">Usuario:</label>
+          <input class="form-control" type="text" [(ngModel)]="usuario" name="usuario" #_usuario="ngModel" required />
+          <div *ngIf="_usuario.touched && !_usuario.valid">
+            <span *ngIf="_usuario.errors.required" class="error">Por favor introduzca un usuario valido, es un valor
+              requerido</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="contrasena">Contraseña:</label>
+          <div class="input-group" id="show_hide_password">
+            <input class="form-control" [type]="controltype" [(ngModel)]="contrasena" name="contrasena"
+              #_contrasena="ngModel"
+              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[{};:=<>_+^#$@!¡%*?&/(),.|°¬¨´¿'-])[A-Za-z\d[\]{};:=<>_+^#$@!¡%*?&/(),.|°¬¨´¿'-]{8,30}"
+              required />
+            <div class="input-group-addon" (click)="showPass()">
+              <i [ngClass]="{
+                'glyphicon': true,
+                'glyphicon-eye-open': showpass,
+                'glyphicon-eye-close': ! showpass
+              }" aria-hidden="true"></i>
+            </div>
+          </div>
+
+          <div *ngIf="_contrasena.touched && !_contrasena.valid">
+            <span *ngIf="_contrasena.errors.required" class="error">Por favor introduzca una contraseña
+            </span>
+            <span *ngIf="_contrasena.errors.pattern" class="error">
+              La contraseña debe contener 8 caractes como minímo, usar letras
+              mayúsculas, letras minúsculas, números y al menos un caracter
+              especial</span>
+          </div>
+        </div>
+        <!-- <div class="form-group">
+          <label class="control-label requerido" for="AvisoPrivacidad"
+            >Aviso Privacidad</label
+          >
+          <br/>
+            <input
+              class="form-check-input"
+              type="checkbox"
+              [(ngModel)]="aviso_privacidad"
+              name="aviso_privacidad"
+            
+              #_aviso_privacidad="ngModel"
+            /><label class="form-check-label" for="exampleCheck1">&nbsp;Aceptar</label>
+
+          <div *ngIf="!aviso_privacidad">
+            <span class="error"
+              >Para continuar debe aceptar el aviso de privaciad</span
+            >
+          </div>
+        </div> -->
+        <!-- <div class="form-group">
+          <label class="control-label requerido" for="AvisoPrivacidad">Campos Obligatorios</label>
+        </div>  -->
+        <button class="btn btn-primary active pull-left" title="Regresar a listado" type="button" (click)="regresar()">
+          Cancelar
+        </button>
+        <button class="btn btn-primary pull-right" [disabled]="!formGuardaUsuarioSistema.form.valid" type="submit">
+          Aceptar
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+<ng-template #Mensaje let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Registro correcto</h4>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="alert alert-success" role="alert">
+          Le hemos enviado su contraseña a su correo electr&oacute;nico para
+          confirmar su cuenta.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary center-block" (click)="modal.close('Save click')">
+      Aceptar
+    </button>
+  </div>
+</ng-template>
+<div class="container p-5" *ngIf="mensajeRespuesta">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="alert alert-danger" role="alert">{{ mensajeRespuesta }}</div>
+    </div>
+  </div>
+</div>

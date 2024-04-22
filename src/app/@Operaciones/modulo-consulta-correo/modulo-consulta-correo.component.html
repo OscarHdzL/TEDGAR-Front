@@ -1,0 +1,77 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container p-5">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-sesion">
+                <div class="panel-heading" style="padding-bottom: 5px">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <h3>Recuperar contraseña</h3>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12"  *ngIf="!solisitudExito">
+                          <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-8 col-sm-offset-2 alert alert-warning">
+                                          <p>Por favor indique el correo electrónico de su cuenta para hacerle llegar su contraseña</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <form [formGroup]="formVeriCorreo" (ngSubmit)="EnviarCorreoContrasena()">
+                                <div class="form-group">
+                                    <input formControlName="Correo" class="form-control"
+                                        placeholder="Correo electrónico" type="email" (keydown)="ocultarAlerta($event)"  autocomplete="off" name="Correo">
+                                    <span class="error"
+                                        *ngIf="(formVeriCorreo.get('Correo').touched || submitted) && formVeriCorreo.get('Correo').errors?.required">
+                                        El correo es un valor requerido
+                                    </span>
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                          <a [routerLink]="['/iniciar-sesion']" tabindex="5" class="btn btn-primary marginbtns">Regresar</a>
+                                            <button class="btn btn-primary marginbtns"
+                                                [disabled]="operacionRespuesta.EstaEjecutando">
+                                                Aceptar<span
+                                                    [ngClass]="{'spinerBtn': operacionRespuesta.EstaEjecutando }"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-12"  *ngIf="solisitudExito">
+                            <div class="form-group">
+                                <div class="alert alert-success" role="alert">
+                                   <span> Le hemos enviado una liga para restablecer la contraseña a su correo electrónico, recuerde que solo estará disponible por 1 hora. 
+                                   </span><br>
+                                </div>
+                             </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-12 text-center">
+                                            <div class="text-center">
+                                                <a [routerLink]="['/iniciar-sesion']" tabindex="5" class="btn btn-primary active">Aceptar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-danger" *ngIf="operacionRespuesta.EsMsjError">
+                            <p>
+                                {{ operacionRespuesta.Msj }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

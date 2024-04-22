@@ -1,0 +1,40 @@
+.mr-1 {
+  margin-right: 5px;
+}
+
+
+.list-catalogos {
+  padding: 2rem 0;
+  max-width: 70%;
+}
+
+input .form-control {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.btn .btn-secondary .btn-sm {
+  padding-top: 1rem !important;
+}
+
+.control-label {
+  text-align: left;
+}
+
+.custom-switch .custom-control-label::before {
+  left: -2.25rem;
+  width: 3.5rem;
+  height: 2rem;
+  pointer-events: all;
+  border-radius: 1rem;
+}
+
+.custom-switch .custom-control-label::after {
+  top: calc(.15rem + 4px);
+  left: calc(-1rem - 7px);
+  width: calc(1.7rem - 0.5px);
+  height: calc(1.75rem - 4px);
+  background-color: #adb5bd;
+  border-radius: .6rem;
+  transition: transform 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+}

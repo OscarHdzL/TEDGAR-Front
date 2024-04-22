@@ -1,0 +1,57 @@
+<app-modulo-spiner-declaratoria *ngIf="estaCargando"></app-modulo-spiner-declaratoria>
+<br><br>
+<h2>Administración de Plantillas</h2>
+<hr class="red" />
+
+<div class="container">
+  <br>
+
+
+  <div class="table-responsive">
+    <table class="table table-striped" #ref datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Acción</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let catalogo of lista; let i = index">
+          <th scope="row"> {{i + 1}} </th>
+          <th scope="row">
+            <button class="btn btn-secondary btn-sm" title="Editar" type="button" (click)="abrirModificacion()">
+              <i class="ti-pencil"></i>
+            </button>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br><br>
+
+<ng-template #contentEditar let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Modificar plantilla</h4>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="formGroup">
+      <div class="row">
+        <div class="col-sm-12">
+          <input type="text" formControlName="nombre">
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">
+      Cerrar
+    </button>
+    <button class="btn btn-sm btn-danger" (click)="guardar()" [disabled]="!this.formGroup.valid">
+      Guardar
+    </button>
+  </div>
+</ng-template>

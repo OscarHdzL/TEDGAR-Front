@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{mensajeTitulo}}</h4>
+  </div>
+    <div class="modal-body">
+              <div class="alert alert-warning" role="alert">
+                {{mensaje}}
+              </div>
+    </div>
+    <div class="modal-footer">
+        <button
+        type="button"
+        class="btn btn-primary"
+        (click)="activeModal.close(true)"
+      >
+      {{btnAceptarTxt}}
+      </button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="activeModal.close(false)"
+      >
+      {{btnCancelarTxt}}
+      </button>
+    </div>
+  

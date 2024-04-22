@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{mensajeTitulo}}</h4>
+  </div>
+    <div class="modal-body">
+    <app-modulo-mensajes [showErrors]="showErrors" [showExitos]="showExitos" [showAdvertencias]="showAdvertencias" [mensajesError]="mensajesError" [mensajesExito]="mensajesExito" [mensajesAdvertencia]="mensajesAdvertencia"></app-modulo-mensajes>
+
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary center-block"
+        (click)="activeModal.close('Close click')"
+      >
+        Aceptar
+      </button>
+    </div>
+  

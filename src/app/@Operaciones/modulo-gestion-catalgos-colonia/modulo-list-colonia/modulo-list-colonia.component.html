@@ -1,0 +1,73 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <h3>Administración Colonias</h3>
+  <div class="tabla-catalogos col-md-12">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-12">
+          <button
+            class="btn btn-primary btn-sm active pull-right"
+            title="Agregar Nueva Componente"
+            type="button"
+            (click)="open()"
+          >
+            Nueva Colonia
+          </button>
+        </div>
+        <div class="col-md-12">
+          <h3>Lista Colonias</h3>
+          <hr class="red" />
+          <div class="table-overflow">
+            <table class="table table-sm table-hover" datatable [dtOptions]="dtOptions">
+
+              <thead>
+                <tr class="text-center">
+                    <th scope="col">Nombre</th>
+                    <th scope="col">C.P.</th>
+                    <th scope="col">Municipio</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Estatus</th>
+                    <th scope="col">Acción</th>
+                </tr>
+              </thead>
+              <tbody *ngIf="listcatalogo?.length != 0">
+                <tr *ngFor="let catalogo of listcatalogo" class="text-center  tr-especialPadding">
+                  <th scope="row">{{ catalogo.c_nombre_n }}</th>
+                <th scope="">{{ catalogo.c_cpostal_n }}</th>
+                <th scope="">{{ catalogo.municipio }}</th>
+                <td>{{ catalogo.c_f_inic_vig | date }}</td>
+                <td>  {{catalogo.c_activo ? 'Activo':'Inactivo'}}</td>
+                  <td class="text-left">
+                    <button
+                    class="btn btn-secondary btn-sm"
+                    title="Editar catalogo"
+                    type="button"
+                    (click)="openEdicion(catalogo)"
+                  >
+                      <i class="ti-pencil"></i>
+                  </button>
+                  
+                  <button
+                    class="btn btn-secondary btn-sm"
+                    title="Desactivar/Activar"
+                    type="button"
+                    (click)="OnChange(catalogo.c_activo,catalogo.c_id)"
+                  >
+                    <i *ngIf="!catalogo.c_activo" class="toggleactivar"></i>
+                    <i *ngIf="catalogo.c_activo" class="togglesuspender"></i>
+                  </button>
+                  </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="listcatalogo?.length == 0">
+              <tr>
+                <td colspan="3" class="no-data-available">No hay datos disponibles.</td>
+              </tr>
+            </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

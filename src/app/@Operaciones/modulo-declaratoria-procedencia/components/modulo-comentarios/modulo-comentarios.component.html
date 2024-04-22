@@ -1,0 +1,37 @@
+<app-modulo-spiner-declaratoria *ngIf="estaCargando"></app-modulo-spiner-declaratoria>
+
+<div class="container">
+  <h2>Otorgamiento de Registro Constitutivo como Asociación religiosa</h2>
+  <h2>Registro de Información</h2>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <span style="font-weight: bold;">Comentarios:</span> <br>
+      <span>{{comentarios}} </span>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-sm-12">
+      <span>Por favor, ingrese a este enlace para atender los comentarios realizados.</span> <br>
+      <span style="text-decoration: underline;color: steelblue;" (click)="irDetalle()">
+        Solicitud de registro
+      </span>
+    </div>
+  </div>
+
+
+  <br>
+  <div class="row">
+    <div class="col-sm-12" style="text-align: center;">
+      <span>
+        <button class="btn btn-sm btn-danger" (click)="salir()">
+          Salir
+        </button>
+      </span>
+    </div>
+  </div>
+
+</div>
+<br><br>

@@ -1,0 +1,33 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container" readonly="bloqueo">
+  <!-- <div class="col-md-12 breadcrumb" *ngIf="!isDictaminador">
+    <p>Otorgamiento de Registro Constitutivo como Asociación Religiosa > <strong>Solicitud de Registro</strong></p>
+  </div>
+  <div class="col-md-12 breadcrumb" *ngIf="isDictaminador">
+    <p><strong>Atención de solicitudes de registro</strong></p>
+    <p>Dictaminación > <strong>Revisión de información del registro</strong></p>
+  </div> -->
+  <!-- <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9 text-right pull-right">
+      <app-modulo-paginacion [routes]="routes" [tramiteId]="id_tramite"></app-modulo-paginacion>
+    </div>
+  </div> -->
+  <app-modulo-formulario-domicilio [TipoDomicilio]="2" (registroDomicilio)="patchDomicilio($event)"
+    [ModelDTO]="ModelDTO" [Enabled]="isDictaminador || bloqueo">
+  </app-modulo-formulario-domicilio>
+  <div class="row">
+    <div class="col-md-6">
+      <span [hidden]="isDictaminador == true || bloqueo == true || bloqueo == 1">
+        <button (click)="OnSubmit()" [disabled]="!this.formGroup.valid || bloqueo || isDictaminador"
+          class="btn btn-primary">
+          Guardar
+        </button>
+      </span>
+
+      <button type="button" class="btn btn-secondary" (click)="exitPublic()">
+        Salir
+      </button>
+    </div>
+  </div>
+</div>

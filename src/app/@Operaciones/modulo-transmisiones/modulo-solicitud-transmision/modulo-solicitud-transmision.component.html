@@ -1,0 +1,821 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <div class="col-md-12 breadcrumb">
+    <h2>Solicitud de Transmisiones</h2>
+  </div>
+
+
+  <!--DATOS GENERALES-->
+  <form role="form" [formGroup]="formGroupDatosGenerales">
+
+    <h3>Datos generales</h3>
+    <hr class="red">
+
+    <div class="row col-md-12 form-group">
+      <label class="col-sm-6 control-label requerido" for="rep_nombre_completo" style="text-align: right;">
+        Nombre del Representante o apoderado Legal:
+      </label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" name="rep_nombre_completo" formControlName="rep_nombre_completo"
+               required readonly appTrim>
+      </div>
+    </div>
+
+    <div class="row col-md-12 form-group">
+      <label class="col-sm-6 control-label requerido" for="denominacion" style="text-align: right;">
+        Denominaci&oacute;n de la Asociaci&oacute;n religiosa:
+      </label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" name="denominacion" formControlName="denominacion" required appTrim maxlength="1000">
+        <div *ngIf="(formGroupDatosGenerales.get('denominacion').touched) && formGroupDatosGenerales.get('denominacion').errors?.required"
+             class="form-text form-text-error">
+          <small>El campo es requerido</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row col-md-12 form-group">
+      <label class="col-sm-6 control-label requerido" for="numero_sgar" style="text-align: right;">
+        N&uacute;mero de Registro SGAR:
+      </label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" name="numero_sgar" formControlName="numero_sgar" required appTrim>
+        <div *ngIf="(formGroupDatosGenerales.get('numero_sgar').touched) && formGroupDatosGenerales.get('numero_sgar').errors?.required"
+             class="form-text form-text-error">
+          <small>El campo es requerido</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row col-md-12 form-group">
+      <label class="col-sm-6 control-label requerido" for="domicilio" style="text-align: right;">
+        Domicilio para o&iacute;r y recibir notificaciones:
+      </label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" name="domicilio" formControlName="domicilio" required appTrim>
+        <div *ngIf="(formGroupDatosGenerales.get('domicilio').touched) && formGroupDatosGenerales.get('domicilio').errors?.required"
+             class="form-text form-text-error">
+          <small>El campo es requerido</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row col-md-12 form-group">
+      <label class="col-sm-6 control-label requerido" for="correo_electronico" style="text-align: right;">
+        Correo electr&oacute;nico:
+      </label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" name="correo_electronico" formControlName="correo_electronico" required appTrim>
+        <div *ngIf="(formGroupDatosGenerales.get('correo_electronico').touched) && formGroupDatosGenerales.get('correo_electronico').errors?.required"
+             class="form-text form-text-error">
+          <small>El campo es requerido</small>
+        </div>
+        <div *ngIf="formGroupDatosGenerales.get('correo_electronico').errors?.pattern && formGroupDatosGenerales.get('correo_electronico').touched"
+             class="form-text form-text-error">
+          <small>Formato Incorrecto </small>
+        </div>
+      </div>
+    </div>
+
+    <div class="row col-md-12 form-group">
+      <label class="col-sm-6 control-label requerido" for="numero_tel" style="text-align: right;">
+        N&uacute;mero telef&oacute;nico:
+      </label>
+      <div class="col-sm-4">
+        <input class="form-control" type="text" name="numero_tel" formControlName="numero_tel" maxlength="10" required appTrim>
+        <div *ngIf="(formGroupDatosGenerales.get('numero_tel').touched) && formGroupDatosGenerales.get('numero_tel').errors?.required"
+             class="form-text form-text-error">
+          <small>El campo es requerido</small>
+        </div>
+        <div *ngIf="formGroupDatosGenerales.get('numero_tel').errors?.pattern && formGroupDatosGenerales.get('numero_tel').touched"
+             class="form-text form-text-error">
+          <small>Formato Incorrecto </small>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!--PANEL COLLAPSE-->
+
+  <h3>Actos Religiosos</h3>
+  <hr class="red">
+
+  <div id="seccionActos" *ngIf="!b_nuevoActo">
+    <div class="panel-group ficha-collapse" id="accordion">
+      <div class="panel panel-default" *ngFor="let row of lstActosReligiosos;">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-parent="#accordion" data-toggle="collapsed" [href]="'#panel-' + row.i_id_acto" aria-expanded="true" attr.aria-valuenow="panel-{{row.i_id_acto}}">
+              {{row.c_nombre}}
+            </a>
+          </h4>
+          <button type="button" class="collpase-button collapsed" data-parent="#accordion" data-toggle="collapse"
+                  [attr.href]="row.ruta" (click)="obtenerActosMediosTransmision(row.i_id_acto, row.c_nombre)">
+          </button>
+        </div>
+        <div class="panel-collapse collapse" id="panel-{{row.i_id_acto}}">
+          <div class="panel-body">
+
+            <form role="form" [formGroup]="formConsultaActosReligiosos">
+
+              <div class="row">
+                <div class="form-group col-md-9">
+                  <label class="control-label requerido">Acto Religioso:</label>
+                  <input class="form-control" type="text" name="c_nombre" formControlName="c_nombre" disabled />
+                </div>
+
+                <div class="form-group col-md-3">
+                  <br>
+                  <button type="button" class="btn btn-primary" (click)="editarActo(row.i_id_acto, row.c_nombre)">
+                    Editar Acto
+                  </button>
+                </div>
+
+              </div>
+
+              <div class="row" id="ActosFechas">
+                <hr>
+                <h4 class="requerido">Fechas y Horario</h4>
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Fecha Inicio</th>
+                      <th>Fecha Fin</th>
+                      <th>Hora Inicio</th>
+                      <th>Hora Fin</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="lstActosFechasRangos?.length > 0">
+                    <tr *ngFor="let row of lstActosFechasRangos; let i = index">
+                      <td> {{i + 1}} </td>
+                      <td> {{row.c_fecha_inicio | date: 'dd/MM/yyyy' }} </td>
+                      <td> {{row.c_fecha_fin | date: 'dd/MM/yyyy' }} </td>
+                      <td> {{row.c_hora_inicio}} </td>
+                      <td> {{row.c_hora_fin}} </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="lstActosFechasRangos?.length == 0">
+                    <tr style="text-align: center;">
+                      <td colspan="6"> Sin registros </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th class="centrar-contenido">Frecuencia</th>
+                      <th class="centrar-contenido">Periodo</th>
+                      <th class="centrar-contenido">Horario</th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="lstActosFechasFrecuencia?.length > 0">
+                    <ng-container *ngFor="let row of lstFrecuenciaHorario; let i = index">
+                      <tr>
+                        <td class="centrarTextoDosTablas"> {{i + 1}} </td>
+                        <td class="centrarTextoDosTablas"> {{row.c_periodo}} </td>
+                        <td>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th style="text-align: left">Días</th>
+                                <th style="text-align: left">Mes</th>
+                                <th class="centrar-contenido">Año</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let itemAnio of row.cat_anio">
+                                <td style="text-align: left">
+                                  <span *ngFor="let dia of row.cat_dia"> {{dia?.c_nombre}} &nbsp;</span>
+                                </td>
+                                <td style="text-align: left">
+                                  <span *ngFor="let mes of row.cat_mes"> {{  mes | mesTransmicion: itemAnio?.c_nombre }}</span>
+                                </td>
+                                <td class="centrar-contenido">
+                                  <span> {{itemAnio?.c_nombre}} </span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                        <td class="centrarTextoDosTablas">
+                          {{row.c_hora_inicio}} - {{row.c_hora_fin}}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                  <tbody *ngIf="lstActosFechasFrecuencia?.length == 0">
+                    <tr style="text-align: center;">
+                      <td colspan="6"> Sin registros </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+
+              <div class="row" id="actosMediosTransmision">
+                <hr>
+                <h4 class="requerido">Medios de Transmisi&oacute;n</h4>
+
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Canal/Frecuencia</th>
+                      <th>Proveedor de servicio</th>
+                      <th>Televisora/Radiofusora</th>
+                      <th>Lugar de Transmisi&oacute;n</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of lstActosMedios; let i = index;">
+                      <td> {{i + 1}} </td>
+                      <td> {{row.frecuencia_canal}} </td>
+                      <td> {{row.proveedor}} </td>
+                      <td> {{row.televisora_radiodifusora}} </td>
+                      <td> {{row.lugar_transmision}} </td>
+                    </tr>
+                  </tbody>
+                  <tbody>
+                    <tr style="text-align: center;" *ngIf="lstActosMedios?.length == 0">
+                      <td colspan="6"> Sin registros </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row col-md-12 form-group" style="text-align: right;">
+      <button type="button" class="btn btn-secondary" (click)="abrirFormActoReligioso()">
+        Agregar Acto Religioso
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="row col-md-12 form-group" style="text-align: right;">
+      <button type="button" class="btn btn-secondary" (click)="abrirModalCargarDoc()">
+        Cargar Documentos
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+      </button>
+    </div>
+
+  </div>
+
+
+
+  <!--NUEVO/EDITAR ACTO-->
+  <form role="form" [formGroup]="formGroupActosReligiosos">
+
+    <div id="formActoReligioso" *ngIf="b_nuevoActo">
+      <div class="row">
+        <div class="form-group col-md-9">
+          <label class="control-label requerido" for="c_acto_religioso">Acto Religioso:</label>
+          <input class="form-control" type="text" name="c_acto_religioso" formControlName="c_acto_religioso" required />
+          <div *ngIf="(formGroupActosReligiosos.get('c_acto_religioso').touched) && formGroupActosReligiosos.get('c_acto_religioso').errors?.required" class="form-text form-text-error">
+            <small>El campo es requerido</small>
+          </div>
+        </div>
+
+        <div class="form-group col-md-3">
+          <br>
+          <button type="button" class="btn btn-secondary" (click)="abrirModalAgregarHorario()">
+            Agregar horario
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <h4 class="requerido">Fechas y Horario</h4>
+
+      <div id="horariosAsignados" class="row col-md-12" *ngIf="!b_horarios">
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Fin</th>
+              <th>Hora Inicio</th>
+              <th>Hora Fin</th>
+              <th>Acci&oacute;n</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of lstRangoHorario; let i = index">
+              <td> {{i + 1}} </td>
+              <td> {{row.c_fecha_inicio | date: 'dd/MM/yyyy' }} </td>
+              <td> {{row.c_fecha_fin | date: 'dd/MM/yyyy' }} </td>
+              <td> {{row.c_hora_inicio}} </td>
+              <td> {{row.c_hora_fin}} </td>
+              <td style="text-align: center;">
+                <span class="ti-trash" title="Eliminar" style="font-size: 22px;" (click)="eliminarHorario(1, i, row.i_id)"></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr style="text-align: center;" *ngIf="lstRangoHorario?.length == 0">
+              <td colspan="6"> Sin registros </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="centrar-contenido">#</th>
+              <th class="centrar-contenido">Frecuencia</th>
+              <th class="centrar-contenido">Periodo</th>
+              <th class="centrar-contenido">Horario</th>
+              <th class="centrar-contenido">Acci&oacute;n</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let row of lstFrecuenciaHorario; let i = index">
+              <tr>
+                <td class="centrarTextoDosTablas"> {{i + 1}} </td>
+                <td class="centrarTextoDosTablas"> {{row.c_periodo}} </td>
+                <td>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th style="text-align: left">Días</th>
+                        <th style="text-align: left">Mes</th>
+                        <th class="centrar-contenido">Año</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let itemAnio of row.cat_anio">
+                        <td style="text-align: left">
+                          <span *ngFor="let dia of row.cat_dia"> {{dia?.c_nombre}} &nbsp;</span>
+                        </td>
+                        <td style="text-align: left">
+                          <span *ngFor="let mes of row.cat_mes"> {{  mes | mesTransmicion: itemAnio?.c_nombre }}</span>
+                        </td>
+                        <td class="centrar-contenido">
+                          <span> {{itemAnio?.c_nombre}} </span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td class="centrarTextoDosTablas">
+                  {{row.c_hora_inicio}} - {{row.c_hora_fin}}
+                </td>
+                <td class="centrarTextoDosTablas">
+                  <span class="ti-trash" title="Eliminar" style="font-size: 22px;" (click)="eliminarHorario(0, i, row.i_id)"></span>
+                </td>
+              </tr>
+            </ng-container>
+            <tr class="centrar-contenido" *ngIf="lstFrecuenciaHorario.length == 0">
+              <td colspan="6"> Sin registros </td>
+            </tr>
+          </tbody>
+        </table>
+        <br><br>
+      </div>
+
+      <h4 class="requerido">Medios de Transmisi&oacute;n</h4>
+
+      <div id="mediosTransmision" class="row col-md-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Canal/Frecuencia</th>
+              <th>Proveedor de servicio</th>
+              <th>Televisora/Radiofusora</th>
+              <th>Lugar de Transmisi&oacute;n</th>
+              <th>Acci&oacute;n</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of lstMediosTransmision; let i = index;">
+              <td> {{i + 1}} </td>
+              <td> {{row.frecuencia_canal}} </td>
+              <td> {{row.proveedor}} </td>
+              <td> {{row.televisora_radiodifusora}} </td>
+              <td> {{row.lugar_transmision}}  </td>
+              <td style="text-align: center;">
+                <span class="ti-trash" title="Borrar" style="font-size: 22px;"
+                      (click)="eliminarMediosTransmision(i, row.i_id_emisora)"></span>
+              </td>
+            </tr>
+          </tbody>
+          <tbody>
+            <tr style="text-align: center;" *ngIf="lstMediosTransmision?.length == 0">
+              <td colspan="6"> Sin registros </td>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+
+        <div class="row col-md-12 form-group" style="text-align: right;">
+          <button type="button" class="btn btn-secondary" (click)="abrirModalNuevoMedioTrans(1)">
+            Agregar Televisora
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <br>
+
+        <div class="row col-md-12 form-group" style="text-align: right;">
+          <button type="button" class="btn btn-secondary" (click)="abrirModalNuevoMedioTrans(0)">
+            Agregar Radiodifusora
+            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <br><br><hr>
+
+        <div class="row col-md-12 form-group" style="text-align: right;">
+          <button type="button" class="btn btn-default btnbtns" style="font-size: 18px!important;" (click)="cerrarFormActoReligioso()">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary" [disabled]="(formGroupActosReligiosos.invalid) || (lstMediosTransmision.length === 0) || (lstFrecuenciaHorario.length === 0 && lstRangoHorario.length === 0 ) " (click)="obtenerModelActoReligioso()">
+            Guardar
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row col-md-12" *ngIf="!b_nuevoActo" style="text-align: right;">
+      <button *ngIf="i_id_transmision != 0 && !isDictaminador" type="button" class="btn btn-primary"
+              [disabled]="formGroupDatosGenerales.invalid && i_id_transmision != 0" (click)="enviarTramiteTransmision()">
+        Enviar
+      </button>
+      <button type="button" class="btn btn-secondary btnbtns" (click)="abrirModalMensajes()">
+        Salir
+      </button>
+      <button type="button" class="btn btn-primary" [disabled]="formGroupDatosGenerales.invalid || i_id_transmision == 0" (click)="guardarTramiteTransmision()">
+        Guardar
+      </button>
+    </div>
+
+  </form>
+
+  <!--SECCION MODALES-->
+  <ng-template #modalCargarDoc let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Cargar Documentos</h4>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+
+
+        <div class="form-group col-md-12">
+          <label class="control-label col-md-3" style="padding-left:0px !important" for="">Identificación</label>
+          <div class="col-md-6">
+
+            <div class="form-group col-md-3">
+              <app-modulo-anexos  (is_loading)="setIsLoadingArchivo($event)" [id]="i_id_transmision" [id_archivo_tramite]="27" (is_sent_anexos)="guardarAnexosIne($event)"></app-modulo-anexos>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group col-md-12">
+          <label class="control-label col-md-6" style="padding-left:0px !important" for="">Oficio de Solicitud</label>
+          <div class="col-md-6">
+            <app-modulo-carga-archivo [id]="i_id_transmision"
+                                      [id_archivo_tramite]="28"
+                                      [archivo_registrado]="solicitudTrans"
+                                      (is_loading)="setIsLoadingArchivo($event)"
+                                      (is_sent_arch)="setSentArch($event)">
+            </app-modulo-carga-archivo>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="modal.dismiss('Cross click')">Cerrar</button>
+      <button class="btn btn-primary" (click)="guardarAnexos()">Guardar</button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalMensajes let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Salir de la Solicitud</h4>
+    </div>
+    <div class="modal-body">
+
+      <div class="row">
+        <p>¿Está seguro de que desea salir de la solicitud?</p>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+              (click)="modal.dismiss('Cross click')">
+        Cerrar
+      </button>
+      <button class="btn btn-primary"
+              (click)="irPaginaPrincipal()">
+        Aceptar
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #modalNuevoMedioTrans let-modal>
+    <div class="modal-header">
+      <h4 *ngIf="b_televisora" class="modal-title" id="modal-basic-title">Registrar Nueva Televisora</h4>
+      <h4 *ngIf="!b_televisora" class="modal-title" id="modal-basic-title">Registrar Nueva Radiodifusora</h4>
+    </div>
+    <div class="modal-body" style="padding: 0px 0px 320px;">
+      <br>
+      <form role="form" [formGroup]="formGroupMedioTransmision">
+
+        <div class="row col-md-12 form-group">
+          <label *ngIf="b_televisora" class="col-sm-6 control-label requerido" style="text-align: right;">
+            Canal:
+          </label>
+          <label *ngIf="!b_televisora" class="col-sm-6 control-label requerido" style="text-align: right;">
+            Frecuencia:
+          </label>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" name="frecuencia_canal" formControlName="frecuencia_canal" required
+                   autocomplete='off' appTrim>
+            <div *ngIf="(formGroupMedioTransmision.get('frecuencia_canal').touched) && formGroupMedioTransmision.get('frecuencia_canal').errors?.required"
+                 class="form-text form-text-error">
+              <small>El campo es requerido</small>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="b_televisora" class="row col-md-12 form-group">
+          <label class="col-sm-6 control-label" for="proveedor" style="text-align: right;">
+            Proveedor de servicio:
+          </label>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" name="proveedor" formControlName="proveedor"
+                   autocomplete='off' appTrim>
+            <!-- <div
+              *ngIf="(formGroupMedioTransmision.get('proveedor').touched) && formGroupMedioTransmision.get('proveedor').errors?.required"
+              class="form-text form-text-error">
+              <small>El campo es requerido</small>
+            </div> -->
+          </div>
+        </div>
+        <div class="row col-md-12 form-group">
+          <label *ngIf="b_televisora" class="col-sm-6 control-label requerido"
+                 style="text-align: right;">
+            Televisora:
+          </label>
+          <label *ngIf="!b_televisora" class="col-sm-6 control-label requerido"
+                 style="text-align: right;">
+            Radiodifusora:
+          </label>
+          <div class="col-sm-6">
+            <input class="form-control" type="text" name="televisora_radiodifusora"
+                   formControlName="televisora_radiodifusora" required autocomplete='off' appTrim>
+            <div *ngIf="(formGroupMedioTransmision.get('televisora_radiodifusora').touched) && formGroupMedioTransmision.get('televisora_radiodifusora').errors?.required"
+                 class="form-text form-text-error">
+              <small>El campo es requerido</small>
+            </div>
+          </div>
+        </div>
+        <div class="row col-md-12 form-group">
+          <label class="col-sm-6 control-label requerido" for="lugar_transmision" style="text-align: right;">
+            Lugar de Transmisi&oacute;n:
+          </label>
+          <div class="col-sm-6">
+            <select id="lugar_transmision" name="lugar_transmision" class="form-control" formControlName="lugar_transmision">
+              <option value="" selected disabled hidden>Seleccione</option>
+              <option *ngFor="let opcion of lstEstadosRep" value="{{opcion.idEstado}}">{{opcion.nombre}}</option>
+            </select>
+            <div *ngIf="(formGroupMedioTransmision.get('lugar_transmision').touched) && formGroupMedioTransmision.get('lugar_transmision').errors?.required"
+                 class="form-text form-text-error">
+              <small>El campo es requerido</small>
+            </div>
+          </div>
+        </div>
+        <div class="row col-md-12 form-group">
+          <label class="col-sm-6 control-label"  style="text-align: right;">
+            Municipio:</label>
+          <div class="col-sm-6">
+            <input class="form-control"
+                   type="text"
+                   name="municipio"
+                   formControlName="municipio"
+                   autocomplete='off' appTrim>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+              (click)="modal.dismiss('Cross click')">
+        Cerrar
+      </button>
+      <button class="btn btn-primary" (click)="agregarMediosTransmision()"
+              [disabled]="formGroupMedioTransmision.invalid">
+        Guardar
+      </button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #modalNuevoHorario let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Registrar Nuevo Horario</h4>
+    </div>
+    <div class="modal-body">
+      <br>
+      <form role="form" [formGroup]="formGroupHorario">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label class="control-label requerido" for="c_acto_religioso">Asignar horario por:</label>
+            <select id="c_periodo" name="c_periodo" class="form-control" (change)="onChange($event.target)">
+              <option value="" selected disabled hidden>Seleccione</option>
+              <option value="1">Rango</option>
+              <option value="2">Frecuencia</option>
+              <option value="3">Calendario</option>
+            </select>
+          </div>
+        </div>
+        <br>
+
+        <div class="row" id="fechasRango" *ngIf="b_fechasRango">
+
+          <div class="form-group col-md-6">
+            <label class="control-label requerido" for="c_fecha_inicio">Fecha Inicio:</label>
+            <input class="form-control"
+                   type="date"
+                   [min]="DateActual"
+                   formControlName="c_fecha_inicio"
+                   name="c_fecha_inicio"
+                   required
+                   #controlFechaInicioRango
+                   (change)="validarFechaActual(controlFechaInicioRango)" />
+          </div>
+
+          <div class="form-group col-md-3">
+            <label class="control-label requerido" for="c_hora_inicio">Hora Inicio:</label>
+            <input class="form-control" placeholder="Inicio" type="time" name="c_hora_inicio" min="18:00" max="21:00"
+                   step="3600" formControlName="c_hora_inicio" required />
+          </div>
+
+          <div class="form-group col-md-3">
+            <label class="control-label requerido" for="c_hora_fin">Hora Fin:</label>
+            <input class="form-control" placeholder="Fin" type="time" name="c_hora_fin" min="18:00" max="21:00"
+                   step="3600" formControlName="c_hora_fin" required />
+          </div>
+
+          <div class="form-group col-md-6">
+            <label class="control-label" for="c_fecha_fin">Fecha Fin:</label>
+            <input class="form-control"
+                   type="date"
+                   [min]="DateActual"
+                   formControlName="c_fecha_fin"
+                   name="c_fecha_fin"
+                   #controlFechaFinRango
+                   (change)="validarFechaActual(controlFechaFinRango, true)" />
+          </div>
+        </div>
+
+        <div id="fechasFrecuencia" *ngIf="b_fechasFrecuencia">
+          <div class="row">
+
+            <div class="form-group col-md-6">
+              <label class="control-label requerido">Grupo:</label>
+              <select id="i_id_cat_periodo" required
+                      name="i_id_cat_periodo"
+                      class="form-control"
+                      formControlName="i_id_cat_periodo"
+                      (change)="seleccionoTipoPeriodo($event.target.value)">
+                <option value="" selected disabled hidden>Seleccione</option>
+                <option *ngFor="let opcion of lstPeriodo" value="{{opcion.i_id}}">{{opcion.c_nombre}}</option>
+              </select>
+              <div class="error" *ngIf="formGroupHorario.controls['i_id_cat_periodo'].invalid && (formGroupHorario.controls['i_id_cat_periodo'].dirty || formGroupHorario.controls['i_id_cat_periodo'].touched)">
+                Campo obligatorio.
+              </div>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label class="control-label requerido" for="c_hora_inicio">Hora Inicio:</label>
+              <input class="form-control" placeholder="Inicio" type="time" name="c_hora_inicio" min="18:00" max="21:00"
+                     step="3600" formControlName="c_hora_inicio" required />
+            </div>
+
+            <div class="form-group col-md-3">
+              <label class="control-label requerido" for="c_hora_fin">Hora Fin:</label>
+              <input class="form-control" placeholder="Fin" type="time" name="c_hora_fin" min="18:00" max="21:00"
+                     step="3600" formControlName="c_hora_fin" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="control-label requerido">Año:</label>
+              <ng-multiselect-dropdown [placeholder]="'&nbsp;'" [settings]="dropdownSettings" [data]="lstCatAnio"
+                                       formControlName="cat_anio"
+                                       (onSelect)="SeleccionoMeses($event)"
+                                       (onDeSelect)="actulizarMeses($event)">
+              </ng-multiselect-dropdown>
+              <div class="error" *ngIf="formGroupHorario.controls['cat_anio'].invalid && (formGroupHorario.controls['cat_anio'].dirty || formGroupHorario.controls['cat_anio'].touched)">
+                Campo obligatorio.
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="control-label requerido">Mes:</label>
+              <ng-multiselect-dropdown [placeholder]="'&nbsp;'" [settings]="dropdownSettings" [data]="lstCatMes"
+                                       formControlName="cat_mes"
+                                       (onSelect)="SeleccionioDias($event)"
+                                       (onDeSelect)="actulizarDias($event)">
+              </ng-multiselect-dropdown>
+              <div class="error" *ngIf="formGroupHorario.controls['cat_mes'].invalid && (formGroupHorario.controls['cat_mes'].dirty || formGroupHorario.controls['cat_mes'].touched)">
+                Campo obligatorio.
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row" *ngIf="seleccionoFrecuenciaTodosLos">
+            <div class="form-group col-md-6">
+              <label class="control-label requerido">Días:</label>
+              <ng-multiselect-dropdown [placeholder]="'&nbsp;'" [settings]="dropdownSettings" [data]="lstCatDias"
+                                       formControlName="cat_dia">
+              </ng-multiselect-dropdown>
+              <div class="error" *ngIf="formGroupHorario.controls['cat_dia'].invalid && (formGroupHorario.controls['cat_dia'].dirty || formGroupHorario.controls['cat_dia'].touched)">
+                Campo obligatorio.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" id="fechasCalendario" *ngIf="b_fechasCalendario">
+
+          <div class="form-group col-md-6">
+            <label class="control-label requerido" for="c_fecha_inicio">Fecha:</label>
+            <input class="form-control"
+                   type="date" [min]="DateActual"
+                   formControlName="c_fecha_inicio"
+                   name="c_fecha_inicio"
+                   required
+                   #control
+                   (change)="validarFechaActual(control)" />
+          </div>
+
+          <div class="form-group col-md-6">
+            <br>
+            <button type="button" class="btn btn-secondary" (click)="agregarFecha()" [disabled]="!puedeAgregarFecha">
+              Agregar Fecha
+              <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="form-group col-md-3">
+            <label class="control-label requerido" for="c_hora_inicio">Hora Inicio:</label>
+            <input class="form-control" placeholder="Inicio" type="time" name="c_hora_inicio" min="18:00" max="21:00"
+                   step="3600" formControlName="c_hora_inicio" required />
+          </div>
+
+          <div class="form-group col-md-3">
+            <label class="control-label requerido" for="c_hora_fin">Hora Fin:</label>
+            <input class="form-control" placeholder="Fin" type="time" name="c_hora_fin" min="18:00" max="21:00"
+                   step="3600" formControlName="c_hora_fin" required />
+          </div>
+
+          <div class="form-group col-sm-12">
+            <div class="divPersonalizada">
+              <div *ngFor="let fecha of lstCalendarioHorario; index as i" style="display: inline-block;">
+                <span class="itemSeleccionado">
+                  {{fecha}}
+                  <span style="margin-left: 5px; margin-right: 8px;" (click)="eliminarFecha(i)"> x </span>
+                </span> &nbsp;&nbsp;
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-default btnbtns" style="font-size: 18px!important;"
+              (click)="modal.dismiss('Cross click')">
+        Cerrar
+      </button>
+      <button class="btn btn-primary" (click)="agregarHorario()" [disabled]="formGroupHorario.invalid || lstCalendarioHorario.count == 0 || !puedeAgregarFecha">Guardar</button>
+    </div>
+  </ng-template>
+
+</div>

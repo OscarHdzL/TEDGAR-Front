@@ -1,0 +1,41 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container">
+  <h3>Asignación de Solicitudes de Trasmisiones</h3>
+  <div class="tabla-registros col-md-12">
+    <div class="container p-5">
+      <div class="row">
+        <div class="col-md-12">
+        </div>
+        <div class="col-md-12">
+          <h3>Solicitudes de Trasmisiones</h3>
+          <hr class="red" />
+          <div class="table-responsive">
+            <table class="table table-sm table-hover" 
+            datatable 
+            [dtOptions]="dtOptions" 
+            [dtTrigger]="dtTrigger">
+              <thead>
+                <tr class="text-center">
+                  <th scope="col">#</th>
+                  <th scope="col">Registro SGAR</th>
+                  <th scope="col">Asociación Religiosa</th>
+                  <th scope="col">Fecha de Solicitud</th>
+                  <th scope="col"  width="15%">Estatus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let reg of listRegistros; let i = index" class="text-center tr-especialPadding">
+                  <th scope="row"> {{ i + 1 }} </th>
+                  <th scope=""> {{ reg.c_numero_sgar }} </th>
+                  <th scope=""> <a class="text-primary" [routerLink]="['/consulta-transmision', reg.i_id_tbl_transmision]" >{{ reg.c_denominacion }}</a></th>
+                  <th> {{ reg.c_fecha | date: 'dd/MM/yyyy'  }} </th>
+                  <th scope="" width="15%"> {{ reg.c_estatus }} </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

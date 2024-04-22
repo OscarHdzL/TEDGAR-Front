@@ -1,0 +1,153 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container p-5">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <h3>{{ titulo }}</h3>
+      <hr class="red">
+      <form role="form" #formGuardaUsuarioSistema="ngForm" (ngSubmit)="guardarUsuarioSistema()">
+        <div class="form-group">
+          <label class="control-label requerido" for="nombre">Nombre:</label>
+          <input class="form-control" type="text" [(ngModel)]="nombre" name="nombre" #_nombre="ngModel"
+                 [disabled]="editarCampo" required>
+          <div *ngIf="_nombre.touched && !_nombre.valid">
+            <span *ngIf="_nombre.errors.required" class="error">
+              Por favor introduzca el nombre(s) es un valor
+              requerido
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="apellido_p">Apellido Paterno:</label>
+          <input class="form-control" type="text" [(ngModel)]="apellido_p" name="apellido_p" [disabled]="editarCampo"
+                 #_apellido_p="ngModel" required>
+          <div *ngIf="_apellido_p.touched && !_apellido_p.valid">
+            <span *ngIf="_apellido_p.errors.required" class="error">
+              Por favor introduzca el apellido paterno, es un
+              valor requerido
+            </span>
+          </div>
+        </div>
+        <!--<div class="form-group">
+          <label class="control-label requerido" for="apellido_m">Apellido Materno:</label>
+          <input class="form-control" type="text" [(ngModel)]="apellido_m" name="apellido_m" [disabled]="editarCampo"
+                 #_apellido_m="ngModel" required>
+          <div *ngIf="_apellido_m.touched && !_apellido_m.valid">
+            <span *ngIf="_apellido_m.errors.required" class="error">
+              Por favor introduzca el apellido materno, es un
+              valor requerido
+            </span>
+          </div>
+        </div>-->
+        <div class="form-group">
+          <label class="control-label" for="apellido_m">Apellido Materno:</label>
+          <input class="form-control" type="text" [(ngModel)]="apellido_m" name="apellido_m" [disabled]="editarCampo"
+                 #_apellido_m="ngModel">
+          <!--<div *ngIf="_apellido_m.touched && !_apellido_m.valid">
+            <span *ngIf="_apellido_m.errors.required" class="error">
+              Por favor introduzca el apellido materno, es un
+              valor requerido
+            </span>
+          </div>-->
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="correo_electronico">Correo Electónico:</label>
+          <input class="form-control" type="text" [(ngModel)]="correo_electronico" name="correo_electronico"
+                 [disabled]="true" #_correo_electronico="ngModel" pattern="[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{1,5}" required>
+          <div *ngIf="_correo_electronico.touched && !_correo_electronico.valid">
+            <span *ngIf="_correo_electronico.errors.required" class="error">
+              Por favor introduzca el correo electrónico, es un valor requerido
+            </span>
+            <span *ngIf="_correo_electronico.errors.pattern" class="error"> Por favor introduzca el correo electrónico con el formato correcto</span>
+          </div>
+
+        </div>
+        <div class="form-group">
+          <label class="control-label requerido" for="id_ca_perfiles">Perfil:</label>
+          <!--<select class="form-control" [(ngModel)]="id_ca_perfiles" name="id_ca_perfiles" [disabled]="editarCampo"
+                  required>
+            <option value="1">Administrador</option>
+            <option value="2">Supervisor</option>
+          </select>-->
+          <select class="form-control" [(ngModel)]="id_ca_perfiles" name="id_ca_perfiles" [disabled]="editarCampo"
+                  required>
+            <option value="" selected>Seleccione una acción</option>
+            <option *ngFor="let tipoPerfil of selectCatPerfiles"
+                    value="{{tipoPerfil.id_perfil}}">
+              {{tipoPerfil.nombre_perfil}}
+            </option>
+          </select>
+
+
+          <!--<span class="error"
+              *ngIf="(formRegistro.get('sexo').touched || submitted) && formRegistro.get('sexo').errors?.required">
+              Por favor seleccione el tipo de sexo, es un valor requerido
+          </span>-->
+        </div>
+        <div>
+          <button class="btn btn-primary active pull-left" title="Regresar a listado" type="button"
+                  (click)="regresar()">
+            Regresar
+          </button>
+          <!--<button class="btn btn-primary pull-right" *ngIf="!editarCampo"
+          [disabled]="!formGuardaUsuarioSistema.form.valid" type="submit">
+            Guardar
+          </button>-->
+          <button class="btn btn-primary pull-right" *ngIf="!editarCampo && !showbutton"
+                  [disabled]="!formGuardaUsuarioSistema.form.valid" type="button" (click)="openActivar(content)">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--<div class="container" *ngIf="mensajeRespuesta">
+  <div class="row" style="padding-top: 10px">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="alert alert-success" role="alert">{{ mensajeRespuesta }}</div>
+    </div>
+  </div>
+</div>-->
+<!--<div class="container p-5" *ngIf="operacionRespuesta.EsMsExitoso">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2" style="text-align:center">
+      <button class="btn btn-sm btn-primary" (click)="regresar()">Aceptar</button>
+    </div>
+  </div>
+</div>-->
+<br />
+
+
+<ng-template #contentActivar let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmación</h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <p>¿Está seguro de que desea editar el usuario?</p>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-sm btn-danger" (click)="guardarUsuarioSistema()">Aceptar</button>
+
+    <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">Cancelar</button>
+  </div>
+</ng-template>
+
+
+<ng-template #contentEXito let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmación</h4>
+  </div>
+  <div class="modal-body">
+   
+    <div class="alert alert-success" role="alert">
+      <p>{{ mensajeRespuesta }}</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary center-block" (click)="regresarExito()">Aceptar</button>
+  </div>
+</ng-template>

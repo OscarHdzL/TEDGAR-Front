@@ -1,0 +1,18 @@
+
+
+<div class="alert-success" *ngIf="showExitos">
+
+  <ng-container *ngFor="let mensaje of mensajesExito">
+      <p><strong>¡Éxito!</strong> {{ mensaje }}</p>
+    </ng-container>
+</div>
+<div class="alert-danger" *ngIf="showErrors">
+  <ng-container *ngFor="let mensaje of mensajesError">
+      <p><strong>Error!</strong> {{ mensaje }}</p>
+    </ng-container>
+</div>
+<div class="alert-warning" *ngIf="showAdvertencias">
+  <ng-container *ngFor="let mensaje of mensajesAdvertencia">
+      <p><strong>Advertencia!</strong> {{ mensaje }}</p>
+    </ng-container>
+</div>

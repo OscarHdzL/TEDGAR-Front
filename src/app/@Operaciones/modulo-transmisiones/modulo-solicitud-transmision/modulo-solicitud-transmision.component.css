@@ -1,0 +1,24 @@
+
+.btnbtns {
+  margin: 1rem;
+}
+
+.btn-default {
+    font-size: 12px!important;
+}
+.roles {
+  width: 5rem !important;
+}
+
+.divPersonalizada{
+  border: 1px solid #CCCCCC; 
+  width: 100%; 
+  height: 100px; 
+  overflow-y: scroll;
+}
+
+.itemSeleccionado {
+  background-color: #367BB3; 
+  color: white;
+}
+

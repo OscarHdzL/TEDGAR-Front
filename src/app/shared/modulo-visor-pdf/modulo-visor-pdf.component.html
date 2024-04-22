@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Visualización del Documento</h4>
+</div>
+
+<div class="modal-body">
+    <button class="btn btn-default btn-sm btn-margin descarga-pdf" *ngIf="!esWord" (click)="downloadPDF()"><span
+            class="glyphicon glyphicon-save"></span></button>
+
+    <button class="btn btn-default btn-sm btn-margin descarga-pdf" *ngIf="esWord" (click)="downloadPDF()"><span
+            class="glyphicon glyphicon-save"> Descargar documento
+        </span>
+    </button>
+
+    <pdf-viewer [src]="base64src" [show-borders]="true" [zoom]="0.9" [show-all]="true"
+        style="display: block;"></pdf-viewer>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary center-block" (click)="modalService.close()">Salir</button>
+</div>

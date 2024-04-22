@@ -1,0 +1,97 @@
+<div class="container p-5">
+  <div class="row">
+    <div class="col-xs-12 text-center">
+      <h3>Trámites de la Dirección General de Asuntos Religiosos</h3>
+    </div> 
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-sesion">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-12 text-center">
+              <h3>Iniciar Sesión</h3>
+            </div>
+          </div>
+          <hr />
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-12">
+              <form [formGroup]="formLogin" (ngSubmit)="EjecutarAutenticacion()">
+                <div class="form-group">
+                  <input formControlName="usuarioCorreo" class="form-control" placeholder="Usuario" type="text"
+                    autocomplete="off" name="Correo" [readonly]="operacionRespuesta.EstaEjecutando" />
+                  <span class="error" *ngIf="
+                      formLogin.get('usuarioCorreo').touched &&
+                      formLogin.get('usuarioCorreo').errors?.required
+                    ">
+                    Por favor introduzca un usuario, es un valor requerido
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="input-group" id="show_hide_password">
+                    <input
+                    formControlName="contrasenia" class="form-control" placeholder="Contraseña" [type]="controltype"
+                    name="Contrasenia" [readonly]="operacionRespuesta.EstaEjecutando"
+                    />
+                    <div class="input-group-addon" (click)="showPass()">
+                      <i 
+                      [ngClass]="{
+                        'glyphicon': true,
+                        'glyphicon-eye-open': this.showpass,
+                        'glyphicon-eye-close': ! this.showpass
+                      }" aria-hidden="true"  ></i>
+                    </div>
+                  </div>
+                  <span class="error" *ngIf="
+                      formLogin.get('contrasenia').touched &&
+                      formLogin.get('contrasenia').errors?.required
+                    ">
+                    Por favor introduzca su contraseña, es un valor requerido
+                  </span>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-sm-12 text-center">
+                      <button class="btn btn-primary" [disabled]="operacionRespuesta.EstaEjecutando">
+                        Iniciar sesión
+                        <span [ngClass]="{
+                            spinerBtn: operacionRespuesta.EstaEjecutando
+                          }"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="text-center">
+                        <a [routerLink]="['/consulta-correo']" tabindex="5" class="btn btn-link">¿Olvidaste tu
+                          contraseña?</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="text-center">
+                        <a [routerLink]="['/registro']" tabindex="2" class="btn btn-link">Crear cuenta</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="alert alert-danger" *ngIf="operacionRespuesta.EsMsjError">
+              <p>
+                {{ operacionRespuesta.Msj }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<nav class="navbar navbar-inverse sub-navbar navbar-fixed-top">
+  <div class="container">
+      <div class="navbar-header">
+        <h6 class="banneruser">{{banner}}</h6>
+      </div>
+      <div class="collapse navbar-collapse" id="subenlaces">
+          <ul class="nav navbar-nav navbar-right">
+              <li><a [routerLink]="['/iniciar-sesion']" *ngIf="!isAuth" >Iniciar Sesión</a></li>
+              <li class="dropdown" *ngFor="let modulos of ListModulos | keyvalue">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{modulos.value[0].cabecera}}<span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li *ngFor="let menu of modulos.value | keyvalue"><a [routerLink]="[menu.value.ruta]">{{menu.value.nombre_menu}}</a></li>
+                </ul>
+              </li>
+              <li><a (click)="cerrarSesion()" *ngIf="isAuth" >Cerrar Sesión</a></li>
+          </ul>
+      </div>
+  </div>
+</nav>

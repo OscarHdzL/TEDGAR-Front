@@ -1,0 +1,40 @@
+<div class="row" *ngIf="pasoSeleccionado < 6">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 breadcrumb" *ngIf="!isDictaminador">
+        <p>
+            Otorgamiento de Registro Constitutivo como Asociación Religiosa >
+            <strong>Solicitud de Registro</strong>
+        </p>
+    </div>
+
+    <div class="col-md-10 breadcrumb" *ngIf="isDictaminador">
+        <p><strong>Atención de solicitudes de registro</strong></p>
+        <p>Dictaminación > <strong>Revisión de información del registro</strong></p>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6"></div>
+    <div class="col-md-6" [ngStyle]="isDictaminador && {'text-align': 'end'}">
+        <div class="pagination text-right">
+            <a *ngFor="let route of routes" class="{{route.activo?'active':''}}" (click)="cambiarComponente(route)">
+                {{route.nombre}}
+            </a>
+        </div>
+    </div>
+
+    <app-modulo-solicitud-primer-paso *ngIf="pasoSeleccionado == 1"></app-modulo-solicitud-primer-paso>
+    <app-modulo-solicitud-segundo-paso *ngIf="pasoSeleccionado == 2"></app-modulo-solicitud-segundo-paso>
+    <app-modulo-solicitud-tercer-paso *ngIf="pasoSeleccionado == 3"></app-modulo-solicitud-tercer-paso>
+    <app-modulo-solicitud-cuarto-paso *ngIf="pasoSeleccionado == 4"></app-modulo-solicitud-cuarto-paso>
+    <app-modulo-solicitud-quinto-paso *ngIf="pasoSeleccionado == 5"></app-modulo-solicitud-quinto-paso>
+    <app-modulo-solicitud-sexto-paso *ngIf="pasoSeleccionado == 6"></app-modulo-solicitud-sexto-paso>
+
+    <app-modulo-cotejo-documentacion *ngIf="pasoSeleccionado == 7 && isDictaminador"></app-modulo-cotejo-documentacion>
+    <app-modulo-cotejo-documentacion-fisica
+        *ngIf="pasoSeleccionado == 8 && isDictaminador"></app-modulo-cotejo-documentacion-fisica>
+    <app-modulo-finalizacion-cotejo *ngIf="pasoSeleccionado == 9 && isDictaminador"></app-modulo-finalizacion-cotejo>
+    <app-modulo-cotejo-concluido *ngIf="pasoSeleccionado == 10 && isDictaminador"></app-modulo-cotejo-concluido>
+
+</div>

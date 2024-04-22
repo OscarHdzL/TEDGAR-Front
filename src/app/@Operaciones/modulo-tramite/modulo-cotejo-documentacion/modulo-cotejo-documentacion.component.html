@@ -1,0 +1,88 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+
+<div class="container">
+  <h3>{{titulo}}</h3>
+  <!-- <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9 text-right pull-right">
+      <app-modulo-paginacion
+        [routes]="routes"
+        [tramiteId]="id_tramite"
+      ></app-modulo-paginacion>
+    </div>
+  </div> -->
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+    <div class="row">
+      <h4>Cotejo Documentación</h4>
+      <div class="form-group col-md-4">
+        <label class="control-label requerido" for="s_estatus">Estatus Registro:</label>
+        <select class="form-control" formControlName="s_estatus" name="s_estatus" required
+          (change)="onChange($event.target.value)">
+          <option value="0" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaEstatus" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre }}
+          </option>
+        </select>
+
+        <div class="error" *ngIf="formGroup.invalid ">
+          {{ obtenerErroresEstatus() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6" *ngIf="showControls && !Valido">
+        <label class="control-label requerido" for="s_comentarios">Comentarios:</label>
+        <textarea class="form-control" formControlName="s_comentarios" name="s_comentarios" [required]="!Valido"
+          rows="20"></textarea>
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_comentarios').touched">
+          {{ obtenerErroresComentarios() }}
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="showControls && Valido">
+      <h4>Indicaciones para el cotejo de la documentación</h4>
+      <div class="form-group col-md-6 row-form" *ngIf="Presencial">
+        <label class="control-label col-md-4 requerido" for="s_fecha">Fecha:</label>
+        <input class="form-control form-date" type="date" formControlName="s_fecha" min="{{this.date}}"
+          (change)="cargarHorarios($event.target.value)" />
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_fecha').touched">
+          {{ obtenerErroresFecha() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label requerido" for="s_direccion">Dirección:</label>
+        <p>Londres No. 102, Piso 4, Colonia Juárez,<br>
+          Alcaldía Cuauhtémoc, Ciudad de México.<br>
+          C.P. 06600.</p>
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_direccion').touched">
+          {{ obtenerErroresDireccion() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6" *ngIf="Presencial">
+        <label class="control-label requerido" for="s_horario">Horario:</label>
+        <div *ngIf="!tab7">
+          <select class="form-control" formControlName="s_horario" name="s_horario">
+            <option value="" selected>Seleccione una opci&oacute;n...</option>
+            <option *ngFor="let tipo of listaHorarios" value="{{ tipo.c_id }}">
+              {{ tipo.c_nombre_n }}
+            </option>
+          </select>
+        </div>
+        <div *ngIf="tab7">
+          <input type="text" class="form-control" formControlName="s_horario2" name="s_horario2" readonly />
+        </div>
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_horario').touched">
+          {{ obtenerErroresHorario() }}
+        </div>
+      </div>
+      <div class="col-md-12">
+        <p>*Nota: La fecha y hora solo se especificará sí el público indico que el cotejo será presencial.</p>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-6 text-center p-5" *ngIf="isDictaminador">
+      <button (click)="OnSubmit()" [disabled]="formGroup.invalid" class="btn btn-primary btn-footer">
+        Enviar Notificación
+      </button>
+    </div>
+  </div>
+</div>

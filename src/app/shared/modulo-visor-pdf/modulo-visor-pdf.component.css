@@ -1,0 +1,6 @@
+.descarga-pdf{
+    position: absolute; 
+    right: 95px; 
+    top: 60px; 
+    z-index: 999;
+}

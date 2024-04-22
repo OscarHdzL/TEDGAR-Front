@@ -1,0 +1,12 @@
+input .form-control {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.btn .btn-secondary .btn-sm {
+  padding-top: 1rem !important;
+}
+
+.control-label {
+  text-align: left;
+}

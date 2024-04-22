@@ -1,0 +1,242 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+
+<div class="container">
+  <!-- <div class="col-md-12 breadcrumb" *ngIf="!isDictaminador">
+    <p>Otorgamiento de Registro Constitutivo como Asociación Religiosa > <strong>Solicitud de Registro</strong></p>
+  </div>
+  <div class="col-md-12 breadcrumb" *ngIf="isDictaminador">
+    <p><strong>Atención de solicitudes de registro</strong></p>
+    <p>Dictaminación > <strong>Revisión de información del registro</strong></p>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9 text-right pull-right">
+      <app-modulo-paginacion [routes]="routes" [tramiteId]="id_tramite"></app-modulo-paginacion>
+    </div>
+  </div> -->
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+    <div class="row">
+      <h4>Especificaciones del Inmueble</h4>
+      <div class="form-group col-md-6">
+        <label class="control-label col-md-12 requerido" for="s_superficie">Superficie:</label>
+        <div class="col-md-10">
+          <input class="form-control" type="number" formControlName="s_superficie" name="s_superficie" required
+            [readonly]="isDictaminador || bloqueo" />
+          <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_superficie').touched">
+            {{ obtenerErroresSuperficie() }}
+          </div>
+        </div>
+        <div class="col-md-2 text-left"><b> &#13217;</b></div>
+
+
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label col-md-12 requerido" for="s_medidas">Medidas:</label>
+        <div class="col-md-10">
+          <input class="form-control" type="text" placeholder="Ej. 40x50" formControlName="s_medidas" name="s_medidas"
+            required [readonly]="isDictaminador || bloqueo" />
+          <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_medidas').touched">
+            {{ obtenerErroresMedidas() }}
+          </div>
+        </div>
+        <div class="col-md-2 text-left"><b>m</b></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <div class="col-md-12">
+          <label class="control-label requerido" for="s_colindancia_text_1">Colindancia:</label>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row g-colindancia">
+            <div class="col-md-3">
+              <input class="form-control" type="text" formControlName="s_colindancia_text_1" name="s_colindancia_text_1"
+                required [readonly]="isDictaminador || bloqueo"/>
+              <div class="error" *ngIf="
+                  formGroup.invalid &&
+                  formGroup.get('s_colindancia_text_1').touched
+                ">
+                {{ obtenerErroresColindancia1() }}
+              </div>
+            </div>
+            <div class="col-md-2">
+              <input class="form-control" type="text" formControlName="s_colindancia_num_1" name="s_colindancia_num_1"
+                required [readonly]="isDictaminador || bloqueo" decimales/>
+              <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_colindancia_num_1').touched">
+                {{ obtenerErroresColindanciaNum1() }}
+              </div>
+            </div>
+            <div class="col-md-1 text-left">
+              <b>m</b>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" type="text" formControlName="s_colindancia_text_2" name="s_colindancia_text_2"
+                required [readonly]="isDictaminador || bloqueo"/>
+              <div class="error" *ngIf="
+                  formGroup.invalid &&
+                  formGroup.get('s_colindancia_text_2').touched
+                ">
+                {{ obtenerErroresColindancia2() }}
+              </div>
+            </div>
+            <div class="col-md-2">
+              <input class="form-control" type="text" formControlName="s_colindancia_num_2" name="s_colindancia_num_2"
+                required [readonly]="isDictaminador || bloqueo" decimales/>
+              <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_colindancia_num_2').touched">
+                {{ obtenerErroresColindanciaNum2() }}
+              </div>
+            </div>
+            <div class="col-md-1 text-left">
+              <b>m</b>
+            </div>
+          </div>
+          <div class="row g-colindancia">
+            <div class="col-md-3">
+              <input class="form-control" type="text" formControlName="s_colindancia_text_3" name="s_colindancia_text_3"
+                required [readonly]="isDictaminador || bloqueo" />
+              <div class="error" *ngIf="
+                  formGroup.invalid &&
+                  formGroup.get('s_colindancia_text_3').touched
+                ">
+                {{ obtenerErroresColindancia3() }}
+              </div>
+            </div>
+            <div class="col-md-2">
+              <input class="form-control" type="text" formControlName="s_colindancia_num_3" name="s_colindancia_num_3"
+                required [readonly]="isDictaminador || bloqueo" decimales/>
+              <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_colindancia_num_3').touched">
+                {{ obtenerErroresColindanciaNum3() }}
+              </div>
+            </div>
+            <div class="col-md-1 text-left">
+              <b>m</b>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" type="text" formControlName="s_colindancia_text_4" name="s_colindancia_text_4"
+                required [readonly]="isDictaminador || bloqueo" />
+              <div class="error" *ngIf="
+                  formGroup.invalid &&
+                  formGroup.get('s_colindancia_text_4').touched
+                ">
+                {{ obtenerErroresColindancia4() }}
+              </div>
+            </div>
+            <div class="col-md-2">
+              <input class="form-control" type="text" formControlName="s_colindancia_num_4" name="s_colindancia_num_4"
+                required [readonly]="isDictaminador || bloqueo" decimales/>
+              <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_colindancia_num_4').touched">
+                {{ obtenerErroresColindanciaNum4() }}
+              </div>
+            </div>
+            <div class="col-md-1 text-left">
+              <b>m</b>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12">
+        <div class="col-md-12">
+          <label class="control-label requerido" for="s_colindancia_usos">Usos:</label>
+        </div>
+        <div class="col-md-12">
+          <div class="row g-colindancia">
+            <div class="col-md-6">
+              <input class="form-control" type="text" formControlName="s_colindancia_usos" name="s_colindancia_usos"
+                required [readonly]="isDictaminador || bloqueo" />
+              <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_colindancia_usos').touched">
+                {{ obtenerErroresColindanciaUsos() }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row">
+      <h4>Identificaciones y Anexos</h4>
+      <div class="form-group col-md-6 row-form">
+        <label class="control-label col-md-12 requerido" for="s_ine_propietario_file">Copia identificación (INE) vigente
+          del
+          propietario:</label>
+        <div class="col-md-12">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="3" [archivo_registrado]="arch_ine_us"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo"></app-modulo-carga-archivo>
+        </div>
+
+      </div>
+    </div>
+    <div class="row row-form">
+      <div class="form-group col-md-6">
+        <label class="control-label col-md-12 requerido" for="s_ine_usuario">Copia identificación (INE) vigente del
+          usuario:</label>
+        <div class="col-md-12">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="4" [archivo_registrado]="arch_ine_prop"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo"></app-modulo-carga-archivo>
+        </div>
+
+      </div>
+    </div>
+    <div class="row row-form">
+      <div class="form-group col-md-6">
+        <label class="control-label col-md-12 requerido" for="s_titulo_propiedad_file">Copia simple del título de
+          propiedad:</label>
+        <div class="col-md-12">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="5" [archivo_registrado]="arch_titulo"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo"></app-modulo-carga-archivo>
+        </div>
+      </div>
+    </div>
+    <div class="row row-form">
+      <div class="form-group col-md-12">
+        <div class="form-group col-md-4">
+          <label class="control-label requerido" for="s_aviso_apertura">Aviso de Apertura:</label>
+          <select class="form-control" formControlName="s_aviso_apertura" name="s_aviso_apertura" required
+            [attr.disabled]="isDictaminador || bloqueo?'':null">
+            <option value="0" selected>Seleccione una opci&oacute;n...</option>
+            <option *ngFor="let tipo of listaAvisos" value="{{ tipo.c_id }}">
+              {{ tipo.c_nombre_n }}
+            </option>
+          </select>
+
+          <div class="error" *ngIf="formGroup.invalid && formGroup.get('s_aviso_apertura').touched">
+            {{ obtenerErroresAvisoAP() }}
+          </div>
+        </div>
+        <div class="col-md-5 btn-file">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="6" [archivo_registrado]="arch_avisoap"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo"></app-modulo-carga-archivo>
+        </div>
+      </div>
+    </div>
+    <div class="row row-form">
+      <div class="form-group col-md-6">
+        <label class="control-label col-md-12 requerido" for="s_estatuto_file">Estatutos:</label>
+        <div class="col-md-12">
+          <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="13" [archivo_registrado]="arch_estatuto"
+            (is_loading)="setIsLoadingArchivo($event)" (is_sent_arch)="setSentArch($event)"
+            [isDictaminador]="isDictaminador || bloqueo"></app-modulo-carga-archivo>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-6">
+      <span [hidden]="isDictaminador == true || bloqueo == true || bloqueo == 1">
+        <button (click)="OnSubmit()"
+          [disabled]="this.formGroup.invalid || isDictaminador || !arch_estatuto || !arch_avisoap || !arch_titulo || !arch_ine_prop || !arch_ine_us || bloqueo"
+          class="btn btn-primary btn-footer">
+          Guardar
+        </button>
+      </span>
+
+      <button (click)="exitPublic()" type="button" class="btn btn-secondary btn-footer">
+        Salir
+      </button>
+    </div>
+  </div>
+</div>

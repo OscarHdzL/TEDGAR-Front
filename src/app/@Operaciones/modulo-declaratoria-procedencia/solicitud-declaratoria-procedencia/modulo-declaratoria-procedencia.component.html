@@ -1,0 +1,40 @@
+
+<div class="container">
+    <div class="col-md-12 breadcrumb">
+      <p>Trámites > <strong>Solicitud Declaratoria de Procedencia</strong></p>
+    </div>
+  <h3>Declaratoria de Procedencia</h3>
+    <div class="row">
+      <div class="col-md-12">
+        <ul>
+          <li>
+            Quejas y sugerencias de servicios.
+            <p>
+              En el espacio de Contacto Ciudadano esta disponible un buz&oacute;n
+              y papeletas para expresar con toda libertad su inconformidad o
+              comentario. V&iacute;a telef&oacute;nica: 01 (55) 5128-0000 ext.
+              36889. V&iacute;a internet al correo electrónico:<a href="mailto:dgar@segob.gob.mx">dgar@segob.gob.mx</a>.
+            </p>
+          </li>
+          <li><a (click)="downloadPdf(7)">Descargue e imprima esta informaci&oacute;n</a></li>
+          <li>
+            Descargue el <a (click)="downloadPdf(8)">escrito libre</a> escrito libre ejemplo para realizar
+            su solicitud.
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-6 link">
+          <a [routerLink]="['/alta-declaratoria']">
+              Solicitud Declaratoria de Procedencia
+        </a>
+      </div>
+
+      <div class="col-md-6 link">
+        <a [routerLink]="['/vista-principal-declaratoria']">
+          Consultar Declaratoria de Procedencia
+      </a>
+      </div>
+
+    </div>
+  </div>

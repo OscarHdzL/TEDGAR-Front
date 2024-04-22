@@ -1,0 +1,181 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="container p-5">
+
+  <div class="row">
+    <h3>Atención de solicitudes de toma de nota</h3>
+    <div class="col-md-12">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-12">
+            <h3>Solicitudes Toma de Nota</h3>
+            <hr class="red">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+
+          <form [formGroup]="formFiltros"
+                (ngSubmit)="ConsultaDatos()">
+
+
+            <div class="col-lg-4">
+              <div class="row col form-group">
+                <label class="col-sm-5 control-label centar-vertial">Denominación:</label>
+                <div class="col-sm-7">
+                  <input class="form-control" type="text" formControlName="denominacion" name="denominacion"
+                         placeholder="Nombre de la denominación" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="row col form-group">
+                <label class="col-sm-3 control-label centar-vertial">N.SGAR:</label>
+                <div class="col-sm-9">
+                  <input class="form-control" type="text" formControlName="nombre" name="nombre"
+                         placeholder="Número SGAR" />
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="row col-sm-12 form-group">
+                <label class="col-sm-3 control-label centar-vertial"> Estatus: </label>
+                <div class="col-sm-9">
+                  <select class="form-control" formControlName="estatus" name="estatus">
+                    <option value="0" selected> Seleccione..</option>
+                    <option *ngFor="let estatus of selectCatEstatus" [ngValue]="estatus.idEstado">{{estatus.nombre}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-11">
+              <div class="text-right">
+
+                <button type="button"
+                        (click)="openlimpiarReporte()"
+                        class="btn btn-primary btn-sm espacio-derecho"
+                        title="Limpiar reporte">
+                  <i class="ti-file"></i>
+                </button>
+
+                <button class="btn btn-primary btn-sm  espacio-derecho">
+                  Buscar
+                </button>
+
+
+
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-responsive">
+              <table class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                <thead>
+                  <tr class="text-center">
+                    <!-- <th scope="col">IdTramite</th>
+                    <th scope="col">IdTomaNota</th> -->
+                    <th scope="col">Folio</th>
+                    <th scope="col">Denominación</th>
+                    <th scope="col">Tipo Solicitud</th>
+                    <th scope="col">Fecha
+                                     Reg</th>
+                    <th scope="col">N. SGAR</th>
+
+                    <th scope="col">Estatus</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let reporte of listRegistros" class="tr-especialPadding">
+                    <td class="text-center">
+                      {{reporte.folio}}
+                    </td>
+                    <td class="text-center">
+                      <span class="info"><a class="text-primary" [routerLink]="['/atencion/toma-nota/'+reporte.id_tnota]">{{reporte.denominacion}}</a></span>
+                    </td>
+                    <td class="text-center">
+                      {{reporte.tramite_solicitado}}
+                    </td>
+                    <td class="text-center">
+                      {{reporte.fecha_registro | date: 'dd/MM/yyyy'}}
+                    </td>
+                    <td class="text-left">
+                      {{reporte.nombre}}
+                    </td>
+                    <td class="text-left">
+                      {{reporte.estatus}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <ng-template #contentReporte let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Mensaje</h4>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group alert alert-warning">
+          <p>¿Desea limpiar los filtros?</p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger"
+              (click)="limpiarReporte()">
+        Aceptar
+      </button>
+      <button type="button"
+              class="btn btn-sm btn-default"
+              (click)="modal.dismiss('cancel click')">
+        Cancelar
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #confirmarEliminar let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Mensaje</h4>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group alert alert-danger">
+          <p>¿Desea eliminar esta toma de nota?</p>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm btn-danger"
+              (click)="eliminarTnota(id_toma_nota)">
+        Aceptar
+      </button>
+      <button type="button"
+              class="btn btn-sm btn-default"
+              (click)="modal.dismiss('cancel click')">
+        Cancelar
+      </button>
+    </div>
+  </ng-template>
+
+
+</div>
+
+

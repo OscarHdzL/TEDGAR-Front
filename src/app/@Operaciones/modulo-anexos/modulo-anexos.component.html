@@ -1,0 +1,33 @@
+<div class="col-md-12">
+    <div class="col-md-2">
+            <button *ngIf="!isDictaminador" class="btn btn-default btn-sm btn-margin" type="button" title="Agregar Archivos" (click)="cargarArchivo()" [disabled]="bloqueoTN">
+                <span class="glyphicon glyphicon-file"></span>
+            </button>
+    </div>
+</div>
+
+<input style="display: none" id="ArchivoModal" name="ArchivoModal" type="file" multiple="multiple" (change)="agregarArchivo($event)" />
+
+<div class="col-md-12 mt-5">
+    <table class="table table-striped" *ngIf="listaAnexos.length > 0">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th class="text-center">Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let archivo of listaAnexos; let i = index">
+                <td>{{ archivo.nombre_anexo }}</td>
+                <td class="text-center">
+                    <button class="btn btn-default btn-sm btn-margin" type="button" (click)="detalle(archivo, archivo.base64)" >
+                        <span class="glyphicon glyphicon-zoom-in"></span>
+                    </button>&nbsp;
+                    <button *ngIf="!isDictaminador"  class="btn btn-default btn-sm btn-margin" type="button" (click)="openAdvertencia(archivo, i)" [disabled]="bloqueoTN">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

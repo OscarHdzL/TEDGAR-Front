@@ -1,0 +1,75 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Edición Componente</h4>
+</div>
+<form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+  <div class="modal-body">
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="control-label">Nombre:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="c_nombre"
+          required
+        />
+        <div *ngIf="formGroup.invalid">
+          {{ obtenerErroresNombre() }}
+        </div>
+      </div>
+      <!-- <div class="form-group col-md-6">
+        <label class="control-label">Descripción:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="c_descripcion"
+          required
+        />
+        <div *ngIf="formGroup.invalid">
+          {{ obtenerErroresDescripcion() }}
+        </div>
+      </div> -->
+    </div>
+    <!-- <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label">Fecha Inicio Vigencia:</label>
+        <input
+          class="form-control form-date"
+          type="date"
+          formControlName="c_f_inic_vig"
+          required
+        />
+        <div *ngIf="formGroup.invalid">
+          {{ obtenerErroresFechaInicio() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label">Fecha Fin Vigencia:</label>
+        <input
+          class="form-control"
+          type="date"
+          formControlName="c_f_fin_vig"
+          required
+        />
+        <div *ngIf="formGroup.invalid">
+          {{ obtenerErroresFechaFin() }}
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="modal-footer">
+    <button
+      (click)="OnSubmit()"
+      [disabled]="!this.formGroup.valid"
+      class="btn btn-primary"
+    >
+      Aceptar
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="activeModal.close('Close click')"
+    >
+      Cancelar
+    </button>
+  </div>
+</form>

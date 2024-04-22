@@ -1,0 +1,100 @@
+<div class="container"><br />
+  <div class="row">
+    <div *ngIf="pantallaAprobado" class="col-sm-offset-1 col-md-10">
+      <div class="row">
+        <h5>Indicaciones para obtener Oficio de Autorización</h5>
+        <p>
+          Su solicitud de transmisión se ha recibido de forma exitosa, por favor
+          preséntese el día, horario y dirección indicados para que le sea entregado el Oficio de Autorización de la
+          Solicitud de Transmisión.
+          <br><br> En caso de inasistencia se tendrá por no presentado el trámite.
+        </p>
+        <div class="col-md-6">
+          <label>Fecha y hora:</label>
+          <p>{{ fecha }}</p>
+          <p><strong>Acudir con:</strong> {{ usuarioDictaminador }}</p>
+        </div>
+        <div class="col-md-6">
+          <label>Direción:</label>
+          <p>{{ direccion }}</p>
+        </div>
+        <div class="col-md-12 text-center p-5">
+          <a [routerLink]="['/registros-transmision']" class="btn btn-primary btn-footer">
+            Salir
+          </a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="pantallaObservaciones" class="col-sm-offset-1 col-md-10">
+      <h5>Indicaciones para atención de observaciones</h5>
+      <p>
+        Su solicitud de transmisión se ha recibido de forma exitosa, presenta inconsistencias en la información. <br>Por
+        favor atender los comentarios.
+      </p>
+      <div class="col-md-12">
+        <label>Comentarios:</label>
+        <p>{{ comentario }}</p>
+      </div>
+      <div class="col-md-12">
+        <p>
+          Por favor ingrese a este enlace para atender los comentarios
+          realizados
+        </p>
+        <div class="col-md-12 text-center p-5">
+          <a [routerLink]="['/solicitud-transmision', id_transmision]" class="btn btn-primary btn-footer">
+            Corregir
+          </a>
+          &nbsp;&nbsp;
+          <a [routerLink]="['/registros-transmision']" class="btn btn-primary btn-footer">
+            Salir
+          </a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="pantallaCancelacion" class="col-sm-offset-1 col-md-10">
+      <h5>Cancelación de Transmisiones</h5>
+      <p>
+        Su solicitud de transmisión ha sido cancelado por los motivos que se muestran a continuación.
+      </p>
+      <div class="row">
+        <div class="col-md-12">
+          <label>Comentarios:</label>
+          <p>{{ comentario }}</p>
+          <div class="col-md-12 text-center p-5">
+            <a [routerLink]="['/registros-transmision']" class="btn btn-primary btn-footer">
+              Salir
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="pantallaAutorizada" class="col-sm-offset-1 col-md-10">
+      <h5>Transmisión Concluida</h5>
+      <p>
+        Su solicitud de transmisión se ha concluido de manera exitosa.
+      </p>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-12 text-center p-5">
+            <a [routerLink]="['/registros-transmision']" class="btn btn-primary btn-footer">
+              Salir
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="pantallaSinDatos" class="col-md-12">
+      <br>
+      <br>
+      <div class="alert alert-warning" role="alert">
+        <p>Aún no hay información que consultar</p>
+      </div>
+      <div class="col-md-12 text-center p-5">
+        <a [routerLink]="['/registros-transmision']" class="btn btn-primary btn-footer">
+          Salir
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

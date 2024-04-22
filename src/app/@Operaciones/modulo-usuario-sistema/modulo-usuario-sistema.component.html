@@ -1,0 +1,135 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+<div class="col-md-12">
+  <div class="container p-5">
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-primary btn-sm active pull-right" title="Agregar Nueva Usuario" type="button"
+          (click)="nuevoUsuario()">Nuevo Usuario</button>
+      </div>
+      <div class="col-md-12">
+        <h3>Lista Usuarios Sistema</h3>
+        <hr class="red">
+        <table class="table table-striped" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+          <thead>
+            <tr>
+              <th scope="col">Usuario</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Estatus</th>
+              <th scope="col">Perfil</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let usuario of listaUsuariosSistema; let i = index">
+              <td scope="row">{{ usuario.usuario }}</td>
+              <td>{{ usuario.nombre }} {{ usuario.apellido_paterno }} {{ usuario.apellido_materno }}</td>
+              <td>{{ usuario.estatus == 1 ? 'Activo' : 'Inactivo' }}</td>
+              <td>{{ usuario.nombre_perfil }}</td>
+              <td>
+                <div class="row">
+                  <div class="col-auto">
+                    <div class="custom-control">
+                      <button class="btn btn-secondary btn-sm active mr-1" title="Editar Usuario" type="button"
+                        (click)="editarUsuario(usuario.id_usuario)">
+                        <!--Editar-->
+                        <i class="ti-pencil"></i>
+                      </button>
+                      <button *ngIf="usuario.estatus != 1" class="btn btn-secondary btn-sm active" title="Activar Usuario"
+                        type="button" (click)="openActivar(contentActivar,usuario.id_usuario)">
+                        <!--Activar-->
+                        <i class="toggleactivar"></i>
+                      </button>
+                      <button *ngIf="usuario.estatus == 1" class="btn btn-secondary btn-sm active" title="Suspender Usuario"
+                        type="button" (click)="openDesactivar(contentDesactivar,usuario.id_usuario)">
+                        <i class="togglesuspender"></i>
+                      </button>
+                      <button class="btn btn-secondary btn-sm active mr-1" title="Eliminar Usuario" type="button"
+                      (click)="openEliminar(contentEliminar, usuario.id_usuario)">
+                      <!--Editar-->
+                      <i class="ti-trash"></i>
+                    </button>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #contentActivar let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Habilitar Usuario</h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <p>¿Está seguro que desea habilitar el usuario?</p>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <!--<button type="button" class="btn btn-outline-dark" >Save</button>-->
+    <!--<button type="button" class="btn btn-sm btn-danger" (click)="activarUsuario(user)">Aceptar</button>-->
+    <button id="{{usuarioId}}" class="btn btn-sm btn-danger" (click)="activarUsuario(this)">Aceptar</button>
+
+    <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">Cancelar</button>
+  </div>
+</ng-template>
+
+<ng-template #contentDesactivar let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Suspender Usuario</h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <p>¿Está seguro que desea suspender el usuario?</p>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button id="{{usuarioId}}" class="btn btn-sm btn-danger" (click)="desctivarUsuario(this)">Aceptar</button>
+    <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">Cancelar</button>
+  </div>
+</ng-template>
+
+<ng-template #contentEliminar let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Eliminar Usuario</h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <p>¿Está seguro que desea eliminar el usuario definitivamente?</p>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button id="{{usuarioId}}" class="btn btn-sm btn-danger" (click)="eliminarUsuario(this)">Aceptar</button>
+    <button type="button" class="btn btn-sm btn-default" (click)="modal.dismiss('cancel click')">Cancelar</button>
+  </div>
+</ng-template>
+
+<ng-template #contentEXito let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmación</h4>
+  </div>
+  <div class="modal-body">
+   
+    <div *ngIf="proceso_exitoso == false" class="alert alert-warning" role="alert">
+      <p>{{ mensajeRespuesta }}</p>
+    </div>
+    <div *ngIf="proceso_exitoso == true" class="alert alert-success" role="alert">
+      <p>{{ mensajeRespuesta }}</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary center-block" (click)="modal.dismiss('cancel click')">Aceptar</button>
+  </div>
+</ng-template>
+<!--<router-outlet></router-outlet>-->

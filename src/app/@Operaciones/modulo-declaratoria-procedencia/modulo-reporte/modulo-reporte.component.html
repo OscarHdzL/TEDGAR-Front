@@ -1,0 +1,88 @@
+<app-modulo-spiner-declaratoria *ngIf="estaCargando"></app-modulo-spiner-declaratoria>
+<br><br>
+<h2>Reportes</h2>
+<hr class="red" />
+
+<div>
+  <form role="form" [formGroup]="formGroup">
+
+    <div class="row">
+      <div class="col-sm-6">
+        <label>Fecha Inicial</label>
+        <input class="form-control" type="date" formControlName="fechaI" placeholder="Fecha inicial" />
+      </div>
+      <div class="col-sm-6">
+        <label>Fecha Final</label>
+        <input class="form-control" type="date" formControlName="fechaF" placeholder="Fecha final" />
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <label>Trámite</label>
+        <select class="form-control" formControlName="tramite" (change)="obtenerEstatus()">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaTramite" value="{{ tipo.id }}">
+            {{ tipo.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-sm-4">
+        <label>Estatus</label>
+        <select class="form-control" formControlName="estatus">
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaEstatus" value="{{ tipo.i_id }}">
+            {{ tipo.c_nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-sm-2" style="margin-top: 25px;text-align: end;">
+        <button type="button" class="btn btn-primary" (click)="obtenerReportes()">
+          Buscar &nbsp; <i class="ti-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <br>
+    <div class="row">
+      <div class="col-sm-8"></div>
+      <div class="col-sm-4" style="text-align: end;">
+        <button type="button" class="btn btn-primary" (click)="exportarExcel()">
+          Exportar resultados a Excel <i class="ti-download"></i>
+        </button>
+      </div>
+    </div>
+
+  </form>
+  <br>
+
+
+  <div class="table-responsive">
+    <table class="table table-striped" #ref datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Trámite</th>
+          <th scope="col">Estatus</th>
+          <th scope="col">Denominación</th>
+          <th scope="col">Fecha de solicitud</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let catalogo of lista; let i = index">
+          <th scope="row" style="width: 5px"> {{i + 1}} </th>
+          <th scope="row" style="width: 20px">{{ catalogo.tramite }}</th>
+          <th scope="row" style="width: 25px">{{ catalogo.estatus }}</th>
+          <th scope="row" style="word-break: break-all; width: 25px">{{ catalogo.denominacion }}</th>
+          <th scope="row" style="width: 25px">{{ catalogo.fecha_solicitud }}</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br><br>

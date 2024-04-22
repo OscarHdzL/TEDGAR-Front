@@ -1,0 +1,162 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Agregar Representante</h4>
+</div>
+<form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <h4 id="modal-basic-title">Datos Generales</h4>
+      </div>
+
+      <div class="form-group col-md-6">
+        <label class="control-label" for="p_nombre">Nombre<span class="text-danger">*</span>:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="p_nombre"
+          required
+        />
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('p_nombre').touched">
+          {{ obtenerErroresNombre() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label" for="p_apaterno">Apellido Paterno<span class="text-danger">*</span>:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="p_apaterno"
+          required
+        />
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('p_apaterno').touched">
+          {{ obtenerErroresPaterno() }}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label" for="p_amaterno">Apellido Materno:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="p_amaterno"
+        />
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('p_amaterno').touched">
+          {{ obtenerErroresMaterno() }}
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label class="control-label" for="p_telefono">Teléfono:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="p_telefono"
+          maxlength="10"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+        />
+        <!--<div class="error" *ngIf="formGroup.invalid && formGroup.get('p_telefono').touched">
+          {{ obtenerErroresTel() }}
+        </div>-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label class="control-label" for="p_correo">Correo<span class="text-danger">*</span>:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="p_correo"
+          email
+          required
+        />
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('p_correo').touched">
+          {{ obtenerErroresCorreo() }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h4 id="modal-basic-title">Datos Representante</h4>
+      </div>
+      <div class="form-group col-md-12">
+        <label class="control-label" for="p_correo">Rol<span class="text-danger">*</span>:</label>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Representante Legal</th>
+              <th scope="col">Ministros de Culto</th>
+              <th scope="col">Asociados</th>
+              <th scope="col">Órgano Gobierno</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row">
+                <input (change)="enableValidations()"  formControlName="t_rep_legal" class="form-checkbox" type="checkbox">
+                
+              </td>
+              <td scope="row">
+                <input (change)="enableValidations()"  formControlName="t_ministro_culto" class="form-checkbox" type="checkbox">
+                
+              </td>
+              <td scope="row">
+                <input (change)="enableValidations()"  formControlName="t_rep_asociado" class="form-checkbox" type="checkbox">
+                
+              </td>
+              <td scope="row">
+                <input (change)="enableValidations()"  formControlName="t_organo_gob" class="form-checkbox" type="checkbox">
+                
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="error"
+          *ngIf="this.invalidrol"
+        >
+          Debe seleccionar al menos un rol.
+        </div>
+      </div>
+      <div class="form-group col-md-6" [hidden]="hideparam">
+        <label class="control-label" for="p_cargo">Órgano de Gobierno<span *ngIf="getRequired(1)" class="text-danger">*</span>:</label>
+        <input class="form-control" type="text" formControlName="p_cargo" />
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('p_cargo').touched">
+          {{ obtenerErroresCargo() }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md-6" [hidden]="hideparam">
+        <label class="control-label" for="c_organo_g">Cargo Gobierno<span  *ngIf="getRequired(2)"  class="text-danger">*</span>:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="c_organo_g"
+          name="c_organo_g"
+        />
+        <div class="error" *ngIf="formGroup.invalid && formGroup.get('c_organo_g').touched">
+          {{ obtenerErroresCargoG() }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      (click)="OnSubmit()"
+      [disabled]="
+        this.formGroup.invalid||this.invalidrol
+      "
+      class="btn btn-primary"
+    >
+      Guardar
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="activeModal.close('Close click')"
+    >
+      Cancelar
+    </button>
+  </div>
+</form>

@@ -1,0 +1,76 @@
+<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>
+
+<div class="container">
+  <h3>{{titulo}}</h3>
+  <!-- <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-9 text-right pull-right">
+      <app-modulo-paginacion [routes]="routes" [tramiteId]="id_tramite"></app-modulo-paginacion>
+    </div>
+  </div> -->
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+    <div class="row">
+      <h4>Cotejo Documentación</h4>
+      <div class="form-group col-md-4">
+        <label class="control-label requerido" for="s_estatus">Estatus Registro:</label>
+        <select class="form-control" formControlName="s_estatus" name="s_estatus"
+          (click)="onChange($event.target.value)" required *ngIf="cumple">
+          <option value="0" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaEstatus" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre }}
+          </option>
+        </select>
+
+        <select class="form-control" formControlName="s_estatus" name="s_estatus"
+          (click)="onChange($event.target.value)" required *ngIf="!cumple">
+          <option value="0" selected>Seleccione una opci&oacute;n...</option>
+          <option value="39" selected>Cotejo registro no cumple</option>
+        </select>
+        <div *ngIf="!formGroup.valid" class="error">
+          {{ obtenerErroresEstatus() }}
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6" *ngIf="showControls && Valido">
+        <div class="form-group col-md-12">
+          <label class="control-label requerido">Número Registro:</label>
+          <input class="form-control" type="text" formControlName="s_numero_registro" name="s_numero_registro"
+            required />
+          <div *ngIf="!formGroup.valid && formGroup.get('s_numero_registro').touched" class="error">
+            {{ obtenerErroresNumeroRegistro() }}
+          </div>
+        </div>
+        <div class="form-group col-md-12">
+          <label class="control-label col-md-12 requerido" for="s_estatuto_file">Certificado de registro:</label>
+          <div class="col-md-12">
+            <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="15" [archivo_registrado]="doc1"
+              (is_loading)="setIsLoadingArchivo($event)" [isDictaminador]="!isDictaminador"></app-modulo-carga-archivo>
+          </div>
+          <label class="control-label col-md-12 requerido" for="s_estatuto_file">Dictamen de registro:</label>
+          <div class="col-md-12">
+            <app-modulo-carga-archivo [id]="id_tramite" [id_archivo_tramite]="16" [archivo_registrado]="doc2"
+              (is_loading)="setIsLoadingArchivo($event)" [isDictaminador]="!isDictaminador"></app-modulo-carga-archivo>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group col-md-12">
+          <label class="control-label requerido" for="s_comentarios">Comentarios:</label>
+          <textarea class="form-control" formControlName="s_comentarios" name="s_comentarios" required
+            rows="20"></textarea>
+          <div *ngIf="!formGroup.valid && formGroup.get('s_comentarios').touched" class="error">
+            {{ obtenerErroresComentarios() }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-6 text-center p-5" *ngIf="isDictaminador">
+      <button (click)="OnSubmit()" [disabled]="!formGroup.valid" class="btn btn-primary btn-footer">
+        Enviar Notificación
+      </button>
+    </div>
+  </div>
+</div>

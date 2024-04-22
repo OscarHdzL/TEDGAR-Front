@@ -1,0 +1,135 @@
+<!--<app-modulo-spiner-login *ngIf="operacionRespuesta.EstaEjecutando"></app-modulo-spiner-login>-->
+<div class="container">
+  <h3>Solicitud de toma de nota</h3>
+  <div class="tabla-Representantes col-md-12">
+    <h4>
+      Domicilio para oír y recibir notificaciones
+    </h4>
+  </div>
+
+  <form role="form" [formGroup]="formGroup" (submit)="OnSubmit()">
+    <div class="row">
+
+      <div class="form-group col-md-6">
+
+        <label class="control-label" for="s_numero_sgar">Codigo Postal:</label>
+        <input class="form-control"
+               type="text"
+               
+               name="s_numero_sgar"
+               required />
+        <!--<div *ngIf="
+            formGroup.invalid && formGroup.get('s_numero_sgar').touched
+          ">
+          {{ obtenerErroresNumeroRegistro() }}
+        </div>-->
+      </div>
+
+      <div class="form-group col-md-6">
+
+        <label class="control-label" for="s_numero_sgar">Entidad:</label>
+        <input class="form-control"
+               type="text"
+               
+               name="s_numero_sgar"
+               required />
+        <!--<div *ngIf="
+            formGroup.invalid && formGroup.get('s_numero_sgar').touched
+          ">
+          {{ obtenerErroresNumeroRegistro() }}
+        </div>-->
+      </div>
+
+      <div class="form-group col-md-6">
+
+        <label class="control-label" for="s_numero_sgar">Ciudad:</label>
+        <input class="form-control"
+               type="text"
+               
+               name="s_numero_sgar"
+               required />
+        <!--<div *ngIf="
+            formGroup.invalid && formGroup.get('s_numero_sgar').touched
+          ">
+          {{ obtenerErroresNumeroRegistro() }}
+        </div>-->
+      </div>
+
+      <div class="form-group col-md-6">
+
+        <label class="control-label" for="s_numero_sgar">Municipio:</label>
+        <input class="form-control"
+               type="text"
+               
+               name="s_numero_sgar"
+               required />
+        <!--<div *ngIf="
+            formGroup.invalid && formGroup.get('s_numero_sgar').touched
+          ">
+          {{ obtenerErroresNumeroRegistro() }}
+        </div>-->
+      </div>
+
+      <div class="form-group col-md-6">
+
+        <label class="control-label" for="s_numero_sgar">Colonia:</label>
+        <input class="form-control"
+               type="text"
+               
+               name="s_numero_sgar"
+               required />
+        <!--<div *ngIf="
+            formGroup.invalid && formGroup.get('s_numero_sgar').touched
+          ">
+          {{ obtenerErroresNumeroRegistro() }}
+        </div>-->
+      </div>
+
+      <div class="form-group col-md-6">
+
+        <label class="control-label" for="s_numero_sgar">Calle:</label>
+        <input class="form-control"
+               type="text"
+               
+               name="s_numero_sgar"
+               required />
+        <!--<div *ngIf="
+            formGroup.invalid && formGroup.get('s_numero_sgar').touched
+          ">
+          {{ obtenerErroresNumeroRegistro() }}
+        </div>-->
+      </div>
+
+
+
+    </div>
+    <div class="row">
+      <div class="form-group col-md-8">
+        <label class="control-label requerido" for="s_cat_solicitud_escrito">Indique cómo desea que se lleve a cabo la entrega  de la  documentación digital contra original:</label>
+        <select class="form-control"
+                
+                name="s_cat_solicitud_escrito"
+                required>
+          <option value="" selected>Seleccione una opci&oacute;n...</option>
+          <option *ngFor="let tipo of listaModalidad" value="{{ tipo.c_id }}">
+            {{ tipo.c_nombre_n }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <button type="button" class="btn btn-primary">
+          Guardar
+        </button>
+        <button (click)="OnSubmit()"
+                class="btn btn-primary">
+          Finalizar
+        </button>
+        <button type="button" class="btn btn-secondary">
+          Salir
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,118 @@
+<div class="container">
+  <h3>Otorgamiento de Registro Constitutivo como Asociación religiosa</h3>
+  <!-- <h5>Dictaminador Asignado: {{ usuarioDictaminador }}</h5> -->
+  <div class="row">
+    <div *ngIf="show1" class="col-md-12">
+      <h3>Registro de Información</h3>
+      <div class="row p-5" *ngIf="respuesta.s_cotejo_v">
+        <p *ngIf="respuesta.s_tipo_cotejo == 1">
+          Su solicitud de registro se ha recibido de forma exitosa, por favor
+          preséntese el día, horario y dirección indicados para realizar el
+          cotejo de la documentación, recuerde presentar la documentación
+          original.
+        </p>
+        <p *ngIf="respuesta.s_tipo_cotejo == 2">
+          Su solicitud de registro se ha recibido de forma exitosa, por favor
+          envie la documentación original a la dirección indicada, lo antes
+          posible para continuar con su trámite.
+        </p>
+        <div class="col-md-6" *ngIf="respuesta.s_tipo_cotejo == 1">
+          <label>Fecha y hora:</label>
+          <p>{{ respuesta.s_fecha | date: 'dd/MM/yyyy, h:mm a' }}</p>
+          <p><strong>Acudir con:</strong> {{ usuarioDictaminador }}</p>
+        </div>
+        <div class="col-md-6">
+          <label>Direción:</label>
+          <p>{{ respuesta.s_direccion }}</p>
+        </div>
+      </div>
+      <div class="row p-5" *ngIf="!respuesta.s_cotejo_v">
+        <div class="col-md-12 p-5">
+          <label>Comentarios:</label>
+          <p>{{ respuesta.s_comentarios }}</p>
+        </div>
+        <div class="col-md-12">
+          <p>
+            Por favor ingrese a este enlace para atender los comentarios
+            realizados
+          </p>
+          <a (click)="editarSolicitud(respuesta?.s_id)">
+          <!--a [routerLink]="['/solicitudregistro/' + respuesta?.s_id]"-->
+            Solicitud de registro
+          </a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="show2" class="col-md-12">
+      <h3>Cotejo de documentos</h3>
+      <div class="row">
+        <div class="col-md-12 p-5">
+          <label>Comentarios:</label>
+          <p>{{ respuesta.s_comentario_f }}</p>
+        </div>
+
+      </div>
+    </div>
+    <div *ngIf="show3" class="col-md-12">
+      <h3>Entrega de certificado</h3>
+      <div class="col-md-12 p-5">
+        <label>Comentarios:</label>
+        <p>{{ respuesta.s_comentario_r }}</p>
+      </div>
+    </div>
+    <div *ngIf="show4" class="col-md-12">
+      <h3>Conclusión del registro</h3>
+      <div class="col-md-12 p-5">
+        <label>Comentarios:</label>
+        <p>{{ respuesta.s_comentario_c }}</p>
+      </div>
+    </div>
+    <div *ngIf="showmensaje" class="col-md-12">
+      <div class="alert alert-warning" role="alert">
+        <p>Aún no hay información que consultar</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="!showmensaje">
+      <div class="col-md-12 text-right">
+        <div class="pagination">
+          <a
+            *ngIf="respuesta?.s_cotejo_v != null"
+            (click)="activeChange(1)"
+            class="{{ show1 ? 'active' : '' }}"
+            >1</a
+          >
+          <a
+            *ngIf="respuesta?.s_cotejo_f != null"
+            (click)="activeChange(2)"
+            class="{{ show2 ? 'active' : '' }}"
+            >2</a
+          >
+          <a
+            *ngIf="respuesta?.s_cotejo_r != null"
+            (click)="activeChange(3)"
+            class="{{ show3 ? 'active' : '' }}"
+            >3</a>
+          <a
+            *ngIf="respuesta?.s_cotejo_c != null"
+            (click)="activeChange(4)"
+            class="{{ show4 ? 'active' : '' }}"
+            >4</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center p-5">
+        <a [routerLink]="['/registros-tramite']" class="btn btn-primary btn-footer">
+          Salir
+        </a>
+        <!-- <button
+            type="button"
+            class="btn btn-secondary btn-footer"
+            [routerLink]="['']"
+          >
+            Salir
+          </button> -->
+      </div>
+    </div>
+  </div>
+</div>

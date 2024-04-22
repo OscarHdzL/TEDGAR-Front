@@ -1,0 +1,100 @@
+<div class="container"><br />
+  <h5>Toma de nota de modificaciones al interior de las asociaciones religiosas > Consultar toma de nota</h5>
+  <!-- <h5>Dictaminador Asignado: {{ usuarioDictaminador }}</h5> -->
+  <div class="row">
+    <div *ngIf="show1" class="col-md-12">
+      <h6>Indicaciones para el cotejo de la documentación</h6>
+      <div class="row p-5" *ngIf="respuesta.s_cotejo_v">
+        <p *ngIf="respuesta.s_tipo_cotejo == 1">
+          Su solicitud de toma de nota se ha recibido de forma exitosa, por favor
+          preséntese el día, horario y dirección indicados para realizar el
+          cotejo de la documentación, recuerde presentar la documentación
+          original. <br><br> En caso de inasistencia se tendrá por no presentado el trámite.
+        </p>
+        <p *ngIf="respuesta.s_tipo_cotejo == 2">
+          Su solicitud de toma de nota se ha recibido de forma exitosa, por favor
+          envíe la documentación original a la dirección indicada, lo antes
+          posible para continuar con su trámite.
+        </p>
+        <div class="col-md-6" *ngIf="respuesta.s_tipo_cotejo == 1">
+          <label>Fecha y hora:</label>
+          <p>{{ respuesta.s_fecha | date: 'dd/MM/yyyy, h:mm a' }}</p>
+          <p><strong>Acudir con:</strong> {{ usuarioDictaminador }}</p>
+        </div>
+        <div class="col-md-6">
+          <label>Direción:</label>
+          <p>{{ respuesta.s_direccion }}</p>
+        </div>
+      </div>
+      <div class="row p-5" *ngIf="!respuesta.s_cotejo_v">
+        <div class="col-md-12 p-5">
+          <label>Comentarios:</label>
+          <p>{{ respuesta.s_comentarios }}</p>
+        </div>
+        <div class="col-md-12">
+          <p>
+            Por favor ingrese a este enlace para atender los comentarios
+            realizados
+          </p>
+          <a [routerLink]="['/solicitudtomanota/'] + this.id_tramite">
+            Solicitud de toma de nota
+          </a>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="show2" class="col-md-12">
+      <h6>Indicaciones para el cotejo de la documentación</h6>
+      <div class="row">
+        <div class="col-md-12 p-5">
+          <label>Comentarios:</label>
+          <p>{{ respuesta.s_comentario_f }}</p>
+        </div>
+
+      </div>
+    </div>
+    <div *ngIf="show3" class="col-md-12">
+      <h6>Indicaciones para la entrega del oficio de toma de nota</h6>
+      <div class="col-md-12 p-5">
+        <label>Comentarios:</label>
+        <br>{{ respuesta.s_comentario_r }}
+      </div>
+    </div>
+    <div *ngIf="show4" class="col-md-12">
+      <h6>Conclusión de la toma de nota</h6>
+      <div class="col-md-12 p-5">
+        <label>Comentarios:</label>
+        <p>{{ respuesta.s_comentario_c }}</p>
+      </div>
+    </div>
+    <div *ngIf="showmensaje" class="col-md-12">
+      <div class="alert alert-warning" role="alert">
+        <p>Aún no hay información que consultar</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="!showmensaje">
+      <div class="col-md-12 text-right">
+        <div class="pagination">
+          <a *ngIf="respuesta?.s_cotejo_v != null"
+             (click)="activeChange(1)"
+             class="{{ show1 ? 'active' : '' }}">1</a>
+          <a *ngIf="respuesta?.s_cotejo_f != null"
+             (click)="activeChange(2)"
+             class="{{ show2 ? 'active' : '' }}">2</a>
+          <a *ngIf="respuesta?.s_cotejo_r != null"
+             (click)="activeChange(3)"
+             class="{{ show3 ? 'active' : '' }}">3</a>
+          <a *ngIf="respuesta?.s_cotejo_c != null"
+             (click)="activeChange(4)"
+             class="{{ show4 ? 'active' : '' }}">4</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center p-5">
+        <a [routerLink]="['/registros-toma-nota']" class="btn btn-primary btn-footer">
+          Salir
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

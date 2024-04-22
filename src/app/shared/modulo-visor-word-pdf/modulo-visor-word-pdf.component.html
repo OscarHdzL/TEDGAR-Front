@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Visualización del Documento</h4>
+</div>
+
+<div class="modal-body">
+    <div [innerHtml]="htmlVistaPrevia"></div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary center-block" (click)="modalService.close()">Salir</button>
+</div>
+
+
